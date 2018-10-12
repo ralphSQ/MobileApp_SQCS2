@@ -37,6 +37,7 @@ public class loginFrame extends javax.swing.JFrame {
         loginBtn = new javax.swing.JButton();
         passwordInput = new javax.swing.JPasswordField();
         forgotPassword = new javax.swing.JLabel();
+        registerBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -101,6 +102,14 @@ public class loginFrame extends javax.swing.JFrame {
             }
         });
 
+        registerBtn.setFont(new java.awt.Font("Comic Sans MS", 0, 16)); // NOI18N
+        registerBtn.setText("Register");
+        registerBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -108,12 +117,13 @@ public class loginFrame extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(emailInput)
                     .addComponent(loginBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(passwordInput, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(forgotPassword)))
+                        .addComponent(registerBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 198, Short.MAX_VALUE)
+                        .addComponent(forgotPassword))
+                    .addComponent(emailInput)
+                    .addComponent(passwordInput))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -126,7 +136,9 @@ public class loginFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(loginBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addComponent(forgotPassword)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(forgotPassword)
+                    .addComponent(registerBtn))
                 .addContainerGap())
         );
 
@@ -149,7 +161,7 @@ public class loginFrame extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(231, Short.MAX_VALUE))
+                .addContainerGap(220, Short.MAX_VALUE))
         );
 
         pack();
@@ -195,6 +207,11 @@ public class loginFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_forgotPasswordMouseClicked
 
+    private void registerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerBtnActionPerformed
+        new registerFrame().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_registerBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -222,6 +239,7 @@ public class loginFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton loginBtn;
     private javax.swing.JPasswordField passwordInput;
+    private javax.swing.JButton registerBtn;
     private javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }
