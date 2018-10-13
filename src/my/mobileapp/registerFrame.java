@@ -180,13 +180,13 @@ public class registerFrame extends javax.swing.JFrame {
             String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ACCTNUM=" + accountNo;
             ResultSet rs = st.executeQuery(DBQ);
             if (rs.next()) {
-                firstname = rs.getString("CLIENT_FN");
-                lastname = rs.getString("CLIENT_LN");
-                middlename = rs.getString("CLIENT_MN");
+                firstname = rs.getString("CLIENT_FN").toLowerCase();
+                lastname = rs.getString("CLIENT_LN").toLowerCase();
+                middlename = rs.getString("CLIENT_MN").toLowerCase();
                 System.out.println(firstname);
                 System.out.println(lastname);
                 System.out.println(middlename);
-                username = firstname.substring(0, 1) + middlename.substring(0, 1) + lastname.replaceAll("\\s+", "");
+                username = firstname.substring(0, 1).replaceAll("\\s+", "") + middlename.substring(0, 1).replaceAll("\\s+", "") + lastname.replaceAll("\\s+", "");
             }
         } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
             System.out.println(e.getMessage());
