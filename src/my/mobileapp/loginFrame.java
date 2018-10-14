@@ -13,6 +13,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
 /**
@@ -213,6 +214,9 @@ public class loginFrame extends javax.swing.JFrame {
         if (usernameInput.getText().equals("")) {
             usernameInput.setText("Username or Email Address");
             usernameInput.setForeground(Color.lightGray);
+            usernameInput.setBorder(BorderFactory.createLineBorder(Color.red));
+        } else {
+            usernameInput.setBorder(BorderFactory.createLineBorder(Color.green));
         }
     }//GEN-LAST:event_usernameInputFocusLost
 
@@ -225,8 +229,11 @@ public class loginFrame extends javax.swing.JFrame {
 
     private void passwordInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordInputFocusLost
         if (passwordInput.getText().equals("")) {
+            passwordInput.setBorder(BorderFactory.createLineBorder(Color.red));
             passwordInput.setText("1234567890");
             passwordInput.setForeground(Color.lightGray);
+        } else {
+            passwordInput.setBorder(BorderFactory.createLineBorder(Color.green));
         }
     }//GEN-LAST:event_passwordInputFocusLost
 
