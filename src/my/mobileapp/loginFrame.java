@@ -104,6 +104,7 @@ public class loginFrame extends javax.swing.JFrame {
         usernameInput.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         usernameInput.setForeground(java.awt.Color.lightGray);
         usernameInput.setText("Username or Email Address");
+        usernameInput.setToolTipText("");
         usernameInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 usernameInputFocusGained(evt);
@@ -112,13 +113,8 @@ public class loginFrame extends javax.swing.JFrame {
                 usernameInputFocusLost(evt);
             }
         });
-        usernameInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                usernameInputActionPerformed(evt);
-            }
-        });
         jPanel1.add(usernameInput);
-        usernameInput.setBounds(20, 370, 360, 50);
+        usernameInput.setBounds(30, 370, 360, 50);
 
         passwordInput.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         passwordInput.setForeground(java.awt.Color.lightGray);
@@ -131,49 +127,51 @@ public class loginFrame extends javax.swing.JFrame {
                 passwordInputFocusLost(evt);
             }
         });
-        passwordInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordInputActionPerformed(evt);
-            }
-        });
         jPanel1.add(passwordInput);
-        passwordInput.setBounds(20, 430, 360, 50);
+        passwordInput.setBounds(30, 430, 360, 50);
 
         signupButton.setBackground(new java.awt.Color(51, 51, 51));
         signupButton.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
         signupButton.setForeground(new java.awt.Color(255, 255, 255));
         signupButton.setText("Sign Up");
+        signupButton.setToolTipText("");
+        signupButton.setBorder(null);
+        signupButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         signupButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 signupButtonActionPerformed(evt);
             }
         });
         jPanel1.add(signupButton);
-        signupButton.setBounds(20, 690, 160, 30);
+        signupButton.setBounds(30, 690, 160, 30);
 
         forgotpassButton.setBackground(new java.awt.Color(51, 51, 51));
         forgotpassButton.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
         forgotpassButton.setForeground(new java.awt.Color(255, 255, 255));
         forgotpassButton.setText("Forgot Password?");
+        forgotpassButton.setBorder(null);
+        forgotpassButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         forgotpassButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 forgotpassButtonActionPerformed(evt);
             }
         });
         jPanel1.add(forgotpassButton);
-        forgotpassButton.setBounds(200, 690, 180, 30);
+        forgotpassButton.setBounds(210, 690, 180, 30);
 
         loginButton.setBackground(new java.awt.Color(0, 176, 170));
         loginButton.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         loginButton.setForeground(new java.awt.Color(255, 255, 255));
-        loginButton.setText("LOG IN");
+        loginButton.setToolTipText("");
+        loginButton.setBorder(null);
+        loginButton.setLabel("LOGIN");
         loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginButtonActionPerformed(evt);
             }
         });
         jPanel1.add(loginButton);
-        loginButton.setBounds(20, 510, 360, 40);
+        loginButton.setBounds(30, 510, 360, 40);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/Untitled-5.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -194,14 +192,6 @@ public class loginFrame extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void usernameInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameInputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_usernameInputActionPerformed
-
-    private void passwordInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordInputActionPerformed
-
-    }//GEN-LAST:event_passwordInputActionPerformed
 
     private void usernameInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_usernameInputFocusGained
         if (usernameInput.getText().equals("Username or Email Address")) {
@@ -290,8 +280,8 @@ public class loginFrame extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                com.jtattoo.plaf.smart.SmartLookAndFeel.setTheme("Gray-Giant-Font", "INSERT YOUR LICENSE KEY HERE", "my company");
-                javax.swing.UIManager.setLookAndFeel("com.jtattoo.plaf.smart.SmartLookAndFeel");
+                com.jtattoo.plaf.smart.SmartLookAndFeel.setTheme("Large-Font", "INSERT YOUR LICENSE KEY HERE", "University Bank");
+                javax.swing.UIManager.setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(loginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
