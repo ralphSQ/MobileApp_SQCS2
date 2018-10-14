@@ -29,7 +29,9 @@ public class loginFrame extends javax.swing.JFrame {
     public loginFrame() {
         initComponents();
         usernameInput.grabFocus();
-        this.setResizable(false);
+        errorLabel.setVisible(false);
+        errorUsernameLabel.setVisible(false);
+        errorPasswordLabel.setVisible(false);
     }
     private static String PW_hasher(String password) {
         String digest = "";
@@ -65,7 +67,6 @@ public class loginFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Username/Password is incorrect");
             }
         } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
-            System.out.println(e.getMessage());
         }
         return fullname;
     }
@@ -88,6 +89,9 @@ public class loginFrame extends javax.swing.JFrame {
         signupButton = new javax.swing.JButton();
         forgotpassButton = new javax.swing.JButton();
         loginButton = new javax.swing.JButton();
+        errorUsernameLabel = new javax.swing.JLabel();
+        errorPasswordLabel = new javax.swing.JLabel();
+        errorLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -99,7 +103,7 @@ public class loginFrame extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/logo.png"))); // NOI18N
         jLabel2.setText("jLabel2");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(50, 70, 320, 270);
+        jLabel2.setBounds(50, 30, 320, 270);
 
         usernameInput.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         usernameInput.setForeground(java.awt.Color.lightGray);
@@ -114,7 +118,7 @@ public class loginFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(usernameInput);
-        usernameInput.setBounds(30, 370, 360, 50);
+        usernameInput.setBounds(30, 340, 360, 50);
 
         passwordInput.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         passwordInput.setForeground(java.awt.Color.lightGray);
@@ -128,7 +132,7 @@ public class loginFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(passwordInput);
-        passwordInput.setBounds(30, 430, 360, 50);
+        passwordInput.setBounds(30, 420, 360, 50);
 
         signupButton.setBackground(new java.awt.Color(51, 51, 51));
         signupButton.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
@@ -171,7 +175,30 @@ public class loginFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(loginButton);
-        loginButton.setBounds(30, 510, 360, 40);
+        loginButton.setBounds(30, 530, 360, 40);
+
+        errorUsernameLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        errorUsernameLabel.setForeground(java.awt.Color.red);
+        errorUsernameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        errorUsernameLabel.setLabelFor(usernameInput);
+        errorUsernameLabel.setText("Enter your Username/Email Address");
+        jPanel1.add(errorUsernameLabel);
+        errorUsernameLabel.setBounds(30, 310, 360, 30);
+
+        errorPasswordLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        errorPasswordLabel.setForeground(java.awt.Color.red);
+        errorPasswordLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        errorPasswordLabel.setLabelFor(passwordInput);
+        errorPasswordLabel.setText("Enter your password");
+        jPanel1.add(errorPasswordLabel);
+        errorPasswordLabel.setBounds(30, 390, 360, 30);
+
+        errorLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        errorLabel.setForeground(java.awt.Color.red);
+        errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        errorLabel.setText("Incorrect username or password");
+        jPanel1.add(errorLabel);
+        errorLabel.setBounds(30, 480, 360, 30);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/Untitled-5.jpg"))); // NOI18N
         jLabel1.setText("jLabel1");
@@ -193,54 +220,16 @@ public class loginFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void usernameInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_usernameInputFocusGained
-        if (usernameInput.getText().equals("Username or Email Address")) {
-            usernameInput.setText("");
-            usernameInput.setForeground(Color.black);
-        }
-    }//GEN-LAST:event_usernameInputFocusGained
-
-    private void usernameInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_usernameInputFocusLost
-        if (usernameInput.getText().equals("")) {
-            usernameInput.setText("Username or Email Address");
-            usernameInput.setForeground(Color.lightGray);
-            usernameInput.setBorder(BorderFactory.createLineBorder(Color.red));
-        } else {
-            usernameInput.setBorder(BorderFactory.createLineBorder(Color.green));
-        }
-    }//GEN-LAST:event_usernameInputFocusLost
-
-    private void passwordInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordInputFocusGained
-        if (passwordInput.getText().equals("1234567890")) {
-            passwordInput.setText("");
-            passwordInput.setForeground(Color.black);
-        }
-    }//GEN-LAST:event_passwordInputFocusGained
-
-    private void passwordInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordInputFocusLost
-        if (passwordInput.getText().equals("")) {
-            passwordInput.setBorder(BorderFactory.createLineBorder(Color.red));
-            passwordInput.setText("1234567890");
-            passwordInput.setForeground(Color.lightGray);
-        } else {
-            passwordInput.setBorder(BorderFactory.createLineBorder(Color.green));
-        }
-    }//GEN-LAST:event_passwordInputFocusLost
-
-    private void signupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupButtonActionPerformed
-        new registerFrame().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_signupButtonActionPerformed
-
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        if (usernameInput.getText().isEmpty() || passwordInput.getText().isEmpty() || usernameInput.getText().equals("Username or Email Address") || passwordInput.getText().equals("1234567890")) {
-            JOptionPane.showMessageDialog(this, "Username/Password is incorrect");
+        if (usernameInput.getText().isEmpty() || usernameInput.getText().equals("Username or Email Address")) {
+            errorUsernameLabel.setVisible(true);
+        } else if( passwordInput.getText().isEmpty() || passwordInput.getText().equals("1234567890")){
+            errorPasswordLabel.setVisible(true);
         } else {
             try {
                 String password, username;
                 password = PW_hasher(passwordInput.getText());
                 username = usernameInput.getText();
-                System.out.println(password);
 
                 Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
                 Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
@@ -249,17 +238,15 @@ public class loginFrame extends javax.swing.JFrame {
                 ResultSet rs = st.executeQuery(DBQ);
                 if (rs.next()) {
                     String fullname = "",firstname = "";
-                    JOptionPane.showMessageDialog(this, "Login Success");
                     int accountId = rs.getInt("CLIENT_ID");
                     fullname = createName(accountId);
                     firstname = rs.getString("CLIENT_FN");
                     this.dispose();
-                    new landingFrame(accountId,firstname,fullname).setVisible(true);
+                    new homeFrame(accountId,firstname,fullname).setVisible(true);
                 } else {
-                    JOptionPane.showMessageDialog(this, "Username/Password is incorrect");
+                    errorLabel.setVisible(true);
                 }
             } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
-                System.out.println(e.getMessage());
             }
         }
     }//GEN-LAST:event_loginButtonActionPerformed
@@ -268,6 +255,49 @@ public class loginFrame extends javax.swing.JFrame {
         this.dispose();
         new resetPasswordFrame().setVisible(true);
     }//GEN-LAST:event_forgotpassButtonActionPerformed
+
+    private void signupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupButtonActionPerformed
+        new registerFrame().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_signupButtonActionPerformed
+
+    private void passwordInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordInputFocusLost
+        if (passwordInput.getText().equals("")) {
+            passwordInput.setBorder(BorderFactory.createLineBorder(Color.red));
+            passwordInput.setText("1234567890");
+            passwordInput.setForeground(Color.lightGray);
+            errorPasswordLabel.setVisible(true);
+        } else {
+            passwordInput.setBorder(BorderFactory.createLineBorder(Color.green));
+            errorPasswordLabel.setVisible(false);
+        }
+    }//GEN-LAST:event_passwordInputFocusLost
+
+    private void passwordInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordInputFocusGained
+        if (passwordInput.getText().equals("1234567890")) {
+            passwordInput.setText("");
+            passwordInput.setForeground(Color.black);
+        }
+    }//GEN-LAST:event_passwordInputFocusGained
+
+    private void usernameInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_usernameInputFocusLost
+        if (usernameInput.getText().equals("")) {
+            usernameInput.setText("Username or Email Address");
+            usernameInput.setForeground(Color.lightGray);
+            usernameInput.setBorder(BorderFactory.createLineBorder(Color.red));
+            errorUsernameLabel.setVisible(true);
+        } else {
+            errorUsernameLabel.setVisible(false);
+            usernameInput.setBorder(BorderFactory.createLineBorder(Color.green));
+        }
+    }//GEN-LAST:event_usernameInputFocusLost
+
+    private void usernameInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_usernameInputFocusGained
+        if (usernameInput.getText().equals("Username or Email Address")) {
+            usernameInput.setText("");
+            usernameInput.setForeground(Color.black);
+        }
+    }//GEN-LAST:event_usernameInputFocusGained
 
     /**
      * @param args the command line arguments
@@ -302,6 +332,9 @@ public class loginFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel errorLabel;
+    private javax.swing.JLabel errorPasswordLabel;
+    private javax.swing.JLabel errorUsernameLabel;
     private javax.swing.JButton forgotpassButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

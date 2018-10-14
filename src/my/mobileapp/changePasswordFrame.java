@@ -14,6 +14,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
 /**
@@ -38,6 +39,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
         this.fullName = fullName;
         this.firstName = firstName;
         initComponents();
+        matchErrorLabel.setVisible(false);
     }
 
     public changePasswordFrame(int userId) {
@@ -45,6 +47,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
         initComponents();
         oldPasswordInput.setVisible(false);
         oldPwLabel.setVisible(false);
+        matchErrorLabel.setVisible(false);
     }
 
     private static String PW_hasher(String password) {
@@ -75,7 +78,6 @@ public class changePasswordFrame extends javax.swing.JFrame {
                 oldPassword = rs.getString("CLIENT_PW");
             }
         } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
-            System.out.println(e.getMessage());
         }
 
         return oldPassword;
@@ -101,6 +103,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
         newPasswordInput = new javax.swing.JPasswordField();
         repeatNewPasswordInput = new javax.swing.JPasswordField();
         cancelBtn = new javax.swing.JButton();
+        matchErrorLabel = new javax.swing.JLabel();
         btnSubmit = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -192,7 +195,14 @@ public class changePasswordFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(cancelBtn);
-        cancelBtn.setBounds(260, 640, 79, 40);
+        cancelBtn.setBounds(300, 650, 79, 40);
+
+        matchErrorLabel.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        matchErrorLabel.setForeground(java.awt.Color.red);
+        matchErrorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        matchErrorLabel.setText("New password does not match");
+        jPanel1.add(matchErrorLabel);
+        matchErrorLabel.setBounds(80, 620, 260, 20);
 
         btnSubmit.setText("Proceed");
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
@@ -201,11 +211,11 @@ public class changePasswordFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnSubmit);
-        btnSubmit.setBounds(160, 640, 100, 40);
+        btnSubmit.setBounds(200, 650, 100, 40);
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(-10, 220, 420, 530);
+        jLabel5.setBounds(-10, 210, 420, 530);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/Changepass_Banner.jpg"))); // NOI18N
         jPanel1.add(jLabel1);
@@ -224,7 +234,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 732, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 724, Short.MAX_VALUE)
         );
 
         pack();
@@ -236,7 +246,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
         if (this.fullName.isEmpty()) {
             new loginFrame().setVisible(true);
         } else {
-            new landingFrame(userId, firstName, fullName).setVisible(true);
+            new homeFrame(userId, firstName, fullName).setVisible(true);
         }
     }//GEN-LAST:event_cancelBtnActionPerformed
 
@@ -265,6 +275,9 @@ public class changePasswordFrame extends javax.swing.JFrame {
         if (oldPasswordInput.getText().equals("")) {
             oldPasswordInput.setText("1234567890");
             oldPasswordInput.setForeground(Color.lightGray);
+            oldPasswordInput.setBorder(BorderFactory.createLineBorder(Color.red));
+        } else {
+            oldPasswordInput.setBorder(BorderFactory.createLineBorder(Color.green));
         }
     }//GEN-LAST:event_oldPasswordInputFocusLost
 
@@ -272,6 +285,9 @@ public class changePasswordFrame extends javax.swing.JFrame {
         if (newPasswordInput.getText().equals("")) {
             newPasswordInput.setText("1234567890");
             newPasswordInput.setForeground(Color.lightGray);
+            newPasswordInput.setBorder(BorderFactory.createLineBorder(Color.red));
+        } else {
+            newPasswordInput.setBorder(BorderFactory.createLineBorder(Color.green));
         }
     }//GEN-LAST:event_newPasswordInputFocusLost
 
@@ -279,6 +295,9 @@ public class changePasswordFrame extends javax.swing.JFrame {
         if (repeatNewPasswordInput.getText().equals("")) {
             repeatNewPasswordInput.setText("1234567890");
             repeatNewPasswordInput.setForeground(Color.lightGray);
+            repeatNewPasswordInput.setBorder(BorderFactory.createLineBorder(Color.red));
+        } else {
+            repeatNewPasswordInput.setBorder(BorderFactory.createLineBorder(Color.green));
         }
     }//GEN-LAST:event_repeatNewPasswordInputFocusLost
 
@@ -290,30 +309,39 @@ public class changePasswordFrame extends javax.swing.JFrame {
         String blank = null;
         if (this.fullName.isEmpty()) {
             if (newPasswordInput.getText().equals(repeatNewPasswordInput.getText())) {
-                    newPassword = PW_hasher(newPasswordInput.getText());
+                newPassword = PW_hasher(newPasswordInput.getText());
 
-                    confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to change your password?", "Confirm", JOptionPane.YES_NO_OPTION);
-                    if (confirm == 0) {
-                        try {
-                            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-                            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
-                            Statement st = con.createStatement();
-                            String DBQ = "UPDATE CLIENT SET CLIENT_PW = '" + newPassword + "', NEW_ACCOUNT =" + newAccount + ", RESET_PW_CODE = '" + blank + "' " + "WHERE CLIENT_ID=" + userId;
-                            result = st.executeUpdate(DBQ);
-                            if (result > 0) {
-                                JOptionPane.showMessageDialog(this, "Password changed successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-                                this.dispose();
-                                new loginFrame().setVisible(true);
-                            }
-                        } catch (ClassNotFoundException | SQLException e) {
-
+                confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to change your password?", "Confirm", JOptionPane.YES_NO_OPTION);
+                if (confirm == 0) {
+                    try {
+                        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+                        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
+                        Statement st = con.createStatement();
+                        String DBQ = "UPDATE CLIENT SET CLIENT_PW = '" + newPassword + "', NEW_ACCOUNT =" + newAccount + ", RESET_PW_CODE = '" + blank + "' " + "WHERE CLIENT_ID=" + userId;
+                        result = st.executeUpdate(DBQ);
+                        if (result > 0) {
+                            JOptionPane.showMessageDialog(this, "Password changed successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                            this.dispose();
+                            new loginFrame().setVisible(true);
                         }
-                    } else if (confirm == 1) {
+                    } catch (ClassNotFoundException | SQLException e) {
+
                     }
+                } else if (confirm == 1) {
                 }
+            }
         } else {
             if (oldPassword.equals(PW_hasher(oldPasswordInput.getText()))) {
-                if (newPasswordInput.getText().equals(repeatNewPasswordInput.getText())) {
+                if (newPasswordInput.getText().equals("1234567890")) {
+                    newPasswordInput.setBorder(BorderFactory.createLineBorder(Color.red));
+                } else if (repeatNewPasswordInput.getText().equals("1234567890")) {
+                    repeatNewPasswordInput.setBorder(BorderFactory.createLineBorder(Color.red));
+                } else if (!newPasswordInput.getText().equals(repeatNewPasswordInput.getText())) {
+                    matchErrorLabel.setVisible(true);
+                    newPasswordInput.grabFocus();
+                    repeatNewPasswordInput.setBorder(BorderFactory.createLineBorder(Color.red));
+                    newPasswordInput.setBorder(BorderFactory.createLineBorder(Color.red));
+                } else {
                     newPassword = PW_hasher(newPasswordInput.getText());
 
                     confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to change your password?", "Confirm", JOptionPane.YES_NO_OPTION);
@@ -327,16 +355,12 @@ public class changePasswordFrame extends javax.swing.JFrame {
                             if (result > 0) {
                                 JOptionPane.showMessageDialog(this, "Password changed successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                                 this.dispose();
-                                new landingFrame(userId, firstName, fullName).setVisible(true);
+                                new homeFrame(userId, firstName, fullName).setVisible(true);
                             }
                         } catch (ClassNotFoundException | SQLException e) {
 
                         }
-                    } else if (confirm == 1) {
                     }
-                } else {
-                    JOptionPane.showMessageDialog(this, "New password does not match", "Change Password", JOptionPane.INFORMATION_MESSAGE);
-                    newPasswordInput.grabFocus();
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "Old Password is incorrect", "Change Password", JOptionPane.INFORMATION_MESSAGE);
@@ -391,6 +415,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel matchErrorLabel;
     private javax.swing.JPasswordField newPasswordInput;
     private javax.swing.JPasswordField oldPasswordInput;
     private javax.swing.JLabel oldPwLabel;

@@ -119,9 +119,9 @@ public class resetPasswordFrame extends javax.swing.JFrame {
         success.add(jLabel10);
         jLabel10.setBounds(0, 0, 420, 230);
 
-        jLabel2.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Enter your email address");
+        jLabel2.setText("Enter E-Mail Address ");
         success.add(jLabel2);
         jLabel2.setBounds(20, 290, 370, 100);
         success.add(jLabel9);

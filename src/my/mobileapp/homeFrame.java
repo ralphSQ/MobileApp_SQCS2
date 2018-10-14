@@ -5,6 +5,7 @@
  */
 package my.mobileapp;
 
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -18,8 +19,9 @@ import java.util.Locale;
  *
  * @author Ralph
  */
-public class landingFrame extends javax.swing.JFrame {
+public class homeFrame extends javax.swing.JFrame {
 
+    
     private String fullName;
     private int accountId;
     private String firstName;
@@ -27,13 +29,13 @@ public class landingFrame extends javax.swing.JFrame {
     private String expectedBalance;
 
     /**
-     * Creates new form landingFrame
+     * Creates new form homeFrame
      */
-    public landingFrame() {
+    public homeFrame() {
         initComponents();
     }
-
-    public landingFrame(int userId, String firstName, String fullName) {
+    
+      public homeFrame(int userId, String firstName, String fullName) {
         this.accountId = userId;
         this.fullName = fullName;
         this.firstName = firstName;
@@ -52,8 +54,8 @@ public class landingFrame extends javax.swing.JFrame {
         balanceLabel.setText(this.balance);
         expectedBalLabel.setText(this.expectedBalance);
     }
-
-    private void getBalance(int accountId) {
+      
+        private void getBalance(int accountId) {
         double balance = 0;
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -111,6 +113,7 @@ public class landingFrame extends javax.swing.JFrame {
         return isNew;
     }
 
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -138,17 +141,12 @@ public class landingFrame extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("University Bank");
-        setMinimumSize(new java.awt.Dimension(420, 750));
-        setName("landingFrame"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(418, 740));
-        setResizable(false);
 
         jPanel1.setLayout(null);
 
         greetingLabel.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
         greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
-        greetingLabel.setText("Hi, Jofet");
+        greetingLabel.setText("Hi, Name");
         jPanel1.add(greetingLabel);
         greetingLabel.setBounds(40, 120, 220, 50);
         jPanel1.add(jLabel2);
@@ -163,7 +161,7 @@ public class landingFrame extends javax.swing.JFrame {
         jLabel6.setBounds(50, 270, 90, 80);
 
         fullNameLabel.setFont(new java.awt.Font("Calibri Light", 1, 18)); // NOI18N
-        fullNameLabel.setText("Jopetus X. Maximus");
+        fullNameLabel.setText("Juan Dela Cruz");
         jPanel1.add(fullNameLabel);
         fullNameLabel.setBounds(130, 270, 220, 50);
 
@@ -192,6 +190,8 @@ public class landingFrame extends javax.swing.JFrame {
         withdrawButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         withdrawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/payment-method.png"))); // NOI18N
         withdrawButton.setText("Cash Withdrawal Request");
+        withdrawButton.setBorder(null);
+        withdrawButton.setRequestFocusEnabled(false);
         withdrawButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 withdrawButtonActionPerformed(evt);
@@ -203,6 +203,8 @@ public class landingFrame extends javax.swing.JFrame {
         viewTransactionsButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         viewTransactionsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/return-to-the-past.png"))); // NOI18N
         viewTransactionsButton.setText("View Transaction History");
+        viewTransactionsButton.setBorder(null);
+        viewTransactionsButton.setRequestFocusEnabled(false);
         viewTransactionsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewTransactionsButtonActionPerformed(evt);
@@ -214,6 +216,8 @@ public class landingFrame extends javax.swing.JFrame {
         fundTransferButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         fundTransferButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/cash-back.png"))); // NOI18N
         fundTransferButton.setText("Fund Transfer");
+        fundTransferButton.setBorder(null);
+        fundTransferButton.setRequestFocusEnabled(false);
         fundTransferButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fundTransferButtonActionPerformed(evt);
@@ -225,16 +229,19 @@ public class landingFrame extends javax.swing.JFrame {
         logoutLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         logoutLabel.setText("Logout");
         logoutLabel.setToolTipText("");
+        logoutLabel.setBorder(null);
         logoutLabel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 logoutLabelActionPerformed(evt);
             }
         });
         jPanel1.add(logoutLabel);
-        logoutLabel.setBounds(40, 670, 90, 30);
+        logoutLabel.setBounds(290, 670, 90, 30);
 
         changePassButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         changePassButton.setText("Change Password");
+        changePassButton.setBorder(null);
+        changePassButton.setRequestFocusEnabled(false);
         changePassButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 changePassButtonActionPerformed(evt);
@@ -245,17 +252,17 @@ public class landingFrame extends javax.swing.JFrame {
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(0, 230, 480, 510);
+        jLabel5.setBounds(-10, 220, 480, 510);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 722, Short.MAX_VALUE)
         );
 
         pack();
@@ -301,20 +308,20 @@ public class landingFrame extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(landingFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(homeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(landingFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(homeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(landingFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(homeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(landingFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(homeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new landingFrame().setVisible(true);
+                new homeFrame().setVisible(true);
             }
         });
     }
