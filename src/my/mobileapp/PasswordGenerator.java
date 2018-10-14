@@ -38,6 +38,16 @@ public class PasswordGenerator {
         }
         return result;
     }
+    
+    public static String generateResetPasswordCode(int len){
+        String dic = ALPHA_CAPS + NUMERIC;
+        String result = "";
+         for (int i = 0; i < len; i++) {
+            int index = random.nextInt(dic.length());
+            result += dic.charAt(index);
+        }
+        return result;
+    }
 
 
 }

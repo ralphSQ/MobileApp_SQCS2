@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  *
@@ -18,9 +20,11 @@ import javax.swing.JOptionPane;
  */
 public class landingFrame extends javax.swing.JFrame {
 
-    public String fullname;
-    public int accountId;
-    public String firstName;
+    private String fullName;
+    private int accountId;
+    private String firstName;
+    private String balance;
+    private String expectedBalance;
 
     /**
      * Creates new form landingFrame
@@ -29,7 +33,27 @@ public class landingFrame extends javax.swing.JFrame {
         initComponents();
     }
 
-    private double getBalance(int accountId) {
+    public landingFrame(int userId, String firstName, String fullName) {
+        this.accountId = userId;
+        this.fullName = fullName;
+        this.firstName = firstName;
+        initComponents();
+        boolean isNew = checkIfNewAccount(this.accountId);
+        System.out.println(isNew);
+        if (isNew) {
+            JOptionPane.showMessageDialog(this, "Please change your password immediately", "Change Password", JOptionPane.WARNING_MESSAGE);
+        }
+
+
+        getBalance(this.accountId);
+        getExpectedBalance(this.accountId);
+        greetingLabel.setText("Hi, " + this.firstName);
+        fullNameLabel.setText(this.fullName);
+        balanceLabel.setText(this.balance);
+        expectedBalLabel.setText(this.expectedBalance);
+    }
+
+    private void getBalance(int accountId) {
         double balance = 0;
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -39,11 +63,12 @@ public class landingFrame extends javax.swing.JFrame {
             ResultSet rs = st.executeQuery(DBQ);
             if (rs.next()) {
                 balance = rs.getDouble("CURRENT_BALANCE");
+                NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
+                this.balance = format.format(balance);
             }
         } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
             System.out.println(e.getMessage());
         }
-        return balance;
     }
 
     private double getExpectedBalance(int accountId) {
@@ -56,6 +81,8 @@ public class landingFrame extends javax.swing.JFrame {
             ResultSet rs = st.executeQuery(DBQ);
             if (rs.next()) {
                 expectedBalance = rs.getDouble("EXPECTED_BALANCE");
+                NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
+                this.expectedBalance = format.format(expectedBalance);
             }
         } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
             System.out.println(e.getMessage());
@@ -83,35 +110,6 @@ public class landingFrame extends javax.swing.JFrame {
         }
         return isNew;
     }
-    
-    
-    // STOPPED HERE
-    private boolean changePassword(int accountId){
-        boolean success = false;
-        
-        return success;
-    }
-
- 
-    public landingFrame(int userId, String firstName, String fullName) {
-        this.accountId = userId;
-        this.fullname = fullName;
-        this.firstName = firstName;
-        initComponents();
-        boolean isNew = checkIfNewAccount(this.accountId);
-        System.out.println(isNew);
-        if (isNew) {
-            JOptionPane.showMessageDialog(this,"Please change your password immediately","Change Password",JOptionPane.WARNING_MESSAGE);
-        }
-
-        System.out.println(this.accountId);
-        System.out.println(this.fullname);
-
-        greetingLabel.setText("Hi, " + this.firstName);
-        fullNameLabel.setText(this.fullname);
-        balanceLabel.setText(String.valueOf(getBalance(this.accountId)));
-        expectedBalLabel.setText(String.valueOf(getExpectedBalance(this.accountId)));
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -123,14 +121,13 @@ public class landingFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        LastLog = new javax.swing.JLabel();
         greetingLabel = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         fullNameLabel = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        forExpectedBalance = new javax.swing.JLabel();
+        forCurrentBalance = new javax.swing.JLabel();
         expectedBalLabel = new javax.swing.JLabel();
         balanceLabel = new javax.swing.JLabel();
         withdrawButton = new javax.swing.JButton();
@@ -141,15 +138,13 @@ public class landingFrame extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(420, 750));
+        setTitle("University Bank");
+        setMinimumSize(new java.awt.Dimension(420, 750));
+        setName("landingFrame"); // NOI18N
+        setPreferredSize(new java.awt.Dimension(418, 740));
+        setResizable(false);
 
         jPanel1.setLayout(null);
-
-        LastLog.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
-        LastLog.setForeground(new java.awt.Color(255, 255, 255));
-        LastLog.setText("Last Login: Oct. 10 2018 01:36:21 PM");
-        jPanel1.add(LastLog);
-        LastLog.setBounds(220, 210, 190, 14);
 
         greetingLabel.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
         greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -161,7 +156,7 @@ public class landingFrame extends javax.swing.JFrame {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/Untitled-8.jpg"))); // NOI18N
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, -20, 416, 260);
+        jLabel1.setBounds(0, -20, 420, 260);
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/money (1).png"))); // NOI18N
         jPanel1.add(jLabel6);
@@ -172,27 +167,27 @@ public class landingFrame extends javax.swing.JFrame {
         jPanel1.add(fullNameLabel);
         fullNameLabel.setBounds(130, 270, 220, 50);
 
-        jLabel3.setFont(new java.awt.Font("Calibri Light", 2, 11)); // NOI18N
-        jLabel3.setText("Expected Balance:");
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(200, 360, 120, 14);
+        forExpectedBalance.setFont(new java.awt.Font("Calibri Light", 2, 12)); // NOI18N
+        forExpectedBalance.setText("Expected Balance:");
+        jPanel1.add(forExpectedBalance);
+        forExpectedBalance.setBounds(180, 360, 120, 16);
 
-        jLabel4.setFont(new java.awt.Font("Calibri Light", 2, 11)); // NOI18N
-        jLabel4.setText("Current Balance:");
-        jPanel1.add(jLabel4);
-        jLabel4.setBounds(200, 340, 120, 14);
+        forCurrentBalance.setFont(new java.awt.Font("Calibri Light", 2, 12)); // NOI18N
+        forCurrentBalance.setText("Current Balance:");
+        jPanel1.add(forCurrentBalance);
+        forCurrentBalance.setBounds(180, 340, 120, 16);
 
-        expectedBalLabel.setFont(new java.awt.Font("Calibri", 1, 11)); // NOI18N
+        expectedBalLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         expectedBalLabel.setForeground(new java.awt.Color(0, 153, 51));
         expectedBalLabel.setText("₱ 10,00.00");
         jPanel1.add(expectedBalLabel);
-        expectedBalLabel.setBounds(300, 360, 60, 14);
+        expectedBalLabel.setBounds(280, 360, 100, 17);
 
-        balanceLabel.setFont(new java.awt.Font("Calibri", 1, 11)); // NOI18N
+        balanceLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         balanceLabel.setForeground(new java.awt.Color(0, 153, 51));
         balanceLabel.setText("₱ 5,00.00");
         jPanel1.add(balanceLabel);
-        balanceLabel.setBounds(300, 340, 60, 14);
+        balanceLabel.setBounds(280, 340, 100, 17);
 
         withdrawButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         withdrawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/payment-method.png"))); // NOI18N
@@ -227,6 +222,7 @@ public class landingFrame extends javax.swing.JFrame {
         jPanel1.add(fundTransferButton);
         fundTransferButton.setBounds(90, 490, 220, 40);
 
+        logoutLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         logoutLabel.setText("Logout");
         logoutLabel.setToolTipText("");
         logoutLabel.addActionListener(new java.awt.event.ActionListener() {
@@ -249,20 +245,21 @@ public class landingFrame extends javax.swing.JFrame {
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(0, 220, 420, 530);
+        jLabel5.setBounds(0, 230, 480, 510);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void withdrawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_withdrawButtonActionPerformed
@@ -283,7 +280,8 @@ public class landingFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutLabelActionPerformed
 
     private void changePassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePassButtonActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
+        new changePasswordFrame(this.accountId, this.fullName, this.firstName).setVisible(true);
     }//GEN-LAST:event_changePassButtonActionPerformed
 
     /**
@@ -322,17 +320,16 @@ public class landingFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel LastLog;
     private javax.swing.JLabel balanceLabel;
     private javax.swing.JButton changePassButton;
     private javax.swing.JLabel expectedBalLabel;
+    private javax.swing.JLabel forCurrentBalance;
+    private javax.swing.JLabel forExpectedBalance;
     private javax.swing.JLabel fullNameLabel;
     private javax.swing.JButton fundTransferButton;
     private static javax.swing.JLabel greetingLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;

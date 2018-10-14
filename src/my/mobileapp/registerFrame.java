@@ -110,6 +110,27 @@ public class registerFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    private boolean checkIfRegistered(int accountId) {
+        boolean registered = false;
+        try {
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
+            Statement st = con.createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ACCTNUM=" + accountId;
+            ResultSet rs = st.executeQuery(DBQ);
+            if(rs.next()){
+                if (rs.getString("CLIENT_UNAME").isEmpty()) {
+                    registered = false;
+                } else {
+                    registered = true;
+                }
+            }
+        } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return registered;
+    }
 
     private static String PW_hasher(String password) {
         String digest = "";
@@ -194,17 +215,18 @@ public class registerFrame extends javax.swing.JFrame {
         return username;
     }
 
-    private String createPassword(int accountNo) {       
+    private String createPassword(int accountNo) {
         String password = PasswordGenerator.generatePassword(10);
         return password;
     }
-    private void createAccount(String username, String password,int clientId){
+
+    private void createAccount(String username, String password, int clientId) {
         password = PW_hasher(password);
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
             Statement st = con.createStatement();
-            String DBQ = "UPDATE CA_ABS.CLIENT SET CLIENT_UNAME = '"+username+"', CLIENT_PW='"+password+"' WHERE CLIENT_ID="+clientId;
+            String DBQ = "UPDATE CA_ABS.CLIENT SET CLIENT_UNAME = '" + username + "', CLIENT_PW='" + password + "' WHERE CLIENT_ID=" + clientId;
             int result = st.executeUpdate(DBQ);
             if (result > 0) {
                 System.out.println("success");
@@ -235,8 +257,9 @@ public class registerFrame extends javax.swing.JFrame {
         return exists;
 
     }
-    private int getId(int accountNo){
-         int id = 0;
+
+    private int getId(int accountNo) {
+        int id = 0;
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
@@ -251,6 +274,7 @@ public class registerFrame extends javax.swing.JFrame {
         }
         return id;
     }
+
     private String getEmail(int accountNo) {
         String email = "";
         try {
@@ -280,15 +304,11 @@ public class registerFrame extends javax.swing.JFrame {
         String password = "";
         try {
             accountNo = Integer.parseInt(accountNo_input.getText());
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
         if (AccountNumberExists(accountNo)) {
-            try {
-                Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-                Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
-                Statement st = con.createStatement();
-                String DBQ = "UPDATE CLIENT SET CLIENT_UNAME = ";
+            if (!checkIfRegistered(accountNo)) {
                 JOptionPane.showMessageDialog(this, "Check your email plz");
                 receipient = getEmail(accountNo);
                 System.out.println(receipient);
@@ -298,11 +318,11 @@ public class registerFrame extends javax.swing.JFrame {
                 System.out.println(password);
                 System.out.println(PW_hasher(password));
                 System.out.println(getId(accountNo));
-                
-                createAccount(username,password,getId(accountNo));
-                sendMail(receipient, username, password);
-            } catch (Exception e) {
 
+                createAccount(username, password, getId(accountNo));
+                sendMail(receipient, username, password);
+            } else {
+                JOptionPane.showMessageDialog(this, "Account is already registered", "Registration",JOptionPane.INFORMATION_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Account number does not exist");

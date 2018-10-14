@@ -28,8 +28,8 @@ public class loginFrame extends javax.swing.JFrame {
     public loginFrame() {
         initComponents();
         usernameInput.grabFocus();
+        this.setResizable(false);
     }
-
     private static String PW_hasher(String password) {
         String digest = "";
         if (password != null || (!password.isEmpty())) {
@@ -91,6 +91,7 @@ public class loginFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
+        setResizable(false);
 
         jPanel1.setLayout(null);
 
@@ -99,7 +100,7 @@ public class loginFrame extends javax.swing.JFrame {
         jPanel1.add(jLabel2);
         jLabel2.setBounds(50, 70, 320, 270);
 
-        usernameInput.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        usernameInput.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         usernameInput.setForeground(java.awt.Color.lightGray);
         usernameInput.setText("Username or Email Address");
         usernameInput.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -118,7 +119,7 @@ public class loginFrame extends javax.swing.JFrame {
         jPanel1.add(usernameInput);
         usernameInput.setBounds(20, 370, 360, 50);
 
-        passwordInput.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        passwordInput.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         passwordInput.setForeground(java.awt.Color.lightGray);
         passwordInput.setText("1234567890");
         passwordInput.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -138,6 +139,7 @@ public class loginFrame extends javax.swing.JFrame {
         passwordInput.setBounds(20, 430, 360, 50);
 
         signupButton.setBackground(new java.awt.Color(51, 51, 51));
+        signupButton.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
         signupButton.setForeground(new java.awt.Color(255, 255, 255));
         signupButton.setText("Sign Up");
         signupButton.addActionListener(new java.awt.event.ActionListener() {
@@ -149,13 +151,19 @@ public class loginFrame extends javax.swing.JFrame {
         signupButton.setBounds(20, 690, 160, 30);
 
         forgotpassButton.setBackground(new java.awt.Color(51, 51, 51));
+        forgotpassButton.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
         forgotpassButton.setForeground(new java.awt.Color(255, 255, 255));
         forgotpassButton.setText("Forgot Password?");
+        forgotpassButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                forgotpassButtonActionPerformed(evt);
+            }
+        });
         jPanel1.add(forgotpassButton);
         forgotpassButton.setBounds(200, 690, 180, 30);
 
         loginButton.setBackground(new java.awt.Color(0, 176, 170));
-        loginButton.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
+        loginButton.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         loginButton.setForeground(new java.awt.Color(255, 255, 255));
         loginButton.setText("LOG IN");
         loginButton.addActionListener(new java.awt.event.ActionListener() {
@@ -183,6 +191,7 @@ public class loginFrame extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void usernameInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameInputActionPerformed
@@ -257,6 +266,11 @@ public class loginFrame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_loginButtonActionPerformed
+
+    private void forgotpassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgotpassButtonActionPerformed
+        this.dispose();
+        new resetPasswordFrame().setVisible(true);
+    }//GEN-LAST:event_forgotpassButtonActionPerformed
 
     /**
      * @param args the command line arguments
