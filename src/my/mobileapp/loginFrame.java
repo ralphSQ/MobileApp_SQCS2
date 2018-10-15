@@ -22,7 +22,6 @@ import javax.swing.JOptionPane;
  */
 public class loginFrame extends javax.swing.JFrame {
 
-    
     /**
      * Creates new form loginFrame
      */
@@ -33,45 +32,28 @@ public class loginFrame extends javax.swing.JFrame {
         errorUsernameLabel.setVisible(false);
         errorPasswordLabel.setVisible(false);
     }
-    private static String PW_hasher(String password) {
-        String digest = "";
-        if (password != null || (!password.isEmpty())) {
-            MessageDigest m = null;
-            try {
-                m = MessageDigest.getInstance("MD5");
-            } catch (Exception e) {
 
-            }
-            m.update(password.getBytes(), 0, password.length());
-            digest = String.format("%032x", new BigInteger(1, m.digest()));
-
-        }
-        return digest;
-    }
-    
     private String createName(int accountId) {
         String fullname = "";
         try {
-            String firstname,lastname,middlename;
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
-            Statement st = con.createStatement();
-            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID="+accountId;
+            String firstname, lastname, middlename;
+            
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + accountId;
             ResultSet rs = st.executeQuery(DBQ);
             if (rs.next()) {
+                
                 firstname = rs.getString("CLIENT_FN");
                 lastname = rs.getString("CLIENT_LN");
                 middlename = rs.getString("CLIENT_MN");
-                fullname = firstname +" "+ middlename.substring(0, 1) +". "+ lastname;
-            } else {
-                JOptionPane.showMessageDialog(this, "Username/Password is incorrect");
+                
+                fullname = firstname + " " + middlename.substring(0, 1) + ". " + lastname;
             }
-        } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
         return fullname;
     }
-
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -221,32 +203,32 @@ public class loginFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        if (usernameInput.getText().isEmpty() || usernameInput.getText().equals("Username or Email Address")) {
+        if (usernameInput.getText().trim().isEmpty() || usernameInput.getText().equals("Username or Email Address")) {
             errorUsernameLabel.setVisible(true);
-        } else if( passwordInput.getText().isEmpty() || passwordInput.getText().equals("1234567890")){
+        } else if (new String(passwordInput.getPassword()).trim().isEmpty() || new String(passwordInput.getPassword()).equals("1234567890")) {
             errorPasswordLabel.setVisible(true);
         } else {
             try {
-                String password, username;
-                password = PW_hasher(passwordInput.getText());
-                username = usernameInput.getText();
+                String password, username, fullname, firstname;
+                password = new String(passwordInput.getPassword());
+                username = usernameInput.getText().trim();
 
-                Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-                Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
-                Statement st = con.createStatement();
-                String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_UNAME='" + username + "' AND CLIENT_PW='" + password + "'";
+                Statement st = DatabaseConnection.connect().createStatement();
+                String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_UNAME='" + username + "' AND CLIENT_PW='" + PasswordHasher.passwordHasher(password) + "'";
                 ResultSet rs = st.executeQuery(DBQ);
                 if (rs.next()) {
-                    String fullname = "",firstname = "";
+
                     int accountId = rs.getInt("CLIENT_ID");
                     fullname = createName(accountId);
                     firstname = rs.getString("CLIENT_FN");
+                    // open home frame
                     this.dispose();
-                    new homeFrame(accountId,firstname,fullname).setVisible(true);
+                    new homeFrame(accountId, firstname, fullname).setVisible(true);
                 } else {
                     errorLabel.setVisible(true);
                 }
-            } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
             }
         }
     }//GEN-LAST:event_loginButtonActionPerformed
@@ -264,8 +246,6 @@ public class loginFrame extends javax.swing.JFrame {
     private void passwordInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordInputFocusLost
         if (passwordInput.getText().equals("")) {
             passwordInput.setBorder(BorderFactory.createLineBorder(Color.red));
-            passwordInput.setText("1234567890");
-            passwordInput.setForeground(Color.lightGray);
             errorPasswordLabel.setVisible(true);
         } else {
             passwordInput.setBorder(BorderFactory.createLineBorder(Color.green));
@@ -282,8 +262,6 @@ public class loginFrame extends javax.swing.JFrame {
 
     private void usernameInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_usernameInputFocusLost
         if (usernameInput.getText().equals("")) {
-            usernameInput.setText("Username or Email Address");
-            usernameInput.setForeground(Color.lightGray);
             usernameInput.setBorder(BorderFactory.createLineBorder(Color.red));
             errorUsernameLabel.setVisible(true);
         } else {
@@ -327,7 +305,7 @@ public class loginFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             new loginFrame().setVisible(true);
-            
+
         });
     }
 
