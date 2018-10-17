@@ -5,20 +5,12 @@
  */
 package my.mobileapp;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
+import java.awt.Color;
 import java.sql.*;
 import javax.swing.JOptionPane;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Properties;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 
 /**
  *
@@ -31,6 +23,9 @@ public class registerFrame extends javax.swing.JFrame {
      */
     public registerFrame() {
         initComponents();
+        errorLabel.setVisible(false);
+        submitButton.setEnabled(false);
+
     }
 
     /**
@@ -43,291 +38,179 @@ public class registerFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        submitButton = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
+        accountNumberInput = new javax.swing.JFormattedTextField();
+        errorLabel = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        accountNo_input = new javax.swing.JFormattedTextField();
-        submit_btn = new javax.swing.JButton();
-        back_btn = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
-        jLabel1.setFont(new java.awt.Font("Comic Sans MS", 1, 36)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Register");
+        jPanel1.setLayout(null);
 
-        accountNo_input.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#####"))));
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/web.png"))); // NOI18N
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(60, 270, 160, 170);
 
-        submit_btn.setText("Submit");
-        submit_btn.addActionListener(new java.awt.event.ActionListener() {
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/right-arrow.png"))); // NOI18N
+        jPanel1.add(jLabel6);
+        jLabel6.setBounds(280, 340, 40, 40);
+
+        jLabel4.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        jLabel4.setText("Input your Account Number");
+        jPanel1.add(jLabel4);
+        jLabel4.setBounds(60, 420, 150, 50);
+
+        submitButton.setBackground(new java.awt.Color(255, 255, 255));
+        submitButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        submitButton.setText("Proceed");
+        submitButton.setBorder(null);
+        submitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                submit_btnActionPerformed(evt);
+                submitButtonActionPerformed(evt);
             }
         });
+        jPanel1.add(submitButton);
+        submitButton.setBounds(80, 590, 120, 40);
 
-        back_btn.setText("Back");
-        back_btn.addActionListener(new java.awt.event.ActionListener() {
+        cancelButton.setBackground(new java.awt.Color(255, 255, 255));
+        cancelButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        cancelButton.setText("Cancel");
+        cancelButton.setBorder(null);
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                back_btnActionPerformed(evt);
+                cancelButtonActionPerformed(evt);
             }
         });
+        jPanel1.add(cancelButton);
+        cancelButton.setBounds(200, 590, 120, 40);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(submit_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(back_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(accountNo_input, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(100, 100, 100)
-                .addComponent(accountNo_input, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(submit_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(back_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 375, Short.MAX_VALUE))
-        );
+        try {
+            accountNumberInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#########")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        accountNumberInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                accountNumberInputFocusLost(evt);
+            }
+        });
+        accountNumberInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                accountNumberInputKeyReleased(evt);
+            }
+        });
+        jPanel1.add(accountNumberInput);
+        accountNumberInput.setBounds(30, 490, 350, 50);
+
+        errorLabel.setForeground(java.awt.Color.red);
+        errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        errorLabel.setText("Label for errors");
+        jPanel1.add(errorLabel);
+        errorLabel.setBounds(30, 550, 350, 20);
+
+        jLabel10.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("Sign Up");
+        jPanel1.add(jLabel10);
+        jLabel10.setBounds(130, 90, 400, 70);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/Untitled-8.jpg"))); // NOI18N
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(0, -20, 416, 260);
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
+        jPanel1.add(jLabel5);
+        jLabel5.setBounds(0, 220, 420, 530);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-    private boolean checkIfRegistered(int accountId) {
-        boolean registered = false;
-        try {
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
-            Statement st = con.createStatement();
-            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ACCTNUM=" + accountId;
-            ResultSet rs = st.executeQuery(DBQ);
-            if(rs.next()){
-                if (rs.getString("CLIENT_UNAME").isEmpty()) {
-                    registered = false;
-                } else {
-                    registered = true;
-                }
-            }
-        } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
-            System.out.println(e.getMessage());
-        }
 
-        return registered;
-    }
+    private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
 
-    private static String PW_hasher(String password) {
-        String digest = "";
-        if (password != null || (!password.isEmpty())) {
-            MessageDigest m = null;
+        boolean isExisting = false, isRegistered = false;
+
+        if (accountNumberInput.getText().trim().isEmpty()) {
+            errorLabel.setText("Please enter your account number");
+            errorLabel.setVisible(true);
+        } else {
             try {
-                m = MessageDigest.getInstance("MD5");
-            } catch (Exception e) {
+                isExisting = Client.checkIfAccountExists(Integer.valueOf(accountNumberInput.getText().trim()));
+                isRegistered = Client.checkIfRegistered(Integer.valueOf(accountNumberInput.getText().trim()));
+                System.out.println(isExisting);
+                System.out.println(isRegistered);
+                if (!isExisting) {
+                    errorLabel.setText("Account number does not exist");
+                    errorLabel.setVisible(true);
+                } else if (isRegistered) {
+                    errorLabel.setText("Account number is already registered");
+                    errorLabel.setVisible(true);
+                } else {
+                    int clientId = Client.getId(Integer.valueOf(accountNumberInput.getText().trim()));
+                    System.out.println(clientId);
+                    String username = Client.createUserName(clientId);
+                    String password = PasswordGenerator.generatePassword(8);
+                    String encryptedPassword = PasswordHasher.passwordHasher(password);
 
+                    String receipient = Client.getEmail(clientId);
+                    if (Client.sendCredentials(receipient, username, password)) {
+                        if (Client.setUsername(username, clientId) && Client.setPassword(encryptedPassword, clientId)) {
+                        };
+                        //JOptionPane.showMessageDialog(this, "Registration complete!\nCheck your email account for your login credentials.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        this.dispose();
+                        new loginFrame().setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Account creation failed, please check your internet connection and try again.", "Failed", JOptionPane.WARNING_MESSAGE);
+                    }
+
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(registerFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
-            m.update(password.getBytes(), 0, password.length());
-            digest = String.format("%032x", new BigInteger(1, m.digest()));
-
         }
-        return digest;
-    }
 
-    private void sendMail(String receipient, String username, String password) {
-        String content = "";
-        content = "Thank you for using University Bank!\n"
-                + "Here are your account credentials\n"
-                + "Username: " + username + "\n"
-                + "Temporary Password: " + password + "\n\n"
-                + "Please change your password immediately";
-        //Setting up configurations for the email connection to the Google SMTP server using TLS
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.auth", "true");
-        //Establishing a session with required user details
-        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("csspec6.n491@gmail.com", "haji12345");
-            }
-        });
-        try {
-            //Creating a Message object to set the email content
-            MimeMessage msg = new MimeMessage(session);
-            //Storing the comma seperated values to email addresses
-            String to = receipient;
-            /*Parsing the String with defualt delimiter as a comma by marking the boolean as true and storing the email
-            addresses in an array of InternetAddress objects*/
-            InternetAddress[] address = InternetAddress.parse(to, true);
-            //Setting the recepients from the address variable
-            msg.setRecipients(Message.RecipientType.TO, address);
-            msg.setSubject("University Bank Account Registration");
-            msg.setSentDate(new Date());
-            msg.setText(content);
-            msg.setHeader("XPriority", "1");
-            Transport.send(msg);
-            System.out.println("Mail has been sent successfully");
-        } catch (MessagingException mex) {
-            System.out.println("Unable to send an email" + mex);
-        }
-    }
+    }//GEN-LAST:event_submitButtonActionPerformed
 
-    private String createUsername(int accountNo) {
-        String username = "";
-        String firstname = "";
-        String lastname = "";
-        String middlename = "";
-        try {
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
-            Statement st = con.createStatement();
-            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ACCTNUM=" + accountNo;
-            ResultSet rs = st.executeQuery(DBQ);
-            if (rs.next()) {
-                firstname = rs.getString("CLIENT_FN").toLowerCase();
-                lastname = rs.getString("CLIENT_LN").toLowerCase();
-                middlename = rs.getString("CLIENT_MN").toLowerCase();
-                System.out.println(firstname);
-                System.out.println(lastname);
-                System.out.println(middlename);
-                username = firstname.substring(0, 1).replaceAll("\\s+", "") + middlename.substring(0, 1).replaceAll("\\s+", "") + lastname.replaceAll("\\s+", "");
-            }
-        } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
-            System.out.println(e.getMessage());
-        }
-        return username;
-    }
-
-    private String createPassword(int accountNo) {
-        String password = PasswordGenerator.generatePassword(10);
-        return password;
-    }
-
-    private void createAccount(String username, String password, int clientId) {
-        password = PW_hasher(password);
-        try {
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
-            Statement st = con.createStatement();
-            String DBQ = "UPDATE CA_ABS.CLIENT SET CLIENT_UNAME = '" + username + "', CLIENT_PW='" + password + "' WHERE CLIENT_ID=" + clientId;
-            int result = st.executeUpdate(DBQ);
-            if (result > 0) {
-                System.out.println("success");
-            } else {
-            }
-        } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private boolean AccountNumberExists(int accountNo) {
-        boolean exists = false;
-        System.out.println(accountNo);
-        try {
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
-            Statement st = con.createStatement();
-            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ACCTNUM=" + accountNo;
-            ResultSet rs = st.executeQuery(DBQ);
-            if (rs.next()) {
-                exists = true;
-            } else {
-                exists = false;
-            }
-        } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
-            System.out.println(e.getMessage());
-        }
-        return exists;
-
-    }
-
-    private int getId(int accountNo) {
-        int id = 0;
-        try {
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
-            Statement st = con.createStatement();
-            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ACCTNUM=" + accountNo;
-            ResultSet rs = st.executeQuery(DBQ);
-            if (rs.next()) {
-                id = rs.getInt("CLIENT_ID");
-            }
-        } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
-            System.out.println(e.getMessage());
-        }
-        return id;
-    }
-
-    private String getEmail(int accountNo) {
-        String email = "";
-        try {
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
-            Statement st = con.createStatement();
-            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ACCTNUM=" + accountNo;
-            ResultSet rs = st.executeQuery(DBQ);
-            if (rs.next()) {
-                email = rs.getString("CLIENT_EMAIL");
-            }
-        } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
-            System.out.println(e.getMessage());
-        }
-        return email;
-    }
-    private void back_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_back_btnActionPerformed
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.dispose();
         new loginFrame().setVisible(true);
-    }//GEN-LAST:event_back_btnActionPerformed
 
-    private void submit_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submit_btnActionPerformed
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
-        int accountNo = 0;
-        String receipient = "";
-        String username = "";
-        String password = "";
-        try {
-            accountNo = Integer.parseInt(accountNo_input.getText());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+    private void accountNumberInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_accountNumberInputKeyReleased
+        if (accountNumberInput.getText().length() == 9) {
+            evt.consume();
+            submitButton.setEnabled(true);
         }
-        if (AccountNumberExists(accountNo)) {
-            if (!checkIfRegistered(accountNo)) {
-                JOptionPane.showMessageDialog(this, "Check your email plz");
-                receipient = getEmail(accountNo);
-                System.out.println(receipient);
-                username = createUsername(accountNo);
-                System.out.println(username);
-                password = createPassword(accountNo);
-                System.out.println(password);
-                System.out.println(PW_hasher(password));
-                System.out.println(getId(accountNo));
+    }//GEN-LAST:event_accountNumberInputKeyReleased
 
-                createAccount(username, password, getId(accountNo));
-                sendMail(receipient, username, password);
-            } else {
-                JOptionPane.showMessageDialog(this, "Account is already registered", "Registration",JOptionPane.INFORMATION_MESSAGE);
-            }
+    private void accountNumberInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_accountNumberInputFocusLost
+        if (accountNumberInput.getText().isEmpty()) {
+            errorLabel.setText("Please enter your account number");
+            errorLabel.setVisible(true);
+            accountNumberInput.setBorder(BorderFactory.createLineBorder(Color.red));
         } else {
-            JOptionPane.showMessageDialog(this, "Account number does not exist");
+            accountNumberInput.setBorder(BorderFactory.createLineBorder(Color.green));
         }
-    }//GEN-LAST:event_submit_btnActionPerformed
+    }//GEN-LAST:event_accountNumberInputFocusLost
 
     /**
      * @param args the command line arguments
@@ -343,16 +226,24 @@ public class registerFrame extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(registerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(registerFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(registerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(registerFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(registerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(registerFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(registerFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(registerFrame.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -365,10 +256,16 @@ public class registerFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFormattedTextField accountNo_input;
-    private javax.swing.JButton back_btn;
+    private javax.swing.JFormattedTextField accountNumberInput;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton submit_btn;
+    private javax.swing.JButton submitButton;
     // End of variables declaration//GEN-END:variables
 }

@@ -6,15 +6,10 @@
 package my.mobileapp;
 
 import java.awt.Color;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -31,28 +26,6 @@ public class loginFrame extends javax.swing.JFrame {
         errorLabel.setVisible(false);
         errorUsernameLabel.setVisible(false);
         errorPasswordLabel.setVisible(false);
-    }
-
-    private String createName(int accountId) {
-        String fullname = "";
-        try {
-            String firstname, lastname, middlename;
-            
-            Statement st = DatabaseConnection.connect().createStatement();
-            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + accountId;
-            ResultSet rs = st.executeQuery(DBQ);
-            if (rs.next()) {
-                
-                firstname = rs.getString("CLIENT_FN");
-                lastname = rs.getString("CLIENT_LN");
-                middlename = rs.getString("CLIENT_MN");
-                
-                fullname = firstname + " " + middlename.substring(0, 1) + ". " + lastname;
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return fullname;
     }
 
     /**
@@ -209,33 +182,37 @@ public class loginFrame extends javax.swing.JFrame {
             errorPasswordLabel.setVisible(true);
         } else {
             try {
-                String password, username, fullname, firstname;
+                String password = "", username = "", fullName = "", firstName = "";
+                int clientId = 0;
                 password = new String(passwordInput.getPassword());
                 username = usernameInput.getText().trim();
-
-                Statement st = DatabaseConnection.connect().createStatement();
-                String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_UNAME='" + username + "' AND CLIENT_PW='" + PasswordHasher.passwordHasher(password) + "'";
-                ResultSet rs = st.executeQuery(DBQ);
-                if (rs.next()) {
-
-                    int accountId = rs.getInt("CLIENT_ID");
-                    fullname = createName(accountId);
-                    firstname = rs.getString("CLIENT_FN");
+                if (new EmailValidator().validateEmail(usernameInput.getText().trim())) {
+                    try {
+                        clientId = Client.loginWithEmail(username, password);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(loginFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else {
+                    clientId = Client.login(username, password);
+                }
+                if (clientId != 0) { // 0 means not found
+                    fullName = Client.createFullName(clientId);
+                    firstName = Client.getFirstName(clientId);
                     // open home frame
                     this.dispose();
-                    new homeFrame(accountId, firstname, fullname).setVisible(true);
+                    new homeFrame(clientId, firstName, fullName).setVisible(true);
                 } else {
                     errorLabel.setVisible(true);
                 }
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
+            } catch (SQLException ex) {
+                Logger.getLogger(loginFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void forgotpassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forgotpassButtonActionPerformed
         this.dispose();
-        new resetPasswordFrame().setVisible(true);
+        new forgotPasswordFrame().setVisible(true);
     }//GEN-LAST:event_forgotpassButtonActionPerformed
 
     private void signupButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signupButtonActionPerformed

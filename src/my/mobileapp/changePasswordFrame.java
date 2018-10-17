@@ -6,14 +6,12 @@
 package my.mobileapp;
 
 import java.awt.Color;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
@@ -23,7 +21,7 @@ import javax.swing.JOptionPane;
  */
 public class changePasswordFrame extends javax.swing.JFrame {
 
-    private int userId = 0;
+    private int clientId = 0;
     private String fullName = "";
     private String firstName = "";
 
@@ -34,53 +32,12 @@ public class changePasswordFrame extends javax.swing.JFrame {
         initComponents();
     }
 
-    public changePasswordFrame(int userId, String fullName, String firstName) {
-        this.userId = userId;
+    public changePasswordFrame(int clientId, String fullName, String firstName) {
+        this.clientId = clientId;
         this.fullName = fullName;
         this.firstName = firstName;
         initComponents();
-        matchErrorLabel.setVisible(false);
-    }
-
-    public changePasswordFrame(int userId) {
-        this.userId = userId;
-        initComponents();
-        oldPasswordInput.setVisible(false);
-        oldPwLabel.setVisible(false);
-        matchErrorLabel.setVisible(false);
-    }
-
-    private static String PW_hasher(String password) {
-        String digest = "";
-        if (password != null || (!password.isEmpty())) {
-            MessageDigest m = null;
-            try {
-                m = MessageDigest.getInstance("MD5");
-            } catch (NoSuchAlgorithmException e) {
-
-            }
-            m.update(password.getBytes(), 0, password.length());
-            digest = String.format("%032x", new BigInteger(1, m.digest()));
-
-        }
-        return digest;
-    }
-
-    private String getOldPassword() {
-        String oldPassword = "";
-        try {
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
-            Statement st = con.createStatement();
-            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + userId;
-            ResultSet rs = st.executeQuery(DBQ);
-            if (rs.next()) {
-                oldPassword = rs.getString("CLIENT_PW");
-            }
-        } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
-        }
-
-        return oldPassword;
+        errorLabel.setVisible(false);
     }
 
     /**
@@ -103,7 +60,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
         newPasswordInput = new javax.swing.JPasswordField();
         repeatNewPasswordInput = new javax.swing.JPasswordField();
         cancelBtn = new javax.swing.JButton();
-        matchErrorLabel = new javax.swing.JLabel();
+        errorLabel = new javax.swing.JLabel();
         btnSubmit = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -185,6 +142,11 @@ public class changePasswordFrame extends javax.swing.JFrame {
                 repeatNewPasswordInputFocusLost(evt);
             }
         });
+        repeatNewPasswordInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                repeatNewPasswordInputKeyReleased(evt);
+            }
+        });
         jPanel1.add(repeatNewPasswordInput);
         repeatNewPasswordInput.setBounds(80, 580, 260, 40);
 
@@ -197,12 +159,12 @@ public class changePasswordFrame extends javax.swing.JFrame {
         jPanel1.add(cancelBtn);
         cancelBtn.setBounds(300, 650, 79, 40);
 
-        matchErrorLabel.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
-        matchErrorLabel.setForeground(java.awt.Color.red);
-        matchErrorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        matchErrorLabel.setText("New password does not match");
-        jPanel1.add(matchErrorLabel);
-        matchErrorLabel.setBounds(80, 620, 260, 20);
+        errorLabel.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        errorLabel.setForeground(java.awt.Color.red);
+        errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        errorLabel.setText("New password does not match");
+        jPanel1.add(errorLabel);
+        errorLabel.setBounds(80, 620, 260, 20);
 
         btnSubmit.setText("Proceed");
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
@@ -243,11 +205,9 @@ public class changePasswordFrame extends javax.swing.JFrame {
 
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
         this.dispose();
-        if (this.fullName.isEmpty()) {
-            new loginFrame().setVisible(true);
-        } else {
-            new homeFrame(userId, firstName, fullName).setVisible(true);
-        }
+
+        new homeFrame(clientId, firstName, fullName).setVisible(true);
+
     }//GEN-LAST:event_cancelBtnActionPerformed
 
     private void oldPasswordInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_oldPasswordInputFocusGained
@@ -273,8 +233,6 @@ public class changePasswordFrame extends javax.swing.JFrame {
 
     private void oldPasswordInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_oldPasswordInputFocusLost
         if (oldPasswordInput.getText().equals("")) {
-            oldPasswordInput.setText("1234567890");
-            oldPasswordInput.setForeground(Color.lightGray);
             oldPasswordInput.setBorder(BorderFactory.createLineBorder(Color.red));
         } else {
             oldPasswordInput.setBorder(BorderFactory.createLineBorder(Color.green));
@@ -283,8 +241,6 @@ public class changePasswordFrame extends javax.swing.JFrame {
 
     private void newPasswordInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_newPasswordInputFocusLost
         if (newPasswordInput.getText().equals("")) {
-            newPasswordInput.setText("1234567890");
-            newPasswordInput.setForeground(Color.lightGray);
             newPasswordInput.setBorder(BorderFactory.createLineBorder(Color.red));
         } else {
             newPasswordInput.setBorder(BorderFactory.createLineBorder(Color.green));
@@ -293,8 +249,6 @@ public class changePasswordFrame extends javax.swing.JFrame {
 
     private void repeatNewPasswordInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_repeatNewPasswordInputFocusLost
         if (repeatNewPasswordInput.getText().equals("")) {
-            repeatNewPasswordInput.setText("1234567890");
-            repeatNewPasswordInput.setForeground(Color.lightGray);
             repeatNewPasswordInput.setBorder(BorderFactory.createLineBorder(Color.red));
         } else {
             repeatNewPasswordInput.setBorder(BorderFactory.createLineBorder(Color.green));
@@ -302,71 +256,46 @@ public class changePasswordFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_repeatNewPasswordInputFocusLost
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-        String oldPassword = getOldPassword();
-        String newPassword = "";
+        String getPassword = "";
+        try {
+            getPassword = Client.getPassword(this.clientId);
+        } catch (SQLException ex) {
+            Logger.getLogger(changePasswordFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String newPassword = "", encryptedPassword = "", oldPassword = "";
         int confirm = 0, result = 0;
-        int newAccount = 0;
-        String blank = null;
-        if (this.fullName.isEmpty()) {
-            if (newPasswordInput.getText().equals(repeatNewPasswordInput.getText())) {
-                newPassword = PW_hasher(newPasswordInput.getText());
-
+        oldPassword = new String(oldPasswordInput.getPassword());
+        if (newPasswordInput.getText().equals(repeatNewPasswordInput.getText())) {
+            if (getPassword.equals(PasswordHasher.passwordHasher(oldPassword))) {
+                newPassword = new String(newPasswordInput.getPassword());
+                encryptedPassword = PasswordHasher.passwordHasher(newPassword);
                 confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to change your password?", "Confirm", JOptionPane.YES_NO_OPTION);
+
                 if (confirm == 0) {
-                    try {
-                        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-                        Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
-                        Statement st = con.createStatement();
-                        String DBQ = "UPDATE CLIENT SET CLIENT_PW = '" + newPassword + "', NEW_ACCOUNT =" + newAccount + ", RESET_PW_CODE = '" + blank + "' " + "WHERE CLIENT_ID=" + userId;
-                        result = st.executeUpdate(DBQ);
-                        if (result > 0) {
-                            JOptionPane.showMessageDialog(this, "Password changed successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-                            this.dispose();
-                            new loginFrame().setVisible(true);
-                        }
-                    } catch (ClassNotFoundException | SQLException e) {
-
-                    }
-                } else if (confirm == 1) {
-                }
-            }
-        } else {
-            if (oldPassword.equals(PW_hasher(oldPasswordInput.getText()))) {
-                if (newPasswordInput.getText().equals("1234567890")) {
-                    newPasswordInput.setBorder(BorderFactory.createLineBorder(Color.red));
-                } else if (repeatNewPasswordInput.getText().equals("1234567890")) {
-                    repeatNewPasswordInput.setBorder(BorderFactory.createLineBorder(Color.red));
-                } else if (!newPasswordInput.getText().equals(repeatNewPasswordInput.getText())) {
-                    matchErrorLabel.setVisible(true);
-                    newPasswordInput.grabFocus();
-                    repeatNewPasswordInput.setBorder(BorderFactory.createLineBorder(Color.red));
-                    newPasswordInput.setBorder(BorderFactory.createLineBorder(Color.red));
-                } else {
-                    newPassword = PW_hasher(newPasswordInput.getText());
-
-                    confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to change your password?", "Confirm", JOptionPane.YES_NO_OPTION);
-                    if (confirm == 0) {
-                        try {
-                            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-                            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
-                            Statement st = con.createStatement();
-                            String DBQ = "UPDATE CLIENT SET CLIENT_PW = '" + newPassword + "', NEW_ACCOUNT =" + newAccount + ", RESET_PW_CODE = '" + blank + "' " + "WHERE CLIENT_ID=" + userId;
-                            result = st.executeUpdate(DBQ);
-                            if (result > 0) {
-                                JOptionPane.showMessageDialog(this, "Password changed successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-                                this.dispose();
-                                new homeFrame(userId, firstName, fullName).setVisible(true);
-                            }
-                        } catch (ClassNotFoundException | SQLException e) {
-
-                        }
-                    }
+                    Client.changePassword(encryptedPassword, clientId);
+                    this.dispose();
+                    JOptionPane.showMessageDialog(this, "Password changed successfully.");
+                    new homeFrame(clientId, firstName, fullName).setVisible(true);
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Old Password is incorrect", "Change Password", JOptionPane.INFORMATION_MESSAGE);
+                errorLabel.setText("Old password is incorrect");
+                errorLabel.setVisible(true);
             }
         }
+
+
     }//GEN-LAST:event_btnSubmitActionPerformed
+
+    private void repeatNewPasswordInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_repeatNewPasswordInputKeyReleased
+        if (!newPasswordInput.getText().equals(repeatNewPasswordInput.getText())) {
+            errorLabel.setText("New password does not match");
+            errorLabel.setVisible(true);
+            repeatNewPasswordInput.setBorder(BorderFactory.createLineBorder(Color.red));
+        } else {
+            errorLabel.setVisible(false);
+            repeatNewPasswordInput.setBorder(BorderFactory.createLineBorder(Color.green));
+        }
+    }//GEN-LAST:event_repeatNewPasswordInputKeyReleased
 
     /**
      * @param args the command line arguments
@@ -406,6 +335,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSubmit;
     private javax.swing.JButton cancelBtn;
+    private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -415,7 +345,6 @@ public class changePasswordFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel matchErrorLabel;
     private javax.swing.JPasswordField newPasswordInput;
     private javax.swing.JPasswordField oldPasswordInput;
     private javax.swing.JLabel oldPwLabel;
