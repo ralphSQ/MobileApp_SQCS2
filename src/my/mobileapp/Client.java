@@ -10,7 +10,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.NumberFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -127,6 +129,21 @@ public class Client {
         }
     }
 
+    public static boolean checkIfNew(int clientId) throws SQLException {
+        Statement st = DatabaseConnection.connect().createStatement();
+        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + clientId;
+        ResultSet rs = st.executeQuery(DBQ);
+        if (rs.next()) {
+            if (rs.getInt("NEW_ACCOUNT") == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     public static boolean checkIfRegistered(int accountNumber) {
         try {
             Statement st = DatabaseConnection.connect().createStatement();
@@ -154,6 +171,18 @@ public class Client {
         } else {
             return false;
         }
+    }
+
+    public static boolean checkPasswordResetCode(String resetCode, String email) throws SQLException {
+        Statement st = DatabaseConnection.connect().createStatement();
+        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE RESET_PW_CODE='" + resetCode + "' AND CLIENT_EMAIL='" + email + "'";
+        ResultSet rs = st.executeQuery(DBQ);
+        if (rs.next()) {
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
     public static int getId(int accountNumber) throws SQLException {
@@ -191,6 +220,42 @@ public class Client {
         return email;
     }
 
+    public static String getFormattedBalance(int clientId){
+        String formattedBalance;
+        double balance = 0;
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + clientId;
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                balance = rs.getDouble("CURRENT_BALANCE");
+                NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
+                formattedBalance = format.format(balance);
+                return formattedBalance;
+            }
+        } catch (SQLException | NumberFormatException e) {
+            System.out.println(e.getMessage());
+        }
+         return null;
+    }
+     public static String getFormattedExpectedBalance(int clientId){
+        String formattedBalance;
+        double balance = 0;
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + clientId;
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                balance = rs.getDouble("EXPECTED_BALANCE");
+                NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
+                formattedBalance = format.format(balance);
+                return formattedBalance;
+            }
+        } catch (SQLException | NumberFormatException e) {
+            System.out.println(e.getMessage());
+        }
+         return null;
+    }
     public static String getPassword(int accountId) throws SQLException {
         String password = "";
         Statement st = DatabaseConnection.connect().createStatement();
@@ -202,18 +267,6 @@ public class Client {
             return null;
         }
         return password;
-    }
-
-    public static boolean checkPasswordResetCode(String resetCode, String email) throws SQLException {
-        Statement st = DatabaseConnection.connect().createStatement();
-        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE RESET_PW_CODE='" + resetCode + "' AND CLIENT_EMAIL='" + email + "'";
-        ResultSet rs = st.executeQuery(DBQ);
-        if (rs.next()) {
-            return true;
-        } else {
-            return false;
-        }
-
     }
 
     public static String getFirstName(int clientId) throws SQLException {

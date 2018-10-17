@@ -196,7 +196,7 @@ public class registerFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void accountNumberInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_accountNumberInputKeyReleased
-        if (accountNumberInput.getText().length() == 9) {
+        if (accountNumberInput.getText().length() >= 9) {
             evt.consume();
             submitButton.setEnabled(true);
         }

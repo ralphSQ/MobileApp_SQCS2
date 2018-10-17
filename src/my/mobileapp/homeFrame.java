@@ -5,7 +5,6 @@
  */
 package my.mobileapp;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -14,6 +13,8 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,9 +22,8 @@ import java.util.Locale;
  */
 public class homeFrame extends javax.swing.JFrame {
 
-    
     private String fullName;
-    private int accountId;
+    private int clientId;
     private String firstName;
     private String balance;
     private String expectedBalance;
@@ -34,83 +34,27 @@ public class homeFrame extends javax.swing.JFrame {
     public homeFrame() {
         initComponents();
     }
-    
-      public homeFrame(int userId, String firstName, String fullName) {
-        this.accountId = userId;
+
+    public homeFrame(int userId, String firstName, String fullName) {
+        this.clientId = userId;
         this.fullName = fullName;
         this.firstName = firstName;
+        this.balance = Client.getFormattedBalance(clientId);
+        this.expectedBalance = Client.getFormattedExpectedBalance(clientId);
         initComponents();
-        boolean isNew = checkIfNewAccount(this.accountId);
-        System.out.println(isNew);
-        if (isNew) {
-            JOptionPane.showMessageDialog(this, "Please change your password immediately", "Change Password", JOptionPane.WARNING_MESSAGE);
+        
+        try {
+            if (Client.checkIfNew(clientId)) {
+                JOptionPane.showMessageDialog(this, "Please change your password immediately", "Change Password", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(homeFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-
-        getBalance(this.accountId);
-        getExpectedBalance(this.accountId);
         greetingLabel.setText("Hi, " + this.firstName);
         fullNameLabel.setText(this.fullName);
         balanceLabel.setText(this.balance);
         expectedBalLabel.setText(this.expectedBalance);
-    }
-      
-        private void getBalance(int accountId) {
-        double balance = 0;
-        try {
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
-            Statement st = con.createStatement();
-            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + accountId;
-            ResultSet rs = st.executeQuery(DBQ);
-            if (rs.next()) {
-                balance = rs.getDouble("CURRENT_BALANCE");
-                NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
-                this.balance = format.format(balance);
-            }
-        } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private double getExpectedBalance(int accountId) {
-        double expectedBalance = 0;
-        try {
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
-            Statement st = con.createStatement();
-            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + accountId;
-            ResultSet rs = st.executeQuery(DBQ);
-            if (rs.next()) {
-                expectedBalance = rs.getDouble("EXPECTED_BALANCE");
-                NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
-                this.expectedBalance = format.format(expectedBalance);
-            }
-        } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
-            System.out.println(e.getMessage());
-        }
-        return expectedBalance;
-    }
-
-    private boolean checkIfNewAccount(int accountId) {
-        boolean isNew = false;
-        try {
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
-            Statement st = con.createStatement();
-            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + accountId;
-            ResultSet rs = st.executeQuery(DBQ);
-            if (rs.next()) {
-                if (rs.getInt("NEW_ACCOUNT") == 1) {
-                    isNew = true;
-                } else {
-                    isNew = false;
-                }
-            }
-        } catch (ClassNotFoundException | SQLException | NumberFormatException e) {
-            System.out.println(e.getMessage());
-        }
-        return isNew;
     }
 
 
@@ -271,7 +215,8 @@ public class homeFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void withdrawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_withdrawButtonActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
+        new withdrawalFrame(this.clientId,this.firstName,this.fullName).setVisible(true);
     }//GEN-LAST:event_withdrawButtonActionPerformed
 
     private void viewTransactionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTransactionsButtonActionPerformed
@@ -289,7 +234,7 @@ public class homeFrame extends javax.swing.JFrame {
 
     private void changePassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePassButtonActionPerformed
         this.dispose();
-        new changePasswordFrame(this.accountId, this.fullName, this.firstName).setVisible(true);
+        new changePasswordFrame(this.clientId, this.fullName, this.firstName).setVisible(true);
     }//GEN-LAST:event_changePassButtonActionPerformed
 
     /**
