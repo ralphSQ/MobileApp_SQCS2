@@ -8,6 +8,7 @@ package my.mobileapp;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,7 +22,7 @@ public class DatabaseConnection {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             con = DriverManager.getConnection("jdbc:derby://localhost:1527/ca_abs", "ca_abs", "haji12345");
         } catch (ClassNotFoundException | SQLException e) {
-
+            System.out.println("Cannot connect to database");
         }
         return con;
     }
