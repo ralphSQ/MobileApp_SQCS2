@@ -224,7 +224,8 @@ public class homeFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_viewTransactionsButtonActionPerformed
 
     private void fundTransferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fundTransferButtonActionPerformed
-        // TODO add your handling code here:
+       this.dispose();
+       new fundTransferFrame(this.clientId,this.firstName,this.fullName).setVisible(true);
     }//GEN-LAST:event_fundTransferButtonActionPerformed
 
     private void logoutLabelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutLabelActionPerformed

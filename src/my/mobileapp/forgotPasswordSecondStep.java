@@ -166,12 +166,14 @@ public class forgotPasswordSecondStep extends javax.swing.JFrame {
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         String newPassword = new String(newPasswordInput.getPassword());
         String repeatNewPassword = new String(repeatNewPasswordInput.getPassword());
+        String encryptedPassword = PasswordHasher.passwordHasher(newPassword);
         int confirm = 0;
         if (newPassword.equals(repeatNewPassword)) {
             System.out.println(newPassword);
+            
             confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to change your password?", "Confirm", JOptionPane.YES_NO_OPTION);
             if (confirm == 0) {
-                Client.setPassword(newPassword, this.clientId);
+                Client.setPassword(encryptedPassword, this.clientId);
                 JOptionPane.showMessageDialog(this, "Password changed successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
                 new loginFrame().setVisible(true);

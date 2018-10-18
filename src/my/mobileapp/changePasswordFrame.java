@@ -150,6 +150,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
         jPanel1.add(repeatNewPasswordInput);
         repeatNewPasswordInput.setBounds(80, 580, 260, 40);
 
+        cancelBtn.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         cancelBtn.setText("Cancel");
         cancelBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -157,7 +158,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(cancelBtn);
-        cancelBtn.setBounds(300, 650, 79, 40);
+        cancelBtn.setBounds(160, 650, 71, 40);
 
         errorLabel.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
         errorLabel.setForeground(java.awt.Color.red);
@@ -166,6 +167,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
         jPanel1.add(errorLabel);
         errorLabel.setBounds(80, 620, 260, 20);
 
+        btnSubmit.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         btnSubmit.setText("Proceed");
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -173,7 +175,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnSubmit);
-        btnSubmit.setBounds(200, 650, 100, 40);
+        btnSubmit.setBounds(240, 650, 100, 40);
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
         jPanel1.add(jLabel5);
@@ -205,7 +207,6 @@ public class changePasswordFrame extends javax.swing.JFrame {
 
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
         this.dispose();
-
         new homeFrame(clientId, firstName, fullName).setVisible(true);
 
     }//GEN-LAST:event_cancelBtnActionPerformed

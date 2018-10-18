@@ -5,8 +5,6 @@
  */
 package my.mobileapp;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -121,6 +119,17 @@ public class Client {
     public static boolean checkIfAccountExists(int accountNumber) throws SQLException {
         Statement st = DatabaseConnection.connect().createStatement();
         String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ACCTNUM=" + accountNumber;
+        ResultSet rs = st.executeQuery(DBQ);
+        if (rs.next()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public static boolean checkIfPinIsCorrect(int pin) throws SQLException {
+        Statement st = DatabaseConnection.connect().createStatement();
+        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_PIN=" + pin;
         ResultSet rs = st.executeQuery(DBQ);
         if (rs.next()) {
             return true;
