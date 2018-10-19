@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -53,9 +54,13 @@ public class fundTransferFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        targetAccountNumberInput = new javax.swing.JTextField();
-        pinInput = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        amountInput = new javax.swing.JFormattedTextField();
+        targetAccountNumberInput = new javax.swing.JFormattedTextField();
         errorLabel = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        pinInput = new javax.swing.JFormattedTextField();
         submitButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
@@ -97,57 +102,64 @@ public class fundTransferFrame extends javax.swing.JFrame {
         jPanel1.add(jLabel3);
         jLabel3.setBounds(50, 410, 120, 30);
 
-        targetAccountNumberInput.setForeground(java.awt.Color.lightGray);
-        targetAccountNumberInput.setText("Receipient's Account Number");
-        targetAccountNumberInput.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                targetAccountNumberInputFocusGained(evt);
+        jLabel8.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        jLabel8.setText("Amount");
+        jPanel1.add(jLabel8);
+        jLabel8.setBounds(70, 580, 270, 20);
+
+        jLabel9.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        jLabel9.setText("Receipient's Account Number");
+        jPanel1.add(jLabel9);
+        jLabel9.setBounds(70, 460, 270, 17);
+
+        amountInput.setBorder(null);
+        amountInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,###.00"))));
+        amountInput.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                amountInputFocusLost(evt);
             }
+        });
+        jPanel1.add(amountInput);
+        amountInput.setBounds(70, 600, 270, 40);
+
+        targetAccountNumberInput.setBorder(null);
+        try {
+            targetAccountNumberInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#########")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        targetAccountNumberInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 targetAccountNumberInputFocusLost(evt);
             }
         });
-        targetAccountNumberInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                targetAccountNumberInputActionPerformed(evt);
-            }
-        });
-        targetAccountNumberInput.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                targetAccountNumberInputKeyTyped(evt);
-            }
-        });
         jPanel1.add(targetAccountNumberInput);
-        targetAccountNumberInput.setBounds(70, 460, 270, 40);
+        targetAccountNumberInput.setBounds(70, 480, 270, 40);
 
-        pinInput.setForeground(java.awt.Color.lightGray);
-        pinInput.setText("PIN");
+        errorLabel.setFont(new java.awt.Font("Calibri Light", 0, 14)); // NOI18N
+        errorLabel.setForeground(java.awt.Color.red);
+        errorLabel.setText("jLabel8");
+        jPanel1.add(errorLabel);
+        errorLabel.setBounds(70, 640, 270, 17);
+
+        jLabel11.setFont(new java.awt.Font("Calibri Light", 1, 14)); // NOI18N
+        jLabel11.setText("Your PIN");
+        jPanel1.add(jLabel11);
+        jLabel11.setBounds(70, 520, 270, 20);
+
+        pinInput.setBorder(null);
+        try {
+            pinInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("######")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
         pinInput.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                pinInputFocusGained(evt);
-            }
             public void focusLost(java.awt.event.FocusEvent evt) {
                 pinInputFocusLost(evt);
             }
         });
-        pinInput.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pinInputActionPerformed(evt);
-            }
-        });
-        pinInput.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                pinInputKeyTyped(evt);
-            }
-        });
         jPanel1.add(pinInput);
-        pinInput.setBounds(70, 520, 270, 40);
-
-        errorLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        errorLabel.setForeground(java.awt.Color.red);
-        errorLabel.setText("jLabel8");
-        jPanel1.add(errorLabel);
-        errorLabel.setBounds(70, 570, 270, 17);
+        pinInput.setBounds(70, 540, 270, 40);
 
         submitButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         submitButton.setText("Proceed");
@@ -158,7 +170,7 @@ public class fundTransferFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(submitButton);
-        submitButton.setBounds(250, 610, 90, 40);
+        submitButton.setBounds(250, 670, 90, 40);
 
         cancelButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         cancelButton.setText("Cancel");
@@ -169,7 +181,7 @@ public class fundTransferFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(cancelButton);
-        cancelButton.setBounds(150, 610, 93, 40);
+        cancelButton.setBounds(150, 670, 93, 40);
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
         jPanel1.add(jLabel5);
@@ -192,34 +204,54 @@ public class fundTransferFrame extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void targetAccountNumberInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_targetAccountNumberInputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_targetAccountNumberInputActionPerformed
-
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
 
-        if (!pinInput.getText().trim().isEmpty() && !targetAccountNumberInput.getText().trim().isEmpty() && !pinInput.getText().trim().equals("PIN") && !targetAccountNumberInput.getText().trim().equals("Receipient's Account Number")) {
-            int pin = 0, targetAccountNumber = 0;
+        if (!amountInput.getText().trim().isEmpty() && !targetAccountNumberInput.getText().trim().isEmpty() && !amountInput.getText().trim().equals("PIN") && !targetAccountNumberInput.getText().trim().equals("Receipient's Account Number")) {
+            int pin = 0, targetAccountNumber = 0, confirm = 0, targetId = 0;
+            double amount, balance;
+            String targetName, message;
             boolean isCorrect, isExist;
+            pin = Integer.parseInt(pinInput.getText().trim());
+            targetAccountNumber = Integer.parseInt(targetAccountNumberInput.getText().trim());
+            amount = Double.parseDouble(amountInput.getText().trim().replace(",", ""));
+            balance = Double.parseDouble(Client.getFormattedBalance(clientId).replaceAll("Php", "").replace(",", ""));
             try {
-                pin = Integer.parseInt(pinInput.getText().trim());
-            } catch (NumberFormatException nfe) {
-                errorLabel.setText("Input your pin properly, use numbers only.");
-                errorLabel.setVisible(true);
-                System.out.println(nfe.getMessage());
-            }
-            try {
-                targetAccountNumber = Integer.parseInt(targetAccountNumberInput.getText().trim());
-            } catch (NumberFormatException nfe) {
-                errorLabel.setText("Input the account number properly, use numbers only.");
-                errorLabel.setVisible(true);
-                System.out.println(nfe.getMessage());
-            }
-            try {
-                    errorLabel.setVisible(false);
                 if (Client.checkIfAccountExists(targetAccountNumber)) {
+                    if (Client.checkIfPinIsCorrect(pin, this.clientId) || Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
+                        if (Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
+                            JOptionPane.showMessageDialog(this, "You are using your temporary pin assigned to your account.\nChange your PIN as soon as possible to increase your account's security", "Tip", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        if (!(balance - 2000 < amount)) {
+                            targetId = Client.getId(targetAccountNumber);
+                            targetName = Client.createFullName(targetId);
+                            if (Client.fundTransfer(clientId, amount, targetAccountNumber, balance)) {
+                                message = "Fund Transfer"
+                                        + "\n------------------------------"
+                                        + "\nReceipient Name: " + targetName
+                                        + "\nReceipient Account Number: " + targetAccountNumber
+                                        + "\nAmount to Transfer: " + amount
+                                        + "\n------------------------------";
+                                confirm = JOptionPane.showConfirmDialog(this, message, "Confirmation", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
+                                if (confirm == 0) {
+                                    this.dispose();
+                                    new fundTransferConfirmFrame(clientId, firstName, fullName, targetAccountNumber, targetName, amount).setVisible(true);
+                                }
+
+                            }
+                            System.out.println("Target ID: " + targetId);
+                            System.out.println("Target NAME: " + targetName);
+                            System.out.println("Amount: " + amount);
+                            System.out.println("Balance: " + balance);
+
+                        } else {
+                            errorLabel.setText("Insufficient balance");
+                            errorLabel.setVisible(true);
+                        }
+                    } else {
+                        errorLabel.setText("Incorrect PIN");
+                        errorLabel.setVisible(true);
+                    }
                 } else {
-                    System.out.println("does not exist");
                     errorLabel.setText("Account number does not exist");
                     errorLabel.setVisible(true);
                 }
@@ -228,9 +260,11 @@ public class fundTransferFrame extends javax.swing.JFrame {
             }
         } else if (targetAccountNumberInput.getText().trim().isEmpty() || targetAccountNumberInput.getText().trim().equals("Receipient's Account Number")) {
             errorLabel.setText("Enter the receipient's account number");
+            targetAccountNumberInput.requestFocus();
             errorLabel.setVisible(true);
-        } else if (pinInput.getText().trim().isEmpty() || pinInput.getText().trim().equals("PIN")) {
+        } else if (amountInput.getText().trim().isEmpty() || amountInput.getText().trim().equals("PIN")) {
             errorLabel.setText("Enter your pin to continue");
+            amountInput.requestFocus();
             errorLabel.setVisible(true);
         }
     }//GEN-LAST:event_submitButtonActionPerformed
@@ -240,51 +274,29 @@ public class fundTransferFrame extends javax.swing.JFrame {
         new homeFrame(clientId, firstName, fullName).setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
-    private void targetAccountNumberInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_targetAccountNumberInputFocusGained
-        if (targetAccountNumberInput.getText().equals("Receipient's Account Number")) {
-            targetAccountNumberInput.setText("");
-            targetAccountNumberInput.setForeground(Color.black);
-        }
-    }//GEN-LAST:event_targetAccountNumberInputFocusGained
-
     private void targetAccountNumberInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_targetAccountNumberInputFocusLost
-        if (targetAccountNumberInput.getText().equals("")) {
+        if (targetAccountNumberInput.getText().trim().isEmpty()) {
             targetAccountNumberInput.setBorder(BorderFactory.createLineBorder(Color.red));
         } else {
-            targetAccountNumberInput.setBorder(BorderFactory.createLineBorder(Color.green));
+            targetAccountNumberInput.setBorder(BorderFactory.createEmptyBorder());
         }
     }//GEN-LAST:event_targetAccountNumberInputFocusLost
 
-    private void pinInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pinInputFocusGained
-        if (pinInput.getText().equals("PIN")) {
-            pinInput.setText("");
-            pinInput.setForeground(Color.black);
+    private void amountInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_amountInputFocusLost
+        if (amountInput.getText().trim().isEmpty()) {
+            amountInput.setBorder(BorderFactory.createLineBorder(Color.red));
+        } else {
+            amountInput.setBorder(BorderFactory.createEmptyBorder());
         }
-    }//GEN-LAST:event_pinInputFocusGained
+    }//GEN-LAST:event_amountInputFocusLost
 
     private void pinInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pinInputFocusLost
-        if (pinInput.getText().equals("")) {
+        if (pinInput.getText().trim().isEmpty()) {
             pinInput.setBorder(BorderFactory.createLineBorder(Color.red));
         } else {
-            pinInput.setBorder(BorderFactory.createLineBorder(Color.green));
+            pinInput.setBorder(BorderFactory.createEmptyBorder());
         }
     }//GEN-LAST:event_pinInputFocusLost
-
-    private void pinInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pinInputActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pinInputActionPerformed
-
-    private void pinInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pinInputKeyTyped
-        if (pinInput.getText().length() >= 6) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_pinInputKeyTyped
-
-    private void targetAccountNumberInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_targetAccountNumberInputKeyTyped
-        if (targetAccountNumberInput.getText().length() >= 9) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_targetAccountNumberInputKeyTyped
 
     /**
      * @param args the command line arguments
@@ -322,19 +334,23 @@ public class fundTransferFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JFormattedTextField amountInput;
     private javax.swing.JButton cancelButton;
     private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField pinInput;
+    private javax.swing.JFormattedTextField pinInput;
     private javax.swing.JButton submitButton;
-    private javax.swing.JTextField targetAccountNumberInput;
+    private javax.swing.JFormattedTextField targetAccountNumberInput;
     // End of variables declaration//GEN-END:variables
 }

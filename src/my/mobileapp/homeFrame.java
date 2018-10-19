@@ -51,10 +51,10 @@ public class homeFrame extends javax.swing.JFrame {
             Logger.getLogger(homeFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        greetingLabel.setText("Hi, " + this.firstName);
-        fullNameLabel.setText(this.fullName);
-        balanceLabel.setText(this.balance);
-        expectedBalLabel.setText(this.expectedBalance);
+        greetingLabel.setText("Hi, " + Client.getFirstName(clientId));
+        fullNameLabel.setText(Client.createFullName(clientId));
+        balanceLabel.setText(Client.getFormattedBalance(clientId));
+        expectedBalLabel.setText(Client.getFormattedExpectedBalance(clientId));
     }
 
 

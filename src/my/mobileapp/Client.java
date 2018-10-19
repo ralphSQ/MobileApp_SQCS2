@@ -5,6 +5,7 @@
  */
 package my.mobileapp;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,6 +13,8 @@ import java.text.NumberFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -87,6 +90,22 @@ public class Client {
         return false;
     }
 
+    public static boolean setBalance(int clientId, double amount) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "UPDATE CA_ABS.CLIENT SET CURRENT_BALANCE = " + amount + ",EXPECTED_BALANCE=" + amount + "WHERE CLIENT_ID=" + clientId;
+            int result = st.executeUpdate(DBQ);
+            if (result > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+
+        }
+        return false;
+    }
+
     public static boolean changePassword(String password, int clientId) {
         try {
             Statement st = DatabaseConnection.connect().createStatement();
@@ -97,6 +116,74 @@ public class Client {
             } else {
                 return false;
             }
+        } catch (SQLException | NumberFormatException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public static boolean fundTransfer(int clientId, double amount, int targetAccountNumber, double balance) {
+        try {
+            String DBQ = "INSERT INTO TRANSACTIONS(client_id,client_name,client_acctype,"
+                    + "employee_id,employee_name,transact_date,transact_method,transact_amount,transact_desc,transact_targetacct,"
+                    + "check_num,check_approver,check_daysclearing,check_iscleared,loan_amount,balance_normal,balance_current,"
+                    + "balance_expected) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            PreparedStatement withdrawSt = DatabaseConnection.connect().prepareStatement(DBQ);
+            withdrawSt.setInt(1, clientId);          //client_id
+            withdrawSt.setString(2, Client.createFullName(clientId));       //Client_name
+            withdrawSt.setString(3, Client.getAccountType(clientId));       //Client_acctype
+            withdrawSt.setInt(4, 0);          //employee_id
+            withdrawSt.setString(5, null);       //employee_name
+            withdrawSt.setInt(6, (int) (System.currentTimeMillis() / 1000L));   //transact_date
+            withdrawSt.setString(7, "Cash");       //transact_method
+            withdrawSt.setDouble(8, amount);      //transact_amount
+            withdrawSt.setString(9, "");       //transact_desc
+            withdrawSt.setInt(10, Client.getAccountNumber(clientId));      //transact_targetacct
+            withdrawSt.setInt(11, 0);         //check_num
+            withdrawSt.setString(12, null);      //check_approver
+            withdrawSt.setInt(13, 0);         //check_daysclearing
+            withdrawSt.setInt(14, 0);         //check_iscleared
+            withdrawSt.setFloat(15, 0);     //loan_amount
+            withdrawSt.setDouble(16, balance - amount);      //Balance_normal
+            withdrawSt.setDouble(17, balance - amount);     //balance_current
+            withdrawSt.setDouble(18, balance - amount);     //balance_expected
+            int result = withdrawSt.executeUpdate();
+            if (result > 0) {
+                Client.setBalance(clientId, balance - amount);
+            }
+            String DBQ2 = "INSERT INTO TRANSACTIONS(client_id,client_name,client_acctype,"
+                    + "employee_id,employee_name,transact_date,transact_method,transact_amount,transact_desc,transact_targetacct,"
+                    + "check_num,check_approver,check_daysclearing,check_iscleared,loan_amount,balance_normal,balance_current,"
+                    + "balance_expected) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            int targetClientId = Client.getId(targetAccountNumber);
+            double targetBalance = Double.parseDouble(Client.getFormattedBalance(targetClientId).replaceAll("Php", "").replace(",", ""));
+            PreparedStatement depositSt = DatabaseConnection.connect().prepareStatement(DBQ);
+            depositSt.setInt(1, targetClientId);          //client_id
+            depositSt.setString(2, Client.createFullName(targetClientId));       //Client_name
+            depositSt.setString(3, Client.getAccountType(targetClientId));       //Client_acctype
+            depositSt.setInt(4, 0);          //employee_id
+            depositSt.setString(5, null);       //employee_name
+            depositSt.setInt(6, (int) (System.currentTimeMillis() / 1000L));   //transact_date
+            depositSt.setString(7, "Cash");       //transact_method
+            depositSt.setDouble(8, amount);      //transact_amount
+            depositSt.setString(9, "");       //transact_desc
+            depositSt.setInt(10, targetAccountNumber);      //transact_targetacct
+            depositSt.setInt(11, 0);         //check_num
+            depositSt.setString(12, null);      //check_approver
+            depositSt.setInt(13, 0);         //check_daysclearing
+            depositSt.setInt(14, 0);         //check_iscleared
+            depositSt.setFloat(15, 0);     //loan_amount
+            depositSt.setDouble(16, targetBalance + amount);      //Balance_normal
+            depositSt.setDouble(17, targetBalance + amount);     //balance_current
+            depositSt.setDouble(18, targetBalance + amount);     //balance_expected
+            int result2 = depositSt.executeUpdate();
+            if (result2 > 0) {
+                Client.setBalance(targetClientId, targetBalance + amount);
+            }
+            if (result > 0 && result2 > 0) {
+                return true;
+            }
+
         } catch (SQLException | NumberFormatException e) {
             System.out.println(e.getMessage());
         }
@@ -126,10 +213,21 @@ public class Client {
             return false;
         }
     }
-    
-    public static boolean checkIfPinIsCorrect(int pin) throws SQLException {
+
+    public static boolean checkIfPinIsCorrect(int pin, int clientId) throws SQLException {
         Statement st = DatabaseConnection.connect().createStatement();
-        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_PIN=" + pin;
+        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_PIN=" + pin + " AND CLIENT_ID=" + clientId;
+        ResultSet rs = st.executeQuery(DBQ);
+        if (rs.next()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean checkIfTemporaryPinIsCorrect(int pin, int clientId) throws SQLException {
+        Statement st = DatabaseConnection.connect().createStatement();
+        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE TEMPORARY_PIN=" + pin + " AND CLIENT_ID=" + clientId;
         ResultSet rs = st.executeQuery(DBQ);
         if (rs.next()) {
             return true;
@@ -194,6 +292,22 @@ public class Client {
 
     }
 
+    public static String getAccountType(int clientId) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + clientId;
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                return rs.getString("ACCOUNT_TYPE");
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+
+        }
+        return null;
+    }
+
     public static int getId(int accountNumber) throws SQLException {
         Statement st = DatabaseConnection.connect().createStatement();
         String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ACCTNUM=" + accountNumber;
@@ -216,6 +330,24 @@ public class Client {
         }
     }
 
+    public static int getAccountNumber(int accountId) {
+        try {
+            int accountNumber = 0;
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + accountId;
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                accountNumber = rs.getInt("CLIENT_ACCTNUM");
+            } else {
+                return 0;
+            }
+            return accountNumber;
+        } catch (SQLException e) {
+
+        }
+        return 0;
+    }
+
     public static String getEmail(int accountId) throws SQLException {
         String email = "";
         Statement st = DatabaseConnection.connect().createStatement();
@@ -229,7 +361,7 @@ public class Client {
         return email;
     }
 
-    public static String getFormattedBalance(int clientId){
+    public static String getFormattedBalance(int clientId) {
         String formattedBalance;
         double balance = 0;
         try {
@@ -245,9 +377,10 @@ public class Client {
         } catch (SQLException | NumberFormatException e) {
             System.out.println(e.getMessage());
         }
-         return null;
+        return null;
     }
-     public static String getFormattedExpectedBalance(int clientId){
+
+    public static String getFormattedExpectedBalance(int clientId) {
         String formattedBalance;
         double balance = 0;
         try {
@@ -263,8 +396,9 @@ public class Client {
         } catch (SQLException | NumberFormatException e) {
             System.out.println(e.getMessage());
         }
-         return null;
+        return null;
     }
+
     public static String getPassword(int accountId) throws SQLException {
         String password = "";
         Statement st = DatabaseConnection.connect().createStatement();
@@ -278,15 +412,20 @@ public class Client {
         return password;
     }
 
-    public static String getFirstName(int clientId) throws SQLException {
-        Statement st = DatabaseConnection.connect().createStatement();
-        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + clientId;
-        ResultSet rs = st.executeQuery(DBQ);
-        if (rs.next()) {
-            return rs.getString("CLIENT_FN");
-        } else {
-            return null;
+    public static String getFirstName(int clientId) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + clientId;
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                return rs.getString("CLIENT_FN");
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
     }
 
     public static String createUserName(int clientId) throws SQLException {
@@ -303,26 +442,27 @@ public class Client {
 
             username = firstName.substring(0, 1).toLowerCase() + middleName.substring(0, 1).toLowerCase() + lastName.trim().toLowerCase();
         }
-
         return username;
     }
 
-    public static String createFullName(int clientId) throws SQLException {
-        String fullName = "", firstName = "", lastName = "", middleName = "";
-
-        Statement st = DatabaseConnection.connect().createStatement();
-        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + clientId;
-        ResultSet rs = st.executeQuery(DBQ);
-        if (rs.next()) {
-
-            firstName = rs.getString("CLIENT_FN");
-            lastName = rs.getString("CLIENT_LN");
-            middleName = rs.getString("CLIENT_MN");
-
-            fullName = firstName + " " + middleName.substring(0, 1) + ". " + lastName;
+    public static String createFullName(int clientId) {
+        try {
+            String fullName = "", firstName = "", lastName = "", middleName = "";
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + clientId;
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                
+                firstName = rs.getString("CLIENT_FN");
+                lastName = rs.getString("CLIENT_LN");
+                middleName = rs.getString("CLIENT_MN");
+                
+                fullName = firstName + " " + middleName.substring(0, 1) + ". " + lastName;
+            }   return fullName;
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        return fullName;
+        return null;
     }
 
     public static boolean sendCredentials(String receipient, String username, String password) {
