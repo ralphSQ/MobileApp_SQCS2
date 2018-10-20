@@ -48,6 +48,15 @@ public class PasswordGenerator {
         }
         return result;
     }
+    public static String generatePin2(){
+        String dic =  NUMERIC;
+        String result = "";
+         for (int i = 0; i < 6; i++) {
+            int index = random.nextInt(dic.length());
+            result += dic.charAt(index);
+        }
+        return result;
+    }
 
 
 }

@@ -133,6 +133,11 @@ public class fundTransferFrame extends javax.swing.JFrame {
                 targetAccountNumberInputFocusLost(evt);
             }
         });
+        targetAccountNumberInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                targetAccountNumberInputKeyTyped(evt);
+            }
+        });
         jPanel1.add(targetAccountNumberInput);
         targetAccountNumberInput.setBounds(70, 480, 270, 40);
 
@@ -156,6 +161,11 @@ public class fundTransferFrame extends javax.swing.JFrame {
         pinInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 pinInputFocusLost(evt);
+            }
+        });
+        pinInput.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                pinInputKeyTyped(evt);
             }
         });
         jPanel1.add(pinInput);
@@ -210,54 +220,52 @@ public class fundTransferFrame extends javax.swing.JFrame {
             int pin = 0, targetAccountNumber = 0, confirm = 0, targetId = 0;
             double amount, balance;
             String targetName, message;
-            boolean isCorrect, isExist;
             pin = Integer.parseInt(pinInput.getText().trim());
             targetAccountNumber = Integer.parseInt(targetAccountNumberInput.getText().trim());
             amount = Double.parseDouble(amountInput.getText().trim().replace(",", ""));
             balance = Double.parseDouble(Client.getFormattedBalance(clientId).replaceAll("Php", "").replace(",", ""));
-            try {
-                if (Client.checkIfAccountExists(targetAccountNumber)) {
-                    if (Client.checkIfPinIsCorrect(pin, this.clientId) || Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
-                        if (Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
-                            JOptionPane.showMessageDialog(this, "You are using your temporary pin assigned to your account.\nChange your PIN as soon as possible to increase your account's security", "Tip", JOptionPane.INFORMATION_MESSAGE);
-                        }
-                        if (!(balance - 2000 < amount)) {
-                            targetId = Client.getId(targetAccountNumber);
-                            targetName = Client.createFullName(targetId);
-                            if (Client.fundTransfer(clientId, amount, targetAccountNumber, balance)) {
-                                message = "Fund Transfer"
-                                        + "\n------------------------------"
-                                        + "\nReceipient Name: " + targetName
-                                        + "\nReceipient Account Number: " + targetAccountNumber
-                                        + "\nAmount to Transfer: " + amount
-                                        + "\n------------------------------";
-                                confirm = JOptionPane.showConfirmDialog(this, message, "Confirmation", JOptionPane.OK_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE);
-                                if (confirm == 0) {
-                                    this.dispose();
-                                    new fundTransferConfirmFrame(clientId, firstName, fullName, targetAccountNumber, targetName, amount).setVisible(true);
-                                }
 
+            if (Client.checkIfAccountExists(targetAccountNumber)) {
+                if (Client.checkIfPinIsCorrect(pin, this.clientId) || Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
+                    if (Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
+                        JOptionPane.showMessageDialog(this, "You are using your temporary pin assigned to your account.\nChange your PIN as soon as possible to increase your account's security", "Tip", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    if (!(balance - 2000 < amount)) {
+                        targetId = Client.getId(targetAccountNumber);
+                        targetName = Client.createFullName(targetId);
+                        message = "Fund Transfer"
+                                + "\n------------------------------"
+                                + "\nReceipient Name: " + targetName
+                                + "\nReceipient Account Number: " + targetAccountNumber
+                                + "\nAmount to Transfer: " + amount
+                                + "\n------------------------------";
+                        confirm = JOptionPane.showConfirmDialog(this, message, "Confirmation", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                        if (confirm == 0) {
+                            if(Client.fundTransfer(clientId, amount, targetAccountNumber, balance)){
+                            this.dispose();
+                            new fundTransferConfirmFrame(clientId, firstName, fullName, targetAccountNumber, targetName, amount).setVisible(true);
+                            } else {
+                                JOptionPane.showMessageDialog(this,"An error occured, please blame the programmer.","Error", JOptionPane.ERROR_MESSAGE);
                             }
-                            System.out.println("Target ID: " + targetId);
-                            System.out.println("Target NAME: " + targetName);
-                            System.out.println("Amount: " + amount);
-                            System.out.println("Balance: " + balance);
-
-                        } else {
-                            errorLabel.setText("Insufficient balance");
-                            errorLabel.setVisible(true);
                         }
+                        System.out.println("Target ID: " + targetId);
+                        System.out.println("Target NAME: " + targetName);
+                        System.out.println("Amount: " + amount);
+                        System.out.println("Balance: " + balance);
+
                     } else {
-                        errorLabel.setText("Incorrect PIN");
+                        errorLabel.setText("Insufficient balance");
                         errorLabel.setVisible(true);
                     }
                 } else {
-                    errorLabel.setText("Account number does not exist");
+                    errorLabel.setText("Incorrect PIN");
                     errorLabel.setVisible(true);
                 }
-            } catch (SQLException ex) {
-                Logger.getLogger(fundTransferFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } else {
+                errorLabel.setText("Account number does not exist");
+                errorLabel.setVisible(true);
             }
+
         } else if (targetAccountNumberInput.getText().trim().isEmpty() || targetAccountNumberInput.getText().trim().equals("Receipient's Account Number")) {
             errorLabel.setText("Enter the receipient's account number");
             targetAccountNumberInput.requestFocus();
@@ -271,7 +279,7 @@ public class fundTransferFrame extends javax.swing.JFrame {
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.dispose();
-        new homeFrame(clientId, firstName, fullName).setVisible(true);
+        new homeFrame(clientId).setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void targetAccountNumberInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_targetAccountNumberInputFocusLost
@@ -297,6 +305,18 @@ public class fundTransferFrame extends javax.swing.JFrame {
             pinInput.setBorder(BorderFactory.createEmptyBorder());
         }
     }//GEN-LAST:event_pinInputFocusLost
+
+    private void pinInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pinInputKeyTyped
+        if (pinInput.getText().length() >= 6) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_pinInputKeyTyped
+
+    private void targetAccountNumberInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_targetAccountNumberInputKeyTyped
+        if (targetAccountNumberInput.getText().length() >= 9) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_targetAccountNumberInputKeyTyped
 
     /**
      * @param args the command line arguments

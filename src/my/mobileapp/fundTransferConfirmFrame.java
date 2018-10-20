@@ -193,7 +193,7 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
      this.dispose();
-     new homeFrame(this.clientId,this.firstName,this.fullName).setVisible(true);
+     new homeFrame(this.clientId).setVisible(true);
     }//GEN-LAST:event_submitButtonActionPerformed
 
     /**

@@ -182,7 +182,7 @@ public class registerFrame extends javax.swing.JFrame {
                     }
 
                 }
-            } catch (SQLException | NullPointerException ex) {
+            } catch (NullPointerException ex) {
                 JOptionPane.showMessageDialog(this, "Failed to connect to database.\nPlease check your database connection and try again.", "Connection Failed", JOptionPane.ERROR_MESSAGE);
             }
         }

@@ -6,7 +6,12 @@
 package my.mobileapp;
 
 import java.awt.Color;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -30,6 +35,7 @@ public class withdrawalFrame extends javax.swing.JFrame {
         this.fullName = fullName;
         this.firstName = firstName;
         initComponents();
+        errorLabel.setVisible(false);
     }
 
     /**
@@ -49,6 +55,7 @@ public class withdrawalFrame extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        errorLabel = new javax.swing.JLabel();
         pinInput = new javax.swing.JFormattedTextField();
         amountInput = new javax.swing.JFormattedTextField();
         cancelButtton = new javax.swing.JButton();
@@ -93,10 +100,17 @@ public class withdrawalFrame extends javax.swing.JFrame {
         jLabel7.setBounds(290, 410, 70, 30);
 
         jLabel9.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
-        jLabel9.setText("Pin 1");
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel9.setText("Your PIN");
         jPanel1.add(jLabel9);
-        jLabel9.setBounds(70, 570, 70, 30);
+        jLabel9.setBounds(20, 560, 110, 40);
 
+        errorLabel.setForeground(java.awt.Color.red);
+        errorLabel.setText("jLabel12");
+        jPanel1.add(errorLabel);
+        errorLabel.setBounds(140, 610, 230, 20);
+
+        pinInput.setBorder(null);
         pinInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
         pinInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -104,13 +118,14 @@ public class withdrawalFrame extends javax.swing.JFrame {
             }
         });
         pinInput.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                pinInputKeyTyped(evt);
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                pinInputKeyReleased(evt);
             }
         });
         jPanel1.add(pinInput);
         pinInput.setBounds(140, 560, 230, 40);
 
+        amountInput.setBorder(null);
         amountInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,###.00"))));
         amountInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -125,28 +140,33 @@ public class withdrawalFrame extends javax.swing.JFrame {
         jPanel1.add(amountInput);
         amountInput.setBounds(140, 500, 230, 40);
 
+        cancelButtton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         cancelButtton.setText("Cancel");
+        cancelButtton.setBorder(null);
         cancelButtton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButttonActionPerformed(evt);
             }
         });
         jPanel1.add(cancelButtton);
-        cancelButtton.setBounds(50, 630, 100, 40);
+        cancelButtton.setBounds(160, 650, 100, 40);
 
+        submitButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         submitButton.setText("Proceed");
+        submitButton.setBorder(null);
         submitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 submitButtonActionPerformed(evt);
             }
         });
         jPanel1.add(submitButton);
-        submitButton.setBounds(260, 630, 100, 40);
+        submitButton.setBounds(270, 650, 100, 40);
 
         jLabel8.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         jLabel8.setText("Amount");
         jPanel1.add(jLabel8);
-        jLabel8.setBounds(60, 500, 80, 40);
+        jLabel8.setBounds(20, 500, 110, 40);
 
         jLabel3.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
         jLabel3.setText("Input Amount");
@@ -178,16 +198,63 @@ public class withdrawalFrame extends javax.swing.JFrame {
 
     private void cancelButttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButttonActionPerformed
         this.dispose();
-        new homeFrame(this.clientId, this.firstName, this.fullName).setVisible(true);
+        new homeFrame(this.clientId).setVisible(true);
     }//GEN-LAST:event_cancelButttonActionPerformed
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-        System.out.println(amountInput.getText());
-        try {
-            System.out.println(Double.valueOf(amountInput.getText().replace(",", "")));
-        } catch (NumberFormatException e) {
-            System.out.println("Please enter the amount properly");
+        if (!amountInput.getText().trim().isEmpty() && !pinInput.getText().trim().isEmpty()) {
+            double amount = Double.valueOf(amountInput.getText().replace(",", ""));
+            double balance = Double.parseDouble(Client.getFormattedBalance(clientId).replaceAll("Php", "").replace(",", ""));
+            int pin = Integer.valueOf(pinInput.getText().trim());
+            int pin2 = Integer.valueOf(PasswordGenerator.generatePin2());
+            int confirm = 0;
+            String message = "";
+            long requestTime = Instant.now().getEpochSecond();
+            LocalDateTime dateTime = LocalDateTime.ofEpochSecond(requestTime, 0, ZoneOffset.of("+8"));
+            if (!(balance - 2000 < amount)) {
+                if (Client.checkIfPinIsCorrect(pin, this.clientId) || Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
+                    if (Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
+                        JOptionPane.showMessageDialog(this, "You are using your temporary pin assigned to your account.\nChange your PIN as soon as possible to increase your account's security", "Tip", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    System.out.println("Amount: " + amount);
+                    System.out.println("Pin 1: " + pin);
+                    System.out.println("Pin 2: " + pin2);
+                    System.out.println("Time Request: " + requestTime);
+                    System.out.println("Time Request in format: " + dateTime);
+                    message = "Fund Transfer"
+                            + "\n------------------------------"
+                            + "\nAmount: " + amount
+                            + "\nYour PIN: " + pin
+                            + "\nPin 2: " + pin2
+                            + "\nTime Request:" + requestTime
+                            + "\nFormatted time: " + dateTime
+                            + "\n------------------------------";
+                    confirm = JOptionPane.showConfirmDialog(this, message, "Confirmation", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if (confirm == 0) {
+                        if (Client.cardlessWithdrawal(clientId, amount, pin, pin2, (int) requestTime)) {
+                            this.dispose();
+                            new cardlessWithdrawalStep2(clientId, pin2, amount, (int) requestTime).setVisible(true);
+                        } else {
+                            JOptionPane.showMessageDialog(this, "An error occured, please blame the programmer.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                } else {
+                    errorLabel.setText("Incorrect PIN");
+                    errorLabel.setVisible(true);
+                }
+            } else {
+                errorLabel.setText("Insufficient balance");
+                errorLabel.setVisible(true);
+            }
+        } else if (amountInput.getText().trim().isEmpty()) {
+            errorLabel.setText("Please enter amount");
+            errorLabel.setVisible(true);
+        } else if (pinInput.getText().trim().isEmpty()) {
+            errorLabel.setText("Please enter your pin");
+            errorLabel.setVisible(true);
         }
+
+
     }//GEN-LAST:event_submitButtonActionPerformed
 
     private void pinInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pinInputFocusLost
@@ -198,14 +265,8 @@ public class withdrawalFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_pinInputFocusLost
 
-    private void pinInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pinInputKeyTyped
-        if (pinInput.getText().length() == 6) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_pinInputKeyTyped
-
     private void amountInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_amountInputFocusLost
-         if (amountInput.getText().trim().isEmpty()) {
+        if (amountInput.getText().trim().isEmpty()) {
             amountInput.setBorder(BorderFactory.createLineBorder(Color.red));
         } else {
             amountInput.setBorder(BorderFactory.createLineBorder(Color.green));
@@ -215,6 +276,15 @@ public class withdrawalFrame extends javax.swing.JFrame {
     private void amountInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_amountInputKeyTyped
         // TODO add your handling code here:
     }//GEN-LAST:event_amountInputKeyTyped
+
+    private void pinInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pinInputKeyReleased
+        if (pinInput.getText().length() >= 6) {
+            evt.consume();
+            pinInput.setBorder(BorderFactory.createLineBorder(Color.green));
+        } else {
+            pinInput.setBorder(BorderFactory.createLineBorder(Color.red));
+        }
+    }//GEN-LAST:event_pinInputKeyReleased
 
     /**
      * @param args the command line arguments
@@ -254,6 +324,7 @@ public class withdrawalFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField amountInput;
     private javax.swing.JButton cancelButtton;
+    private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

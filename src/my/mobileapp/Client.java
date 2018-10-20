@@ -29,33 +29,90 @@ import javax.mail.internet.MimeMessage;
  */
 public class Client {
 
-    /**
-     *
-     * @param username
-     * @param password
-     * @return
-     * @throws SQLException
-     */
-    public static int login(String username, String password) throws SQLException {
-        Statement st = DatabaseConnection.connect().createStatement();
-        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_UNAME='" + username + "' AND CLIENT_PW='" + PasswordHasher.passwordHasher(password) + "'";
-        ResultSet rs = st.executeQuery(DBQ);
-        if (rs.next()) {
-            return rs.getInt("CLIENT_ID");
-        } else {
-            return 0;
+    public static boolean updateWithdrawal(int clientId, int pin2, int timeRequest, int status) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "UPDATE CA_ABS.CARDLESS_WITHDRAWAL SET STATUS = "+ 2 + " WHERE CLIENT_ID=" + clientId + " AND PIN2 = " + pin2 + " AND TIMEREQUEST = " + timeRequest;
+            int result = st.executeUpdate(DBQ);
+            if (result > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException | NumberFormatException e) {
+            System.out.println(e.getMessage());
         }
+        return false;
     }
 
-    public static int loginWithEmail(String email, String password) throws SQLException {
-        Statement st = DatabaseConnection.connect().createStatement();
-        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_EMAIL='" + email + "' AND CLIENT_PW='" + PasswordHasher.passwordHasher(password) + "'";
-        ResultSet rs = st.executeQuery(DBQ);
-        if (rs.next()) {
-            return rs.getInt("CLIENT_ID");
-        } else {
-            return 0;
+    public static int getWithdrawalStatus(int clientId, int pin2, int timeRequest) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CARDLESS_WITHDRAWAL WHERE CLIENT_ID=" + clientId + " AND PIN2 =" + pin2 + " AND TIMEREQUEST = " + timeRequest;
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                return rs.getInt("STATUS");
+            } else {
+                return 0;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return 0;
+    }
+
+    public static boolean cardlessWithdrawal(int clientId, double amount, int pin1, int pin2, int timeRequest) {
+        try {
+            String DBQ = "INSERT INTO CARDLESS_WITHDRAWAL(client_id,pin1,pin2,amount,timerequest,timewithdraw,status) values(?,?,?,?,?,?,?)";
+            PreparedStatement withdrawSt = DatabaseConnection.connect().prepareStatement(DBQ);
+            withdrawSt.setInt(1, clientId);          //client_id
+            withdrawSt.setInt(2, pin1);     //pin1
+            withdrawSt.setInt(3, pin2);       //pin2
+            withdrawSt.setDouble(4, amount);       //amount
+            withdrawSt.setInt(5, timeRequest);      //timerequest
+            withdrawSt.setInt(6, 0);      //timewithdraw
+            withdrawSt.setInt(7, 0);
+            int result = withdrawSt.executeUpdate();
+            if (result > 0) {
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public static int login(String username, String password) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_UNAME='" + username + "' AND CLIENT_PW='" + PasswordHasher.passwordHasher(password) + "'";
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                return rs.getInt("CLIENT_ID");
+            } else {
+                return 0;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
+
+    public static int loginWithEmail(String email, String password) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_EMAIL='" + email + "' AND CLIENT_PW='" + PasswordHasher.passwordHasher(password) + "'";
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                return rs.getInt("CLIENT_ID");
+            } else {
+                return 0;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
     }
 
     public static boolean setUsername(String username, int clientId) {
@@ -190,65 +247,89 @@ public class Client {
         return false;
     }
 
-    public static boolean resetCodeToNull(int clientId) throws SQLException {
+    public static boolean resetCodeToNull(int clientId) {
 
-        Statement st = DatabaseConnection.connect().createStatement();
-        String DBQ = "UPDATE CA_ABS.CLIENT SET RESET_PW_CODE = '' WHERE CLIENT_ID=" + clientId;
-        int result = st.executeUpdate(DBQ);
-        if (result > 0) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    public static boolean checkIfAccountExists(int accountNumber) throws SQLException {
-        Statement st = DatabaseConnection.connect().createStatement();
-        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ACCTNUM=" + accountNumber;
-        ResultSet rs = st.executeQuery(DBQ);
-        if (rs.next()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public static boolean checkIfPinIsCorrect(int pin, int clientId) throws SQLException {
-        Statement st = DatabaseConnection.connect().createStatement();
-        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_PIN=" + pin + " AND CLIENT_ID=" + clientId;
-        ResultSet rs = st.executeQuery(DBQ);
-        if (rs.next()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public static boolean checkIfTemporaryPinIsCorrect(int pin, int clientId) throws SQLException {
-        Statement st = DatabaseConnection.connect().createStatement();
-        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE TEMPORARY_PIN=" + pin + " AND CLIENT_ID=" + clientId;
-        ResultSet rs = st.executeQuery(DBQ);
-        if (rs.next()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public static boolean checkIfNew(int clientId) throws SQLException {
-        Statement st = DatabaseConnection.connect().createStatement();
-        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + clientId;
-        ResultSet rs = st.executeQuery(DBQ);
-        if (rs.next()) {
-            if (rs.getInt("NEW_ACCOUNT") == 1) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "UPDATE CA_ABS.CLIENT SET RESET_PW_CODE = '' WHERE CLIENT_ID=" + clientId;
+            int result = st.executeUpdate(DBQ);
+            if (result > 0) {
                 return true;
             } else {
                 return false;
             }
-        } else {
-            return false;
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
+    }
+
+    public static boolean checkIfAccountExists(int accountNumber) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ACCTNUM=" + accountNumber;
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public static boolean checkIfPinIsCorrect(int pin, int clientId) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_PIN=" + pin + " AND CLIENT_ID=" + clientId;
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public static boolean checkIfTemporaryPinIsCorrect(int pin, int clientId) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE TEMPORARY_PIN=" + pin + " AND CLIENT_ID=" + clientId;
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public static boolean checkIfNew(int clientId) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + clientId;
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                if (rs.getInt("NEW_ACCOUNT") == 1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     public static boolean checkIfRegistered(int accountNumber) {
@@ -269,27 +350,36 @@ public class Client {
         return false;
     }
 
-    public static boolean checkIfEmailExists(String email) throws SQLException {
-        Statement st = DatabaseConnection.connect().createStatement();
-        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_EMAIL='" + email + "'";
-        ResultSet rs = st.executeQuery(DBQ);
-        if (rs.next()) {
-            return true;
-        } else {
-            return false;
+    public static boolean checkIfEmailExists(String email) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_EMAIL='" + email + "'";
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
     }
 
-    public static boolean checkPasswordResetCode(String resetCode, String email) throws SQLException {
-        Statement st = DatabaseConnection.connect().createStatement();
-        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE RESET_PW_CODE='" + resetCode + "' AND CLIENT_EMAIL='" + email + "'";
-        ResultSet rs = st.executeQuery(DBQ);
-        if (rs.next()) {
-            return true;
-        } else {
-            return false;
+    public static boolean checkPasswordResetCode(String resetCode, String email) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE RESET_PW_CODE='" + resetCode + "' AND CLIENT_EMAIL='" + email + "'";
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return false;
     }
 
     public static String getAccountType(int clientId) {
@@ -308,26 +398,36 @@ public class Client {
         return null;
     }
 
-    public static int getId(int accountNumber) throws SQLException {
-        Statement st = DatabaseConnection.connect().createStatement();
-        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ACCTNUM=" + accountNumber;
-        ResultSet rs = st.executeQuery(DBQ);
-        if (rs.next()) {
-            return rs.getInt("CLIENT_ID");
-        } else {
-            return 0;
+    public static int getId(int accountNumber) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ACCTNUM=" + accountNumber;
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                return rs.getInt("CLIENT_ID");
+            } else {
+                return 0;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return 0;
     }
 
-    public static int getIdwithResetCode(String resetCode) throws SQLException {
-        Statement st = DatabaseConnection.connect().createStatement();
-        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE RESET_PW_CODE='" + resetCode + "'";
-        ResultSet rs = st.executeQuery(DBQ);
-        if (rs.next()) {
-            return rs.getInt("CLIENT_ID");
-        } else {
-            return 0;
+    public static int getIdwithResetCode(String resetCode) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE RESET_PW_CODE='" + resetCode + "'";
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                return rs.getInt("CLIENT_ID");
+            } else {
+                return 0;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return 0;
     }
 
     public static int getAccountNumber(int accountId) {
@@ -348,17 +448,22 @@ public class Client {
         return 0;
     }
 
-    public static String getEmail(int accountId) throws SQLException {
-        String email = "";
-        Statement st = DatabaseConnection.connect().createStatement();
-        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + accountId;
-        ResultSet rs = st.executeQuery(DBQ);
-        if (rs.next()) {
-            email = rs.getString("CLIENT_EMAIL");
-        } else {
-            return null;
+    public static String getEmail(int accountId) {
+        try {
+            String email = "";
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + accountId;
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                email = rs.getString("CLIENT_EMAIL");
+            } else {
+                return null;
+            }
+            return email;
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return email;
+        return null;
     }
 
     public static String getFormattedBalance(int clientId) {
@@ -399,17 +504,22 @@ public class Client {
         return null;
     }
 
-    public static String getPassword(int accountId) throws SQLException {
-        String password = "";
-        Statement st = DatabaseConnection.connect().createStatement();
-        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + accountId;
-        ResultSet rs = st.executeQuery(DBQ);
-        if (rs.next()) {
-            password = rs.getString("CLIENT_PW");
-        } else {
-            return null;
+    public static String getPassword(int accountId) {
+        try {
+            String password = "";
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + accountId;
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                password = rs.getString("CLIENT_PW");
+            } else {
+                return null;
+            }
+            return password;
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return password;
+        return null;
     }
 
     public static String getFirstName(int clientId) {
@@ -428,21 +538,25 @@ public class Client {
         return null;
     }
 
-    public static String createUserName(int clientId) throws SQLException {
-        String username = "", firstName = "", lastName = "", middleName = "";
+    public static String createUserName(int clientId) {
+        try {
+            String username = "", firstName = "", lastName = "", middleName = "";
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + clientId;
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
 
-        Statement st = DatabaseConnection.connect().createStatement();
-        String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + clientId;
-        ResultSet rs = st.executeQuery(DBQ);
-        if (rs.next()) {
+                firstName = rs.getString("CLIENT_FN");
+                lastName = rs.getString("CLIENT_LN");
+                middleName = rs.getString("CLIENT_MN");
 
-            firstName = rs.getString("CLIENT_FN");
-            lastName = rs.getString("CLIENT_LN");
-            middleName = rs.getString("CLIENT_MN");
-
-            username = firstName.substring(0, 1).toLowerCase() + middleName.substring(0, 1).toLowerCase() + lastName.trim().toLowerCase();
+                username = firstName.substring(0, 1).toLowerCase() + middleName.substring(0, 1).toLowerCase() + lastName.trim().toLowerCase();
+            }
+            return username;
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return username;
+        return null;
     }
 
     public static String createFullName(int clientId) {
@@ -452,13 +566,14 @@ public class Client {
             String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + clientId;
             ResultSet rs = st.executeQuery(DBQ);
             if (rs.next()) {
-                
+
                 firstName = rs.getString("CLIENT_FN");
                 lastName = rs.getString("CLIENT_LN");
                 middleName = rs.getString("CLIENT_MN");
-                
+
                 fullName = firstName + " " + middleName.substring(0, 1) + ". " + lastName;
-            }   return fullName;
+            }
+            return fullName;
         } catch (SQLException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }

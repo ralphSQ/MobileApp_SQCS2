@@ -133,52 +133,48 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-        try {
-            if (!emailInput.getText().trim().isEmpty()) {
-
-                EmailValidator validator = new EmailValidator();
-
-                if (validator.validateEmail(emailInput.getText().trim())) {
-
-                    emailInput.setBorder(BorderFactory.createLineBorder(Color.green));
-
-                    if (Client.checkIfEmailExists(emailInput.getText().trim())) {
-
-                        try {
-                            String resetCode = PasswordGenerator.generateResetPasswordCode(6);
-
-                            Statement st = DatabaseConnection.connect().createStatement();
-                            String DBQ = "UPDATE CA_ABS.CLIENT SET RESET_PW_CODE='" + resetCode + "' WHERE CLIENT_EMAIL='" + emailInput.getText() + "'";
-                            int result = st.executeUpdate(DBQ);
-                            if (result > 0) {
-
-                                if (Client.sendResetPassword(emailInput.getText(), resetCode)) {
-                                    JOptionPane.showMessageDialog(this, "Password reset code has been sent to your email","Success",JOptionPane.INFORMATION_MESSAGE);
-                                } else {
-                                    JOptionPane.showMessageDialog(this, "Email not sent, please try again or check your internet connection", "Try Again", JOptionPane.WARNING_MESSAGE);
-                                }
-                                this.email = emailInput.getText();
-                                this.dispose();
-                                new forgotPasswordInputCode(this.email).setVisible(true);
+        if (!emailInput.getText().trim().isEmpty()) {
+            
+            EmailValidator validator = new EmailValidator();
+            
+            if (validator.validateEmail(emailInput.getText().trim())) {
+                
+                emailInput.setBorder(BorderFactory.createLineBorder(Color.green));
+                
+                if (Client.checkIfEmailExists(emailInput.getText().trim())) {
+                    
+                    try {
+                        String resetCode = PasswordGenerator.generateResetPasswordCode(6);
+                        
+                        Statement st = DatabaseConnection.connect().createStatement();
+                        String DBQ = "UPDATE CA_ABS.CLIENT SET RESET_PW_CODE='" + resetCode + "' WHERE CLIENT_EMAIL='" + emailInput.getText() + "'";
+                        int result = st.executeUpdate(DBQ);
+                        if (result > 0) {
+                            
+                            if (Client.sendResetPassword(emailInput.getText(), resetCode)) {
+                                JOptionPane.showMessageDialog(this, "Password reset code has been sent to your email","Success",JOptionPane.INFORMATION_MESSAGE);
+                            } else {
+                                JOptionPane.showMessageDialog(this, "Email not sent, please try again or check your internet connection", "Try Again", JOptionPane.WARNING_MESSAGE);
                             }
-                        } catch (SQLException | NumberFormatException e) {
-                            System.out.println(e.getMessage());
+                            this.email = emailInput.getText();
+                            this.dispose();
+                            new forgotPasswordInputCode(this.email).setVisible(true);
                         }
-                    } else {
-
-                        errorLabel.setText("Email address not found");
-                        errorLabel.setVisible(true);
+                    } catch (SQLException | NumberFormatException e) {
+                        System.out.println(e.getMessage());
                     }
                 } else {
-                    errorLabel.setText("Invalid email address format");
+
+                    errorLabel.setText("Email address not found");
                     errorLabel.setVisible(true);
                 }
             } else {
-                errorLabel.setText("Please enter your email address");
+                errorLabel.setText("Invalid email address format");
                 errorLabel.setVisible(true);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(forgotPasswordFrame.class.getName()).log(Level.SEVERE, null, ex);
+        } else {
+            errorLabel.setText("Please enter your email address");
+            errorLabel.setVisible(true);
         }
     }//GEN-LAST:event_submitButtonActionPerformed
 

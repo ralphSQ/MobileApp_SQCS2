@@ -207,7 +207,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
 
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
         this.dispose();
-        new homeFrame(clientId, firstName, fullName).setVisible(true);
+        new homeFrame(clientId).setVisible(true);
 
     }//GEN-LAST:event_cancelBtnActionPerformed
 
@@ -258,11 +258,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         String getPassword = "";
-        try {
-            getPassword = Client.getPassword(this.clientId);
-        } catch (SQLException ex) {
-            Logger.getLogger(changePasswordFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        getPassword = Client.getPassword(this.clientId);
         String newPassword = "", encryptedPassword = "", oldPassword = "";
         int confirm = 0, result = 0;
         oldPassword = new String(oldPasswordInput.getPassword());
@@ -276,7 +272,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
                     Client.changePassword(encryptedPassword, clientId);
                     this.dispose();
                     JOptionPane.showMessageDialog(this, "Password changed successfully.");
-                    new homeFrame(clientId, firstName, fullName).setVisible(true);
+                    new homeFrame(clientId).setVisible(true);
                 }
             } else {
                 errorLabel.setText("Old password is incorrect");

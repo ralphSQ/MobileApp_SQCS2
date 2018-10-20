@@ -181,31 +181,23 @@ public class loginFrame extends javax.swing.JFrame {
         } else if (new String(passwordInput.getPassword()).trim().isEmpty() || new String(passwordInput.getPassword()).equals("1234567890")) {
             errorPasswordLabel.setVisible(true);
         } else {
-            try {
-                String password = "", username = "", fullName = "", firstName = "";
-                int clientId = 0;
-                password = new String(passwordInput.getPassword());
-                username = usernameInput.getText().trim();
-                if (new EmailValidator().validateEmail(usernameInput.getText().trim())) {
-                    try {
-                        clientId = Client.loginWithEmail(username, password);
-                    } catch (SQLException ex) {
-                        Logger.getLogger(loginFrame.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    clientId = Client.login(username, password);
-                }
-                if (clientId != 0) { // 0 means not found
-                    fullName = Client.createFullName(clientId);
-                    firstName = Client.getFirstName(clientId);
-                    // open home frame
-                    this.dispose();
-                    new homeFrame(clientId, firstName, fullName).setVisible(true);
-                } else {
-                    errorLabel.setVisible(true);
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(loginFrame.class.getName()).log(Level.SEVERE, null, ex);
+            String password = "", username = "", fullName = "", firstName = "";
+            int clientId = 0;
+            password = new String(passwordInput.getPassword());
+            username = usernameInput.getText().trim();
+            if (new EmailValidator().validateEmail(usernameInput.getText().trim())) {
+                clientId = Client.loginWithEmail(username, password);
+            } else {
+                clientId = Client.login(username, password);
+            }
+            if (clientId != 0) { // 0 means not found
+                fullName = Client.createFullName(clientId);
+                firstName = Client.getFirstName(clientId);
+                // open home frame
+                this.dispose();
+                new homeFrame(clientId).setVisible(true);
+            } else {
+                errorLabel.setVisible(true);
             }
         }
     }//GEN-LAST:event_loginButtonActionPerformed

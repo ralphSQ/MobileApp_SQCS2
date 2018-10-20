@@ -127,18 +127,14 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-      try {
-            if (Client.checkPasswordResetCode(codeInput.getText(),this.email)) {
-                this.accountId = Client.getIdwithResetCode(codeInput.getText());
-                System.out.println(this.accountId);
-                System.out.println(Client.resetCodeToNull(this.accountId));
-                this.dispose();
-                new forgotPasswordSecondStep(this.accountId).setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(this, "Invalid password reset code", "Reset Password", JOptionPane.INFORMATION_MESSAGE);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(forgotPasswordInputCode.class.getName()).log(Level.SEVERE, null, ex);
+        if (Client.checkPasswordResetCode(codeInput.getText(),this.email)) {
+            this.accountId = Client.getIdwithResetCode(codeInput.getText());
+            System.out.println(this.accountId);
+            System.out.println(Client.resetCodeToNull(this.accountId));
+            this.dispose();
+            new forgotPasswordSecondStep(this.accountId).setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid password reset code", "Reset Password", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_submitButtonActionPerformed
 

@@ -35,20 +35,12 @@ public class homeFrame extends javax.swing.JFrame {
         initComponents();
     }
 
-    public homeFrame(int userId, String firstName, String fullName) {
+    public homeFrame(int userId) {
         this.clientId = userId;
-        this.fullName = fullName;
-        this.firstName = firstName;
-        this.balance = Client.getFormattedBalance(clientId);
-        this.expectedBalance = Client.getFormattedExpectedBalance(clientId);
         initComponents();
         
-        try {
-            if (Client.checkIfNew(clientId)) {
-                JOptionPane.showMessageDialog(this, "Please change your password immediately", "Change Password", JOptionPane.WARNING_MESSAGE);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(homeFrame.class.getName()).log(Level.SEVERE, null, ex);
+        if (Client.checkIfNew(clientId)) {
+            JOptionPane.showMessageDialog(this, "Please change your password immediately", "Change Password", JOptionPane.WARNING_MESSAGE);
         }
 
         greetingLabel.setText("Hi, " + Client.getFirstName(clientId));
