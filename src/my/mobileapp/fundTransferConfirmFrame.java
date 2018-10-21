@@ -5,6 +5,9 @@
  */
 package my.mobileapp;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 /**
  *
  * @author Ralph
@@ -36,7 +39,10 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
         targetAccountNo.setText(String.valueOf(this.targetAccountNumber));
         receipientName.setText(this.targetFullName);
         amountLabel.setText(String.valueOf(this.amount));
-        balanceLabel.setText(Client.getFormattedBalance(clientId));
+        double balance =Client.getBalance(clientId);
+        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.US);
+        String formattedBalance = format.format(balance);
+        balanceLabel.setText(formattedBalance);
         
     }
 

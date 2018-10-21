@@ -150,6 +150,7 @@ public class registerFrame extends javax.swing.JFrame {
         if (accountNumberInput.getText().trim().isEmpty()) {
             errorLabel.setText("Please enter your account number");
             errorLabel.setVisible(true);
+            accountNumberInput.setBorder(BorderFactory.createLineBorder(Color.red));
         } else {
             try {
                 isExisting = Client.checkIfAccountExists(Integer.valueOf(accountNumberInput.getText().trim()));
@@ -159,16 +160,18 @@ public class registerFrame extends javax.swing.JFrame {
                 if (!isExisting) {
                     errorLabel.setText("Account number does not exist");
                     errorLabel.setVisible(true);
+                    accountNumberInput.setBorder(BorderFactory.createLineBorder(Color.red));
                 } else if (isRegistered) {
                     errorLabel.setText("Account number is already registered");
                     errorLabel.setVisible(true);
+                    accountNumberInput.setBorder(BorderFactory.createLineBorder(Color.red));
                 } else {
                     int clientId = Client.getId(Integer.valueOf(accountNumberInput.getText().trim()));
-                    System.out.println(clientId);
                     String username = Client.createUserName(clientId);
                     String password = PasswordGenerator.generatePassword(8);
                     String encryptedPassword = PasswordHasher.passwordHasher(password);
 
+                    accountNumberInput.setBorder(BorderFactory.createLineBorder(Color.green));
                     String receipient = Client.getEmail(clientId);
                     if (Client.sendCredentials(receipient, username, password)) {
                         if (Client.setUsername(username, clientId) && Client.setPassword(encryptedPassword, clientId)) {

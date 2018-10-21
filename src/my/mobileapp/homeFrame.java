@@ -45,8 +45,14 @@ public class homeFrame extends javax.swing.JFrame {
 
         greetingLabel.setText("Hi, " + Client.getFirstName(clientId));
         fullNameLabel.setText(Client.createFullName(clientId));
-        balanceLabel.setText(Client.getFormattedBalance(clientId));
-        expectedBalLabel.setText(Client.getFormattedExpectedBalance(clientId));
+        double balance =Client.getBalance(clientId);
+        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.US);
+        String formattedBalance = format.format(balance);
+        
+        balanceLabel.setText(formattedBalance);
+        double expectedBalance =Client.getExpectedBalance(clientId);
+        String formattedExpectedBalance = format.format(expectedBalance);
+        expectedBalLabel.setText(formattedExpectedBalance);
     }
 
 

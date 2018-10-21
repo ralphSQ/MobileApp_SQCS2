@@ -15,23 +15,23 @@ import javax.swing.JOptionPane;
  */
 public class fundTransferFrame extends javax.swing.JFrame {
 
-    private int clientId = 0;
-    private String fullName = "";
-    private String firstName = "";
-
+    private int clientId;
+    private String firstName;
+    private String fullName;
+    
     /**
      * Creates new form fundTransferFrame
      */
     public fundTransferFrame() {
         initComponents();
     }
-
-    public fundTransferFrame(int userId, String firstName, String fullName) {
+    
+    
+    public fundTransferFrame(int clientId, String firstName, String fullName){
         initComponents();
-        this.clientId = userId;
-        this.fullName = fullName;
+        this.clientId = clientId;
         this.firstName = firstName;
-        errorLabel.setVisible(false);
+        this.fullName = fullName;
     }
 
     /**
@@ -64,8 +64,6 @@ public class fundTransferFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Fund Transfer");
-        setPreferredSize(new java.awt.Dimension(400, 733));
-        setResizable(false);
 
         jPanel1.setLayout(null);
 
@@ -123,11 +121,8 @@ public class fundTransferFrame extends javax.swing.JFrame {
         amountInput.setBounds(70, 600, 270, 40);
 
         targetAccountNumberInput.setBorder(null);
-        try {
-            targetAccountNumberInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#########")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        targetAccountNumberInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#########"))));
+        targetAccountNumberInput.setFocusLostBehavior(javax.swing.JFormattedTextField.COMMIT);
         targetAccountNumberInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         targetAccountNumberInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -154,11 +149,8 @@ public class fundTransferFrame extends javax.swing.JFrame {
         jLabel11.setBounds(70, 520, 270, 20);
 
         pinInput.setBorder(null);
-        try {
-            pinInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("######")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        pinInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
+        pinInput.setFocusLostBehavior(javax.swing.JFormattedTextField.COMMIT);
         pinInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         pinInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -209,14 +201,48 @@ public class fundTransferFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 731, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 731, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void amountInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_amountInputFocusLost
+        if (amountInput.getText().trim().isEmpty()) {
+            amountInput.setBorder(BorderFactory.createLineBorder(Color.red));
+        } else {
+            amountInput.setBorder(BorderFactory.createLineBorder(Color.green));
+        }
+    }//GEN-LAST:event_amountInputFocusLost
+
+    private void targetAccountNumberInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_targetAccountNumberInputFocusLost
+        if (targetAccountNumberInput.getText().trim().isEmpty()) {
+            targetAccountNumberInput.setBorder(BorderFactory.createLineBorder(Color.red));
+        } else {
+            targetAccountNumberInput.setBorder(BorderFactory.createLineBorder(Color.green));
+        }
+    }//GEN-LAST:event_targetAccountNumberInputFocusLost
+
+    private void targetAccountNumberInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_targetAccountNumberInputKeyTyped
+        if (targetAccountNumberInput.getText().length() >= 9) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_targetAccountNumberInputKeyTyped
+
+    private void pinInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pinInputFocusLost
+        if (pinInput.getText().trim().isEmpty()) {
+            pinInput.setBorder(BorderFactory.createLineBorder(Color.red));
+        } else {
+            pinInput.setBorder(BorderFactory.createLineBorder(Color.green));
+        }
+    }//GEN-LAST:event_pinInputFocusLost
+
+    private void pinInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pinInputKeyTyped
+        if (pinInput.getText().length() >= 6) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_pinInputKeyTyped
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
 
@@ -227,7 +253,7 @@ public class fundTransferFrame extends javax.swing.JFrame {
             pin = Integer.parseInt(pinInput.getText().trim());
             targetAccountNumber = Integer.parseInt(targetAccountNumberInput.getText().trim());
             amount = Double.parseDouble(amountInput.getText().trim().replace(",", ""));
-            balance = Double.parseDouble(Client.getFormattedBalance(clientId).replaceAll("Php", "").replaceAll("$","").replace(",", ""));
+            balance = Client.getBalance(clientId);
 
             if (Client.checkIfAccountExists(targetAccountNumber)) {
                 if (Client.checkIfPinIsCorrect(pin, this.clientId) || Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
@@ -238,16 +264,16 @@ public class fundTransferFrame extends javax.swing.JFrame {
                         targetId = Client.getId(targetAccountNumber);
                         targetName = Client.createFullName(targetId);
                         message = "Fund Transfer"
-                                + "\n------------------------------"
-                                + "\nReceipient Name: " + targetName
-                                + "\nReceipient Account Number: " + targetAccountNumber
-                                + "\nAmount to Transfer: " + amount
-                                + "\n------------------------------";
+                        + "\n------------------------------"
+                        + "\nReceipient Name: " + targetName
+                        + "\nReceipient Account Number: " + targetAccountNumber
+                        + "\nAmount to Transfer: " + amount
+                        + "\n------------------------------";
                         confirm = JOptionPane.showConfirmDialog(this, message, "Confirmation", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                         if (confirm == 0) {
                             if(Client.fundTransfer(clientId, amount, targetAccountNumber, balance)){
-                            this.dispose();
-                            new fundTransferConfirmFrame(clientId, firstName, fullName, targetAccountNumber, targetName, amount).setVisible(true);
+                                this.dispose();
+                                new fundTransferConfirmFrame(clientId, firstName, fullName, targetAccountNumber, targetName, amount).setVisible(true);
                             } else {
                                 JOptionPane.showMessageDialog(this,"An error occured, please blame the programmer.","Error", JOptionPane.ERROR_MESSAGE);
                             }
@@ -285,42 +311,6 @@ public class fundTransferFrame extends javax.swing.JFrame {
         this.dispose();
         new homeFrame(clientId).setVisible(true);
     }//GEN-LAST:event_cancelButtonActionPerformed
-
-    private void targetAccountNumberInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_targetAccountNumberInputFocusLost
-        if (targetAccountNumberInput.getText().trim().isEmpty()) {
-            targetAccountNumberInput.setBorder(BorderFactory.createLineBorder(Color.red));
-        } else {
-            targetAccountNumberInput.setBorder(BorderFactory.createEmptyBorder());
-        }
-    }//GEN-LAST:event_targetAccountNumberInputFocusLost
-
-    private void amountInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_amountInputFocusLost
-        if (amountInput.getText().trim().isEmpty()) {
-            amountInput.setBorder(BorderFactory.createLineBorder(Color.red));
-        } else {
-            amountInput.setBorder(BorderFactory.createEmptyBorder());
-        }
-    }//GEN-LAST:event_amountInputFocusLost
-
-    private void pinInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pinInputFocusLost
-        if (pinInput.getText().trim().isEmpty()) {
-            pinInput.setBorder(BorderFactory.createLineBorder(Color.red));
-        } else {
-            pinInput.setBorder(BorderFactory.createEmptyBorder());
-        }
-    }//GEN-LAST:event_pinInputFocusLost
-
-    private void pinInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pinInputKeyTyped
-        if (pinInput.getText().length() >= 6) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_pinInputKeyTyped
-
-    private void targetAccountNumberInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_targetAccountNumberInputKeyTyped
-        if (targetAccountNumberInput.getText().length() >= 9) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_targetAccountNumberInputKeyTyped
 
     /**
      * @param args the command line arguments

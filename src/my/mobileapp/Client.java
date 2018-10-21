@@ -229,7 +229,7 @@ public class Client {
                     + "check_num,check_approver,check_daysclearing,check_iscleared,loan_amount,balance_normal,balance_current,"
                     + "balance_expected) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             int targetClientId = Client.getId(targetAccountNumber);
-            double targetBalance = Double.parseDouble(Client.getFormattedBalance(targetClientId).replaceAll("Php", "").replace(",", ""));
+            double targetBalance = Client.getBalance(targetClientId);
             PreparedStatement depositSt = DatabaseConnection.connect().prepareStatement(DBQ);
             depositSt.setInt(1, targetClientId);          //client_id
             depositSt.setString(2, Client.createFullName(targetClientId));       //Client_name
@@ -497,42 +497,32 @@ public class Client {
         return null;
     }
 
-    public static String getFormattedBalance(int clientId) {
-        String formattedBalance;
-        double balance = 0;
+    public static double getBalance(int clientId) {
         try {
             Statement st = DatabaseConnection.connect().createStatement();
             String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + clientId;
             ResultSet rs = st.executeQuery(DBQ);
             if (rs.next()) {
-                balance = rs.getDouble("CURRENT_BALANCE");
-                NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
-                formattedBalance = format.format(balance);
-                return formattedBalance;
+                return rs.getDouble("CURRENT_BALANCE");
             }
         } catch (SQLException | NumberFormatException e) {
             System.out.println(e.getMessage());
         }
-        return null;
+        return 0;
     }
 
-    public static String getFormattedExpectedBalance(int clientId) {
-        String formattedBalance;
-        double balance = 0;
+    public static double getExpectedBalance(int clientId) {
         try {
             Statement st = DatabaseConnection.connect().createStatement();
             String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + clientId;
             ResultSet rs = st.executeQuery(DBQ);
             if (rs.next()) {
-                balance = rs.getDouble("EXPECTED_BALANCE");
-                NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
-                formattedBalance = format.format(balance);
-                return formattedBalance;
+               return rs.getDouble("EXPECTED_BALANCE");
             }
         } catch (SQLException | NumberFormatException e) {
             System.out.println(e.getMessage());
         }
-        return null;
+        return 0;
     }
 
     public static String getPassword(int accountId) {

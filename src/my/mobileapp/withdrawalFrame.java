@@ -66,6 +66,7 @@ public class withdrawalFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Cardless Withdrawal");
         setResizable(false);
 
         jPanel1.setLayout(null);
@@ -135,11 +136,6 @@ public class withdrawalFrame extends javax.swing.JFrame {
                 amountInputFocusLost(evt);
             }
         });
-        amountInput.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                amountInputKeyTyped(evt);
-            }
-        });
         jPanel1.add(amountInput);
         amountInput.setBounds(140, 500, 230, 40);
 
@@ -190,11 +186,11 @@ public class withdrawalFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 723, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 716, Short.MAX_VALUE)
         );
 
         pack();
@@ -209,7 +205,7 @@ public class withdrawalFrame extends javax.swing.JFrame {
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         if (!amountInput.getText().trim().isEmpty() && !pinInput.getText().trim().isEmpty()) {
             double amount = Double.valueOf(amountInput.getText().replace(",", ""));
-            double balance = Double.parseDouble(Client.getFormattedBalance(clientId).replaceAll("Php", "").replaceAll("$","").replace(",", ""));
+            double balance = Client.getBalance(clientId);
             int pin = Integer.valueOf(pinInput.getText().trim());
             int pin2 = Integer.valueOf(PasswordGenerator.generatePin2());
             int confirm = 0;
@@ -277,10 +273,6 @@ public class withdrawalFrame extends javax.swing.JFrame {
             amountInput.setBorder(BorderFactory.createLineBorder(Color.green));
         }
     }//GEN-LAST:event_amountInputFocusLost
-
-    private void amountInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_amountInputKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_amountInputKeyTyped
 
     private void pinInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pinInputKeyReleased
         if (pinInput.getText().length() >= 6) {

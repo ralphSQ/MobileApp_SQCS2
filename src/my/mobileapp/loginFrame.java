@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.UIManager;
 
 /**
  *
@@ -38,7 +39,7 @@ public class loginFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        logo = new javax.swing.JLabel();
         usernameInput = new javax.swing.JTextField();
         passwordInput = new javax.swing.JPasswordField();
         signupButton = new javax.swing.JButton();
@@ -47,23 +48,23 @@ public class loginFrame extends javax.swing.JFrame {
         errorUsernameLabel = new javax.swing.JLabel();
         errorPasswordLabel = new javax.swing.JLabel();
         errorLabel = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
         setResizable(false);
 
-        jPanel1.setLayout(null);
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/logo.png"))); // NOI18N
-        jLabel2.setText("jLabel2");
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(50, 30, 320, 270);
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/logo.png"))); // NOI18N
+        logo.setText("jLabel2");
+        jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 320, 270));
 
         usernameInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         usernameInput.setForeground(java.awt.Color.lightGray);
         usernameInput.setText("Username or Email Address");
         usernameInput.setToolTipText("");
+        usernameInput.setBorder(null);
         usernameInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 usernameInputFocusGained(evt);
@@ -72,12 +73,12 @@ public class loginFrame extends javax.swing.JFrame {
                 usernameInputFocusLost(evt);
             }
         });
-        jPanel1.add(usernameInput);
-        usernameInput.setBounds(30, 340, 360, 50);
+        jPanel1.add(usernameInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 340, 360, 50));
 
         passwordInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         passwordInput.setForeground(java.awt.Color.lightGray);
         passwordInput.setText("1234567890");
+        passwordInput.setBorder(null);
         passwordInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 passwordInputFocusGained(evt);
@@ -86,89 +87,81 @@ public class loginFrame extends javax.swing.JFrame {
                 passwordInputFocusLost(evt);
             }
         });
-        jPanel1.add(passwordInput);
-        passwordInput.setBounds(30, 420, 360, 50);
+        jPanel1.add(passwordInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 420, 360, 50));
 
         signupButton.setBackground(new java.awt.Color(51, 51, 51));
-        signupButton.setFont(new java.awt.Font("Calibri", 1, 16)); // NOI18N
+        signupButton.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         signupButton.setForeground(new java.awt.Color(255, 255, 255));
         signupButton.setText("Sign Up");
         signupButton.setToolTipText("");
-        signupButton.setBorder(null);
+        signupButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         signupButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         signupButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 signupButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(signupButton);
-        signupButton.setBounds(30, 670, 150, 40);
+        jPanel1.add(signupButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 580, 360, 40));
 
         forgotpassButton.setBackground(new java.awt.Color(51, 51, 51));
-        forgotpassButton.setFont(new java.awt.Font("Calibri", 1, 16)); // NOI18N
+        forgotpassButton.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
         forgotpassButton.setForeground(new java.awt.Color(255, 255, 255));
         forgotpassButton.setText("Forgot Password?");
-        forgotpassButton.setBorder(null);
+        forgotpassButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         forgotpassButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         forgotpassButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 forgotpassButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(forgotpassButton);
-        forgotpassButton.setBounds(240, 670, 150, 40);
+        jPanel1.add(forgotpassButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 670, 150, 40));
 
         loginButton.setBackground(new java.awt.Color(38, 166, 154));
         loginButton.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         loginButton.setForeground(new java.awt.Color(255, 255, 255));
+        loginButton.setText("Log In");
         loginButton.setToolTipText("");
-        loginButton.setBorder(null);
-        loginButton.setLabel("LOGIN");
+        loginButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(loginButton);
-        loginButton.setBounds(30, 530, 360, 40);
+        jPanel1.add(loginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 530, 360, 40));
 
         errorUsernameLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         errorUsernameLabel.setForeground(java.awt.Color.red);
         errorUsernameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         errorUsernameLabel.setLabelFor(usernameInput);
         errorUsernameLabel.setText("Enter your Username/Email Address");
-        jPanel1.add(errorUsernameLabel);
-        errorUsernameLabel.setBounds(30, 310, 360, 30);
+        jPanel1.add(errorUsernameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, 360, 30));
 
         errorPasswordLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         errorPasswordLabel.setForeground(java.awt.Color.red);
         errorPasswordLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         errorPasswordLabel.setLabelFor(passwordInput);
         errorPasswordLabel.setText("Enter your password");
-        jPanel1.add(errorPasswordLabel);
-        errorPasswordLabel.setBounds(30, 390, 360, 30);
+        jPanel1.add(errorPasswordLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 390, 360, 30));
 
         errorLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         errorLabel.setForeground(java.awt.Color.red);
         errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         errorLabel.setText("Incorrect username or password");
-        jPanel1.add(errorLabel);
-        errorLabel.setBounds(30, 480, 360, 30);
+        jPanel1.add(errorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 480, 360, 30));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/Untitled-5.jpg"))); // NOI18N
-        jLabel1.setText("jLabel1");
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, 0, 430, 740);
+        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/Untitled-5.jpg"))); // NOI18N
+        background.setText("jLabel1");
+        jPanel1.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 420, 740));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 740, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -257,8 +250,8 @@ public class loginFrame extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                com.jtattoo.plaf.smart.SmartLookAndFeel.setTheme("Large-Font", "INSERT YOUR LICENSE KEY HERE", "University Bank");
-                javax.swing.UIManager.setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
+                // select the Look and Feel
+                UIManager.setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(loginFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
@@ -279,14 +272,14 @@ public class loginFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel background;
     private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel errorPasswordLabel;
     private javax.swing.JLabel errorUsernameLabel;
     private javax.swing.JButton forgotpassButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton loginButton;
+    private javax.swing.JLabel logo;
     private javax.swing.JPasswordField passwordInput;
     private javax.swing.JButton signupButton;
     private javax.swing.JTextField usernameInput;
