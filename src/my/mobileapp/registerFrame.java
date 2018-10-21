@@ -34,9 +34,8 @@ public class registerFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        icon = new javax.swing.JLabel();
+        labelForAccountNumber = new javax.swing.JLabel();
         submitButton = new javax.swing.JButton();
         cancelButton = new javax.swing.JButton();
         accountNumberInput = new javax.swing.JFormattedTextField();
@@ -51,15 +50,13 @@ public class registerFrame extends javax.swing.JFrame {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/web.png"))); // NOI18N
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 270, 160, 170));
+        icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/web.png"))); // NOI18N
+        jPanel1.add(icon, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 280, 130, 140));
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/right-arrow.png"))); // NOI18N
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 340, 40, 40));
-
-        jLabel4.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
-        jLabel4.setText("Input your Account Number");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 420, 150, 50));
+        labelForAccountNumber.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        labelForAccountNumber.setLabelFor(accountNumberInput);
+        labelForAccountNumber.setText("Input your Account Number");
+        jPanel1.add(labelForAccountNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 460, 320, 30));
 
         submitButton.setBackground(new java.awt.Color(38, 166, 154));
         submitButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
@@ -111,7 +108,7 @@ public class registerFrame extends javax.swing.JFrame {
         jLabel10.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Sign Up");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 400, 70));
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 160, 70));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/Untitled-8.jpg"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, -1, 260));
@@ -252,13 +249,12 @@ public class registerFrame extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField accountNumberInput;
     private javax.swing.JButton cancelButton;
     private javax.swing.JLabel errorLabel;
+    private javax.swing.JLabel icon;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel labelForAccountNumber;
     private javax.swing.JButton submitButton;
     // End of variables declaration//GEN-END:variables
 }
