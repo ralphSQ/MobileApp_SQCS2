@@ -66,89 +66,75 @@ public class cardlessWithdrawalStep2 extends javax.swing.JFrame {
         setTitle("Cardless Withdrawal");
         setResizable(false);
 
-        jPanel1.setLayout(null);
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel10.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Cash Withdrawal");
-        jPanel1.add(jLabel10);
-        jLabel10.setBounds(40, 60, 350, 70);
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, 350, 70));
 
         jLabel11.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Request");
-        jPanel1.add(jLabel11);
-        jLabel11.setBounds(130, 90, 260, 100);
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 260, 100));
 
         labelForPin2.setFont(new java.awt.Font("Calibri", 1, 28)); // NOI18N
         labelForPin2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelForPin2.setText("Use this PIN 2 on an ATM ");
-        jPanel1.add(labelForPin2);
-        labelForPin2.setBounds(20, 250, 370, 120);
+        jPanel1.add(labelForPin2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 250, 370, 120));
 
         confirmButton.setBackground(new java.awt.Color(38, 166, 154));
         confirmButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         confirmButton.setText("Done");
-        confirmButton.setBorder(null);
         confirmButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 confirmButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(confirmButton);
-        confirmButton.setBounds(220, 620, 90, 40);
+        jPanel1.add(confirmButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 620, 90, 40));
 
         cancelButton.setBackground(java.awt.Color.lightGray);
         cancelButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         cancelButton.setText("Cancel");
-        cancelButton.setBorder(null);
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(cancelButton);
-        cancelButton.setBounds(110, 620, 90, 40);
+        jPanel1.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 620, 90, 40));
 
         pin2Label.setFont(new java.awt.Font("Calibri", 1, 40)); // NOI18N
         pin2Label.setForeground(new java.awt.Color(32, 173, 32));
         pin2Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pin2Label.setText("123456");
-        jPanel1.add(pin2Label);
-        pin2Label.setBounds(20, 370, 370, 90);
+        jPanel1.add(pin2Label, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 370, 370, 90));
 
-        jLabel2.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Expiry Time");
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(140, 500, 140, 30);
+        jLabel2.setText("Use Code Before");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 500, 370, -1));
 
         expiryTimeLabel.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         expiryTimeLabel.setForeground(new java.awt.Color(38, 166, 154));
         expiryTimeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         expiryTimeLabel.setText("5 OKLOK");
-        jPanel1.add(expiryTimeLabel);
-        expiryTimeLabel.setBounds(140, 540, 140, 30);
+        jPanel1.add(expiryTimeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 540, 370, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/CashWthdrawReq_Banner.jpg"))); // NOI18N
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, -20, 416, 260);
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, -1, 260));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
-        jPanel1.add(jLabel5);
-        jLabel5.setBounds(0, 220, 420, 530);
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 420, 500));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 735, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -173,7 +159,7 @@ public class cardlessWithdrawalStep2 extends javax.swing.JFrame {
         if(status == 1){
             JOptionPane.showMessageDialog(this, "Withdrawal successful!");
         } else {
-            JOptionPane.showMessageDialog(this, "Transaction is not yet done, click cancel if you wish to stop the transaction.");
+            JOptionPane.showMessageDialog(this, "Transaction is not yet done, click cancel if you wish to end the transaction.");
         }
     }//GEN-LAST:event_confirmButtonActionPerformed
 

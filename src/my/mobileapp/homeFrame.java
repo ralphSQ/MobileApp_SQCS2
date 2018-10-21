@@ -86,128 +86,109 @@ public class homeFrame extends javax.swing.JFrame {
         setTitle("University Bank");
         setResizable(false);
 
-        jPanel1.setLayout(null);
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         greetingLabel.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
         greetingLabel.setForeground(new java.awt.Color(255, 255, 255));
         greetingLabel.setText("Hi, Name");
-        jPanel1.add(greetingLabel);
-        greetingLabel.setBounds(40, 120, 220, 50);
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(20, 60, 60, 80);
+        jPanel1.add(greetingLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, 220, 50));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 60, 80));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/Untitled-8.jpg"))); // NOI18N
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, -20, 420, 260);
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, 410, 260));
 
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/money (1).png"))); // NOI18N
-        jPanel1.add(jLabel6);
-        jLabel6.setBounds(50, 270, 90, 80);
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 280, 110, 100));
 
         fullNameLabel.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         fullNameLabel.setText("Juan Dela Cruz");
-        jPanel1.add(fullNameLabel);
-        fullNameLabel.setBounds(130, 270, 220, 50);
+        jPanel1.add(fullNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 270, 260, 50));
 
         forExpectedBalance.setFont(new java.awt.Font("Calibri Light", 2, 14)); // NOI18N
         forExpectedBalance.setText("Expected Balance:");
-        jPanel1.add(forExpectedBalance);
-        forExpectedBalance.setBounds(130, 360, 120, 16);
+        jPanel1.add(forExpectedBalance, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 360, 120, 16));
 
         forCurrentBalance.setFont(new java.awt.Font("Calibri Light", 2, 14)); // NOI18N
         forCurrentBalance.setText("Current Balance:");
-        jPanel1.add(forCurrentBalance);
-        forCurrentBalance.setBounds(130, 340, 120, 16);
+        jPanel1.add(forCurrentBalance, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 340, 120, 16));
 
         expectedBalLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         expectedBalLabel.setForeground(new java.awt.Color(0, 153, 51));
         expectedBalLabel.setText("₱ 10,00.00");
-        jPanel1.add(expectedBalLabel);
-        expectedBalLabel.setBounds(260, 360, 110, 17);
+        jPanel1.add(expectedBalLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 360, 130, -1));
 
         balanceLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         balanceLabel.setForeground(new java.awt.Color(0, 153, 51));
         balanceLabel.setText("₱ 5,00.00");
-        jPanel1.add(balanceLabel);
-        balanceLabel.setBounds(260, 340, 110, 17);
+        jPanel1.add(balanceLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 340, 130, -1));
 
         withdrawButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         withdrawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/payment-method.png"))); // NOI18N
         withdrawButton.setText("Cash Withdrawal Request");
-        withdrawButton.setBorder(null);
         withdrawButton.setRequestFocusEnabled(false);
         withdrawButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 withdrawButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(withdrawButton);
-        withdrawButton.setBounds(90, 540, 220, 40);
+        jPanel1.add(withdrawButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 540, 220, 40));
 
         viewTransactionsButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         viewTransactionsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/return-to-the-past.png"))); // NOI18N
         viewTransactionsButton.setText("View Transaction History");
-        viewTransactionsButton.setBorder(null);
         viewTransactionsButton.setRequestFocusEnabled(false);
         viewTransactionsButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 viewTransactionsButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(viewTransactionsButton);
-        viewTransactionsButton.setBounds(90, 440, 220, 40);
+        jPanel1.add(viewTransactionsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 440, 220, 40));
 
         fundTransferButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         fundTransferButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/cash-back.png"))); // NOI18N
         fundTransferButton.setText("Fund Transfer");
-        fundTransferButton.setBorder(null);
         fundTransferButton.setRequestFocusEnabled(false);
         fundTransferButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fundTransferButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(fundTransferButton);
-        fundTransferButton.setBounds(90, 490, 220, 40);
+        jPanel1.add(fundTransferButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 490, 220, 40));
 
         logoutLabel.setBackground(java.awt.Color.lightGray);
         logoutLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         logoutLabel.setText("Logout");
         logoutLabel.setToolTipText("");
-        logoutLabel.setBorder(null);
         logoutLabel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 logoutLabelActionPerformed(evt);
             }
         });
-        jPanel1.add(logoutLabel);
-        logoutLabel.setBounds(280, 660, 90, 40);
+        jPanel1.add(logoutLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 650, 90, 40));
 
         changePassButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         changePassButton.setText("Change Password");
-        changePassButton.setBorder(null);
         changePassButton.setRequestFocusEnabled(false);
         changePassButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 changePassButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(changePassButton);
-        changePassButton.setBounds(90, 590, 220, 40);
+        jPanel1.add(changePassButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 590, 220, 40));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
-        jPanel1.add(jLabel5);
-        jLabel5.setBounds(-10, 220, 480, 510);
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 410, 490));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 722, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -220,7 +201,9 @@ public class homeFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_withdrawButtonActionPerformed
 
     private void viewTransactionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTransactionsButtonActionPerformed
-        // TODO add your handling code here:
+       this.dispose();
+       new viewTransactionsFrame(this.clientId).setVisible(true);
+        
     }//GEN-LAST:event_viewTransactionsButtonActionPerformed
 
     private void fundTransferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fundTransferButtonActionPerformed

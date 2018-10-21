@@ -40,14 +40,13 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
+        title = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         codeInput = new javax.swing.JTextField();
         cancelButton = new javax.swing.JButton();
         submitButton = new javax.swing.JButton();
         errorLabel = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
 
@@ -55,29 +54,27 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
         setTitle("Forgot Password");
         setResizable(false);
 
-        jPanel1.setLayout(null);
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel10.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("Forgot Password");
-        jPanel1.add(jLabel10);
-        jLabel10.setBounds(30, 90, 400, 70);
+        title.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
+        title.setForeground(new java.awt.Color(255, 255, 255));
+        title.setText("Forgot Password");
+        jPanel1.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 400, 70));
 
-        jLabel3.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Input Code");
         jLabel3.setToolTipText("");
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(100, 410, 80, 14);
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 450, 300, 30));
 
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/credit-card.png"))); // NOI18N
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(60, 250, 160, 170);
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 370, -1));
 
         codeInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         codeInput.setForeground(new java.awt.Color(204, 204, 204));
         codeInput.setText("Input Code");
         codeInput.setToolTipText("");
-        codeInput.setBorder(null);
         codeInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 codeInputFocusGained(evt);
@@ -88,8 +85,7 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
                 codeInputKeyTyped(evt);
             }
         });
-        jPanel1.add(codeInput);
-        codeInput.setBounds(60, 480, 300, 40);
+        jPanel1.add(codeInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 480, 300, 40));
 
         cancelButton.setBackground(java.awt.Color.lightGray);
         cancelButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
@@ -100,8 +96,7 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
                 cancelButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(cancelButton);
-        cancelButton.setBounds(110, 580, 90, 40);
+        jPanel1.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 580, 90, 40));
 
         submitButton.setBackground(new java.awt.Color(38, 166, 154));
         submitButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
@@ -112,37 +107,29 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
                 submitButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(submitButton);
-        submitButton.setBounds(220, 580, 90, 40);
+        jPanel1.add(submitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 580, 90, 40));
 
         errorLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         errorLabel.setForeground(java.awt.Color.red);
         errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         errorLabel.setText("jLabel4");
-        jPanel1.add(errorLabel);
-        errorLabel.setBounds(60, 520, 300, 30);
-
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/right-arrow.png"))); // NOI18N
-        jPanel1.add(jLabel6);
-        jLabel6.setBounds(280, 330, 150, 40);
+        jPanel1.add(errorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 520, 300, 30));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/Changepass_Banner.jpg"))); // NOI18N
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, -20, 416, 260);
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, -1, 260));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
-        jPanel1.add(jLabel5);
-        jLabel5.setBounds(0, 220, 420, 530);
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 420, 500));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -222,12 +209,11 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
     private javax.swing.JTextField codeInput;
     private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton submitButton;
+    private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }

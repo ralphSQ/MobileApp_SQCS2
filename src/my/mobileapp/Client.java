@@ -9,9 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.NumberFormat;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,6 +43,55 @@ public class Client {
         return false;
     }
 
+    public static ResultSet getFundTransfers(int clientId) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT TRANSACT_DATE ,TRANSACT_AMOUNT,TRANSACT_TARGETACCT,BALANCE_NORMAL FROM CA_ABS.TRANSACTIONS WHERE CLIENT_ID=" + clientId + " AND TRANSACT_DESC='fundTransfer'";
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                return rs;
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+
+    public static ResultSet getDeposits(int clientId) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT TRANSACT_DATE ,TRANSACT_AMOUNT,TRANSACT_TARGETACCT,BALANCE_NORMAL FROM CA_ABS.TRANSACTIONS WHERE CLIENT_ID=" + clientId + " AND TRANSACT_DESC='fundTransfer'";
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                return rs;
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public static ResultSet getWithdrawRequests(int clientId) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT AMOUNT , TIMEREQUEST , STATUS, PIN2 FROM CA_ABS.CARDLESS_WITHDRAWAL WHERE CLIENT_ID=" + clientId;
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                return rs;
+            } else {
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     public static int getWithdrawalStatus(int clientId, int pin2, int timeRequest) {
         try {
             Statement st = DatabaseConnection.connect().createStatement();
@@ -71,7 +118,7 @@ public class Client {
             withdrawSt.setDouble(4, amount);       //amount
             withdrawSt.setInt(5, timeRequest);      //timerequest
             withdrawSt.setInt(6, 0);      //timewithdraw
-            withdrawSt.setInt(7, 0);
+            withdrawSt.setInt(7, 0); // status
             int result = withdrawSt.executeUpdate();
             if (result > 0) {
                 return true;
@@ -147,7 +194,7 @@ public class Client {
         return false;
     }
 
-    public static boolean setPasswordResetCode(String email,String resetCode) {
+    public static boolean setPasswordResetCode(String email, String resetCode) {
         try {
             Statement st = DatabaseConnection.connect().createStatement();
             String DBQ = "UPDATE CA_ABS.CLIENT SET RESET_PW_CODE = '" + resetCode + "' WHERE CLIENT_EMAIL= '" + email + "'";
@@ -210,14 +257,14 @@ public class Client {
             withdrawSt.setInt(6, (int) (System.currentTimeMillis() / 1000L));   //transact_date
             withdrawSt.setString(7, "Cash");       //transact_method
             withdrawSt.setDouble(8, amount);      //transact_amount
-            withdrawSt.setString(9, "");       //transact_desc
-            withdrawSt.setInt(10, Client.getAccountNumber(clientId));      //transact_targetacct
+            withdrawSt.setString(9, "fundTransfer");       //transact_desc
+            withdrawSt.setInt(10, targetAccountNumber);      //transact_targetacct
             withdrawSt.setInt(11, 0);         //check_num
             withdrawSt.setString(12, null);      //check_approver
             withdrawSt.setInt(13, 0);         //check_daysclearing
             withdrawSt.setInt(14, 0);         //check_iscleared
             withdrawSt.setFloat(15, 0);     //loan_amount
-            withdrawSt.setDouble(16, balance - amount);      //Balance_normal
+            withdrawSt.setString(16, "DEBIT");      //Balance_normal
             withdrawSt.setDouble(17, balance - amount);     //balance_current
             withdrawSt.setDouble(18, balance - amount);     //balance_expected
             int result = withdrawSt.executeUpdate();
@@ -239,14 +286,14 @@ public class Client {
             depositSt.setInt(6, (int) (System.currentTimeMillis() / 1000L));   //transact_date
             depositSt.setString(7, "Cash");       //transact_method
             depositSt.setDouble(8, amount);      //transact_amount
-            depositSt.setString(9, "");       //transact_desc
-            depositSt.setInt(10, targetAccountNumber);      //transact_targetacct
+            depositSt.setString(9, null);       //transact_desc
+            depositSt.setInt(10, 0);      //transact_targetacct
             depositSt.setInt(11, 0);         //check_num
             depositSt.setString(12, null);      //check_approver
             depositSt.setInt(13, 0);         //check_daysclearing
             depositSt.setInt(14, 0);         //check_iscleared
             depositSt.setFloat(15, 0);     //loan_amount
-            depositSt.setDouble(16, targetBalance + amount);      //Balance_normal
+            depositSt.setString(16, "CREDIT");      //Balance_normal
             depositSt.setDouble(17, targetBalance + amount);     //balance_current
             depositSt.setDouble(18, targetBalance + amount);     //balance_expected
             int result2 = depositSt.executeUpdate();
@@ -398,6 +445,22 @@ public class Client {
         return false;
     }
 
+    public static String getAccountTypeUsingAccountNumber(int accountNumber) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ACCOUNTNUM=" + accountNumber;
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                return rs.getString("ACCOUNT_TYPE");
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+
+        }
+        return null;
+    }
+
     public static String getAccountType(int clientId) {
         try {
             Statement st = DatabaseConnection.connect().createStatement();
@@ -430,7 +493,7 @@ public class Client {
         return 0;
     }
 
-    public static int getIdWithEmail(String email){
+    public static int getIdWithEmail(String email) {
         try {
             Statement st = DatabaseConnection.connect().createStatement();
             String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_EMAIL='" + email + "'";
@@ -445,6 +508,7 @@ public class Client {
         }
         return 0;
     }
+
     public static int getIdwithResetCode(String resetCode) {
         try {
             Statement st = DatabaseConnection.connect().createStatement();
@@ -517,7 +581,7 @@ public class Client {
             String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ID=" + clientId;
             ResultSet rs = st.executeQuery(DBQ);
             if (rs.next()) {
-               return rs.getDouble("EXPECTED_BALANCE");
+                return rs.getDouble("EXPECTED_BALANCE");
             }
         } catch (SQLException | NumberFormatException e) {
             System.out.println(e.getMessage());

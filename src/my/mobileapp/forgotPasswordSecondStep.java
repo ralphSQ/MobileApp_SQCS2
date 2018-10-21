@@ -46,7 +46,6 @@ public class forgotPasswordSecondStep extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         errorLabel = new javax.swing.JLabel();
@@ -61,45 +60,34 @@ public class forgotPasswordSecondStep extends javax.swing.JFrame {
         setTitle("Forgot Password");
         setResizable(false);
 
-        jPanel1.setLayout(null);
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel10.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Forgot Password");
-        jPanel1.add(jLabel10);
-        jLabel10.setBounds(30, 90, 400, 70);
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 400, 70));
 
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/keywords.png"))); // NOI18N
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(140, 250, 160, 170);
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 270, 370, 130));
 
-        jLabel3.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
-        jLabel3.setText("Input New Password");
-        jLabel3.setToolTipText("");
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(150, 410, 140, 14);
-
-        jLabel6.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         jLabel6.setText("New Password");
-        jPanel1.add(jLabel6);
-        jLabel6.setBounds(70, 440, 280, 17);
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 440, 280, -1));
 
-        jLabel4.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         jLabel4.setText("Repeat New Password");
-        jPanel1.add(jLabel4);
-        jLabel4.setBounds(70, 510, 280, 17);
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 510, 280, -1));
 
         errorLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         errorLabel.setForeground(java.awt.Color.red);
         errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        errorLabel.setText("jLabel7");
-        jPanel1.add(errorLabel);
-        errorLabel.setBounds(70, 570, 280, 30);
+        errorLabel.setText("label for errors");
+        jPanel1.add(errorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 570, 280, 30));
 
         repeatNewPasswordInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         repeatNewPasswordInput.setForeground(java.awt.Color.lightGray);
         repeatNewPasswordInput.setText("1234567890");
-        repeatNewPasswordInput.setBorder(null);
         repeatNewPasswordInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 repeatNewPasswordInputFocusGained(evt);
@@ -116,13 +104,11 @@ public class forgotPasswordSecondStep extends javax.swing.JFrame {
                 repeatNewPasswordInputKeyTyped(evt);
             }
         });
-        jPanel1.add(repeatNewPasswordInput);
-        repeatNewPasswordInput.setBounds(70, 530, 280, 40);
+        jPanel1.add(repeatNewPasswordInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 530, 280, 40));
 
         newPasswordInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         newPasswordInput.setForeground(java.awt.Color.lightGray);
         newPasswordInput.setText("1234567890");
-        newPasswordInput.setBorder(null);
         newPasswordInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 newPasswordInputFocusGained(evt);
@@ -131,8 +117,7 @@ public class forgotPasswordSecondStep extends javax.swing.JFrame {
                 newPasswordInputFocusLost(evt);
             }
         });
-        jPanel1.add(newPasswordInput);
-        newPasswordInput.setBounds(70, 460, 280, 40);
+        jPanel1.add(newPasswordInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 460, 280, 40));
 
         cancelButton.setBackground(java.awt.Color.lightGray);
         cancelButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
@@ -143,8 +128,7 @@ public class forgotPasswordSecondStep extends javax.swing.JFrame {
                 cancelButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(cancelButton);
-        cancelButton.setBounds(150, 620, 90, 40);
+        jPanel1.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 620, 90, 40));
 
         submitButton.setBackground(new java.awt.Color(38, 166, 154));
         submitButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
@@ -155,28 +139,23 @@ public class forgotPasswordSecondStep extends javax.swing.JFrame {
                 submitButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(submitButton);
-        submitButton.setBounds(260, 620, 90, 40);
+        jPanel1.add(submitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 620, 90, 40));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/Changepass_Banner.jpg"))); // NOI18N
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, -20, 416, 260);
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, -1, 260));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
-        jPanel1.add(jLabel5);
-        jLabel5.setBounds(0, 220, 420, 530);
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 420, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 733, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -297,7 +276,6 @@ public class forgotPasswordSecondStep extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

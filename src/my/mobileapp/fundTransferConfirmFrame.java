@@ -75,13 +75,13 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
         setTitle("Fund Transfer");
         setResizable(false);
 
-        jPanel3.setLayout(null);
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel17.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
-        jLabel17.setText("Done");
+        jLabel17.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel17.setText("Transaction Successful");
         jLabel17.setToolTipText("");
-        jPanel3.add(jLabel17);
-        jLabel17.setBounds(190, 400, 34, 14);
+        jPanel3.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 400, 370, 50));
 
         submitButton.setBackground(new java.awt.Color(38, 166, 154));
         submitButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
@@ -91,8 +91,7 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
                 submitButtonActionPerformed(evt);
             }
         });
-        jPanel3.add(submitButton);
-        submitButton.setBounds(160, 640, 90, 40);
+        jPanel3.add(submitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 640, 90, 40));
 
         targetAccountNo.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         targetAccountNo.setForeground(new java.awt.Color(0, 107, 0));
@@ -100,8 +99,7 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
         targetAccountNo.setMaximumSize(new java.awt.Dimension(144, 23));
         targetAccountNo.setMinimumSize(new java.awt.Dimension(144, 23));
         targetAccountNo.setPreferredSize(new java.awt.Dimension(144, 23));
-        jPanel3.add(targetAccountNo);
-        targetAccountNo.setBounds(200, 490, 190, 23);
+        jPanel3.add(targetAccountNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 490, 190, -1));
 
         receipientName.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         receipientName.setForeground(new java.awt.Color(0, 107, 0));
@@ -109,8 +107,7 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
         receipientName.setMaximumSize(new java.awt.Dimension(144, 23));
         receipientName.setMinimumSize(new java.awt.Dimension(144, 23));
         receipientName.setPreferredSize(new java.awt.Dimension(144, 23));
-        jPanel3.add(receipientName);
-        receipientName.setBounds(200, 520, 190, 23);
+        jPanel3.add(receipientName, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 520, 190, -1));
 
         amountLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         amountLabel.setForeground(new java.awt.Color(0, 107, 0));
@@ -118,8 +115,7 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
         amountLabel.setMaximumSize(new java.awt.Dimension(144, 23));
         amountLabel.setMinimumSize(new java.awt.Dimension(144, 23));
         amountLabel.setPreferredSize(new java.awt.Dimension(144, 23));
-        jPanel3.add(amountLabel);
-        amountLabel.setBounds(200, 550, 190, 23);
+        jPanel3.add(amountLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 550, 190, -1));
 
         balanceLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         balanceLabel.setForeground(new java.awt.Color(0, 107, 0));
@@ -127,8 +123,7 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
         balanceLabel.setMaximumSize(new java.awt.Dimension(144, 23));
         balanceLabel.setMinimumSize(new java.awt.Dimension(144, 23));
         balanceLabel.setPreferredSize(new java.awt.Dimension(144, 23));
-        jPanel3.add(balanceLabel);
-        balanceLabel.setBounds(200, 580, 190, 23);
+        jPanel3.add(balanceLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 580, 190, -1));
 
         labelForAccountNo.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         labelForAccountNo.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -136,8 +131,7 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
         labelForAccountNo.setMaximumSize(new java.awt.Dimension(144, 23));
         labelForAccountNo.setMinimumSize(new java.awt.Dimension(144, 23));
         labelForAccountNo.setPreferredSize(new java.awt.Dimension(144, 23));
-        jPanel3.add(labelForAccountNo);
-        labelForAccountNo.setBounds(20, 490, 170, 23);
+        jPanel3.add(labelForAccountNo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 490, 170, -1));
 
         labelForAmount.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         labelForAmount.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -145,8 +139,7 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
         labelForAmount.setMaximumSize(new java.awt.Dimension(144, 23));
         labelForAmount.setMinimumSize(new java.awt.Dimension(144, 23));
         labelForAmount.setPreferredSize(new java.awt.Dimension(144, 23));
-        jPanel3.add(labelForAmount);
-        labelForAmount.setBounds(20, 550, 170, 23);
+        jPanel3.add(labelForAmount, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 550, 170, -1));
 
         labelForName.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         labelForName.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -154,8 +147,7 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
         labelForName.setMaximumSize(new java.awt.Dimension(144, 23));
         labelForName.setMinimumSize(new java.awt.Dimension(144, 23));
         labelForName.setPreferredSize(new java.awt.Dimension(144, 23));
-        jPanel3.add(labelForName);
-        labelForName.setBounds(20, 520, 170, 23);
+        jPanel3.add(labelForName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 520, 170, -1));
 
         labelForBalance.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         labelForBalance.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -163,38 +155,32 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
         labelForBalance.setMaximumSize(new java.awt.Dimension(144, 23));
         labelForBalance.setMinimumSize(new java.awt.Dimension(144, 23));
         labelForBalance.setPreferredSize(new java.awt.Dimension(144, 23));
-        jPanel3.add(labelForBalance);
-        labelForBalance.setBounds(20, 580, 170, 23);
+        jPanel3.add(labelForBalance, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 580, 170, -1));
 
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/checked.png"))); // NOI18N
-        jPanel3.add(jLabel2);
-        jLabel2.setBounds(140, 240, 160, 170);
+        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, 370, 170));
 
         jLabel18.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.setText("Fund Transfer");
-        jPanel3.add(jLabel18);
-        jLabel18.setBounds(70, 80, 290, 70);
+        jPanel3.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 290, 70));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/FundTransfer_Banner.jpg"))); // NOI18N
-        jPanel3.add(jLabel1);
-        jLabel1.setBounds(0, -20, 416, 260);
+        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, -1, 260));
 
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
-        jPanel3.add(jLabel19);
-        jLabel19.setBounds(0, 220, 420, 530);
+        jPanel3.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 420, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 733, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();

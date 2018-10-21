@@ -40,9 +40,9 @@ public class registerFrame extends javax.swing.JFrame {
         cancelButton = new javax.swing.JButton();
         accountNumberInput = new javax.swing.JFormattedTextField();
         errorLabel = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        title = new javax.swing.JLabel();
+        header = new javax.swing.JLabel();
+        background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sign Up");
@@ -54,6 +54,7 @@ public class registerFrame extends javax.swing.JFrame {
         jPanel1.add(icon, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 280, 130, 140));
 
         labelForAccountNumber.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        labelForAccountNumber.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelForAccountNumber.setLabelFor(accountNumberInput);
         labelForAccountNumber.setText("Input your Account Number");
         jPanel1.add(labelForAccountNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 460, 320, 30));
@@ -61,7 +62,6 @@ public class registerFrame extends javax.swing.JFrame {
         submitButton.setBackground(new java.awt.Color(38, 166, 154));
         submitButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         submitButton.setText("Proceed");
-        submitButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         submitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 submitButtonActionPerformed(evt);
@@ -72,7 +72,6 @@ public class registerFrame extends javax.swing.JFrame {
         cancelButton.setBackground(java.awt.Color.lightGray);
         cancelButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         cancelButton.setText("Cancel");
-        cancelButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
@@ -80,7 +79,6 @@ public class registerFrame extends javax.swing.JFrame {
         });
         jPanel1.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 580, 90, 40));
 
-        accountNumberInput.setBorder(null);
         try {
             accountNumberInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#########")));
         } catch (java.text.ParseException ex) {
@@ -102,19 +100,20 @@ public class registerFrame extends javax.swing.JFrame {
 
         errorLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         errorLabel.setForeground(java.awt.Color.red);
+        errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         errorLabel.setText("Label for errors");
         jPanel1.add(errorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 530, 320, 30));
 
-        jLabel10.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("Sign Up");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 160, 70));
+        title.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
+        title.setForeground(new java.awt.Color(255, 255, 255));
+        title.setText("Sign Up");
+        jPanel1.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 90, 160, 70));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/Untitled-8.jpg"))); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, -1, 260));
+        header.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/Untitled-8.jpg"))); // NOI18N
+        jPanel1.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, -1, 260));
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 420, 490));
+        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
+        jPanel1.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 420, 490));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -154,6 +153,8 @@ public class registerFrame extends javax.swing.JFrame {
                     errorLabel.setVisible(true);
                     accountNumberInput.requestFocus();
                     accountNumberInput.setBorder(BorderFactory.createLineBorder(Color.red));
+                } else if(Client.getAccountTypeUsingAccountNumber(Integer.valueOf(accountNumberInput.getText().trim())).equals("CURRENT")) {
+                    JOptionPane.showMessageDialog(this, "This account number is associated with an CURRENT account, only savings account can register.");
                 } else {
                     int clientId = Client.getId(Integer.valueOf(accountNumberInput.getText().trim()));
                     String username = Client.createUserName(clientId);
@@ -247,14 +248,14 @@ public class registerFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField accountNumberInput;
+    private javax.swing.JLabel background;
     private javax.swing.JButton cancelButton;
     private javax.swing.JLabel errorLabel;
+    private javax.swing.JLabel header;
     private javax.swing.JLabel icon;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel labelForAccountNumber;
     private javax.swing.JButton submitButton;
+    private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }

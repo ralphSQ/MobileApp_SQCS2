@@ -54,14 +54,16 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        icon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/pass.png"))); // NOI18N
-        jPanel1.add(icon, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 260, 130, 130));
+        jPanel1.add(icon, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 370, 130));
 
         labelForEmail.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        labelForEmail.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelForEmail.setLabelFor(emailInput);
         labelForEmail.setText("Enter Your E-Mail Address");
         labelForEmail.setToolTipText("");
-        jPanel1.add(labelForEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 460, 300, 14));
+        jPanel1.add(labelForEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 450, 300, 30));
 
         title.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
         title.setForeground(new java.awt.Color(255, 255, 255));
@@ -71,7 +73,6 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
         emailInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         emailInput.setForeground(new java.awt.Color(204, 204, 204));
         emailInput.setText("Enter Email");
-        emailInput.setBorder(null);
         emailInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 emailInputFocusGained(evt);
@@ -85,7 +86,6 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
         cancelButton.setBackground(java.awt.Color.lightGray);
         cancelButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         cancelButton.setText("Cancel");
-        cancelButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
@@ -96,7 +96,6 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
         submitButton.setBackground(new java.awt.Color(38, 166, 154));
         submitButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         submitButton.setText("Send Code");
-        submitButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         submitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 submitButtonActionPerformed(evt);
@@ -106,11 +105,12 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
 
         errorLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         errorLabel.setForeground(java.awt.Color.red);
+        errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         errorLabel.setText("Invalid email address");
         jPanel1.add(errorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 520, 300, 40));
 
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
-        jPanel1.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 420, 490));
+        jPanel1.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 420, 500));
 
         header.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/Changepass_Banner.jpg"))); // NOI18N
         jPanel1.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, -1, 260));

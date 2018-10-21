@@ -90,11 +90,10 @@ public class loginFrame extends javax.swing.JFrame {
         jPanel1.add(passwordInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 420, 360, 50));
 
         signupButton.setBackground(new java.awt.Color(51, 51, 51));
-        signupButton.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        signupButton.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         signupButton.setForeground(new java.awt.Color(255, 255, 255));
         signupButton.setText("Sign Up");
         signupButton.setToolTipText("");
-        signupButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         signupButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         signupButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -107,21 +106,19 @@ public class loginFrame extends javax.swing.JFrame {
         forgotpassButton.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
         forgotpassButton.setForeground(new java.awt.Color(255, 255, 255));
         forgotpassButton.setText("Forgot Password?");
-        forgotpassButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         forgotpassButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         forgotpassButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 forgotpassButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(forgotpassButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 670, 150, 40));
+        jPanel1.add(forgotpassButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 670, 150, 40));
 
         loginButton.setBackground(new java.awt.Color(38, 166, 154));
-        loginButton.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
+        loginButton.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         loginButton.setForeground(new java.awt.Color(255, 255, 255));
         loginButton.setText("Log In");
         loginButton.setToolTipText("");
-        loginButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginButtonActionPerformed(evt);
