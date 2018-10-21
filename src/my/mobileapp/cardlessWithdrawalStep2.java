@@ -63,6 +63,8 @@ public class cardlessWithdrawalStep2 extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Cardless Withdrawal");
+        setResizable(false);
 
         jPanel1.setLayout(null);
 
@@ -82,9 +84,10 @@ public class cardlessWithdrawalStep2 extends javax.swing.JFrame {
         labelForPin2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labelForPin2.setText("Use this PIN 2 on an ATM ");
         jPanel1.add(labelForPin2);
-        labelForPin2.setBounds(20, 250, 370, 140);
+        labelForPin2.setBounds(20, 250, 370, 120);
 
-        confirmButton.setFont(new java.awt.Font("Calibri", 1, 16)); // NOI18N
+        confirmButton.setBackground(new java.awt.Color(38, 166, 154));
+        confirmButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         confirmButton.setText("Done");
         confirmButton.setBorder(null);
         confirmButton.addActionListener(new java.awt.event.ActionListener() {
@@ -93,9 +96,10 @@ public class cardlessWithdrawalStep2 extends javax.swing.JFrame {
             }
         });
         jPanel1.add(confirmButton);
-        confirmButton.setBounds(210, 580, 110, 40);
+        confirmButton.setBounds(220, 620, 90, 40);
 
-        cancelButton.setFont(new java.awt.Font("Calibri", 1, 16)); // NOI18N
+        cancelButton.setBackground(java.awt.Color.lightGray);
+        cancelButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         cancelButton.setText("Cancel");
         cancelButton.setBorder(null);
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
@@ -104,24 +108,27 @@ public class cardlessWithdrawalStep2 extends javax.swing.JFrame {
             }
         });
         jPanel1.add(cancelButton);
-        cancelButton.setBounds(90, 580, 110, 40);
+        cancelButton.setBounds(110, 620, 90, 40);
 
-        pin2Label.setFont(new java.awt.Font("Calibri Light", 1, 40)); // NOI18N
+        pin2Label.setFont(new java.awt.Font("Calibri", 1, 40)); // NOI18N
         pin2Label.setForeground(new java.awt.Color(32, 173, 32));
         pin2Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pin2Label.setText("123456");
         jPanel1.add(pin2Label);
-        pin2Label.setBounds(20, 400, 370, 90);
+        pin2Label.setBounds(20, 370, 370, 90);
 
-        jLabel2.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Expiry Time");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(70, 510, 120, 30);
+        jLabel2.setBounds(140, 500, 140, 30);
 
         expiryTimeLabel.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        expiryTimeLabel.setForeground(new java.awt.Color(38, 166, 154));
+        expiryTimeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         expiryTimeLabel.setText("5 OKLOK");
         jPanel1.add(expiryTimeLabel);
-        expiryTimeLabel.setBounds(210, 510, 120, 30);
+        expiryTimeLabel.setBounds(140, 540, 140, 30);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/CashWthdrawReq_Banner.jpg"))); // NOI18N
         jPanel1.add(jLabel1);

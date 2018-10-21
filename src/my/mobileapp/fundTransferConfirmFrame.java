@@ -66,6 +66,8 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Fund Transfer");
+        setResizable(false);
 
         jPanel3.setLayout(null);
 
@@ -73,8 +75,10 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
         jLabel17.setText("Done");
         jLabel17.setToolTipText("");
         jPanel3.add(jLabel17);
-        jLabel17.setBounds(200, 400, 34, 14);
+        jLabel17.setBounds(190, 400, 34, 14);
 
+        submitButton.setBackground(new java.awt.Color(38, 166, 154));
+        submitButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         submitButton.setText("Done");
         submitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -82,9 +86,9 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
             }
         });
         jPanel3.add(submitButton);
-        submitButton.setBounds(140, 660, 100, 40);
+        submitButton.setBounds(160, 640, 90, 40);
 
-        targetAccountNo.setFont(new java.awt.Font("Calibri Light", 3, 18)); // NOI18N
+        targetAccountNo.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         targetAccountNo.setForeground(new java.awt.Color(0, 107, 0));
         targetAccountNo.setText("000000000");
         targetAccountNo.setMaximumSize(new java.awt.Dimension(144, 23));
@@ -93,7 +97,7 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
         jPanel3.add(targetAccountNo);
         targetAccountNo.setBounds(200, 490, 190, 23);
 
-        receipientName.setFont(new java.awt.Font("Calibri Light", 3, 18)); // NOI18N
+        receipientName.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         receipientName.setForeground(new java.awt.Color(0, 107, 0));
         receipientName.setText("Receipient's Name");
         receipientName.setMaximumSize(new java.awt.Dimension(144, 23));
@@ -102,7 +106,7 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
         jPanel3.add(receipientName);
         receipientName.setBounds(200, 520, 190, 23);
 
-        amountLabel.setFont(new java.awt.Font("Calibri Light", 3, 18)); // NOI18N
+        amountLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         amountLabel.setForeground(new java.awt.Color(0, 107, 0));
         amountLabel.setText("Amount");
         amountLabel.setMaximumSize(new java.awt.Dimension(144, 23));
@@ -111,7 +115,7 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
         jPanel3.add(amountLabel);
         amountLabel.setBounds(200, 550, 190, 23);
 
-        balanceLabel.setFont(new java.awt.Font("Calibri Light", 3, 18)); // NOI18N
+        balanceLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         balanceLabel.setForeground(new java.awt.Color(0, 107, 0));
         balanceLabel.setText("Balance");
         balanceLabel.setMaximumSize(new java.awt.Dimension(144, 23));
@@ -158,7 +162,7 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/checked.png"))); // NOI18N
         jPanel3.add(jLabel2);
-        jLabel2.setBounds(150, 240, 160, 170);
+        jLabel2.setBounds(140, 240, 160, 170);
 
         jLabel18.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
@@ -234,25 +238,11 @@ public class fundTransferConfirmFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel amountLabel;
     private javax.swing.JLabel balanceLabel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel labelForAccountNo;
     private javax.swing.JLabel labelForAmount;

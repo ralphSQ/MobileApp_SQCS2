@@ -77,6 +77,7 @@ public class homeFrame extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("University Bank");
         setResizable(false);
 
         jPanel1.setLayout(null);
@@ -97,32 +98,32 @@ public class homeFrame extends javax.swing.JFrame {
         jPanel1.add(jLabel6);
         jLabel6.setBounds(50, 270, 90, 80);
 
-        fullNameLabel.setFont(new java.awt.Font("Calibri Light", 1, 18)); // NOI18N
+        fullNameLabel.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         fullNameLabel.setText("Juan Dela Cruz");
         jPanel1.add(fullNameLabel);
         fullNameLabel.setBounds(130, 270, 220, 50);
 
-        forExpectedBalance.setFont(new java.awt.Font("Calibri Light", 2, 12)); // NOI18N
+        forExpectedBalance.setFont(new java.awt.Font("Calibri Light", 2, 14)); // NOI18N
         forExpectedBalance.setText("Expected Balance:");
         jPanel1.add(forExpectedBalance);
-        forExpectedBalance.setBounds(180, 360, 120, 16);
+        forExpectedBalance.setBounds(130, 360, 120, 16);
 
-        forCurrentBalance.setFont(new java.awt.Font("Calibri Light", 2, 12)); // NOI18N
+        forCurrentBalance.setFont(new java.awt.Font("Calibri Light", 2, 14)); // NOI18N
         forCurrentBalance.setText("Current Balance:");
         jPanel1.add(forCurrentBalance);
-        forCurrentBalance.setBounds(180, 340, 120, 16);
+        forCurrentBalance.setBounds(130, 340, 120, 16);
 
         expectedBalLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         expectedBalLabel.setForeground(new java.awt.Color(0, 153, 51));
         expectedBalLabel.setText("₱ 10,00.00");
         jPanel1.add(expectedBalLabel);
-        expectedBalLabel.setBounds(280, 360, 100, 17);
+        expectedBalLabel.setBounds(260, 360, 110, 17);
 
         balanceLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         balanceLabel.setForeground(new java.awt.Color(0, 153, 51));
         balanceLabel.setText("₱ 5,00.00");
         jPanel1.add(balanceLabel);
-        balanceLabel.setBounds(280, 340, 100, 17);
+        balanceLabel.setBounds(260, 340, 110, 17);
 
         withdrawButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         withdrawButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/payment-method.png"))); // NOI18N
@@ -163,6 +164,7 @@ public class homeFrame extends javax.swing.JFrame {
         jPanel1.add(fundTransferButton);
         fundTransferButton.setBounds(90, 490, 220, 40);
 
+        logoutLabel.setBackground(java.awt.Color.lightGray);
         logoutLabel.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         logoutLabel.setText("Logout");
         logoutLabel.setToolTipText("");
@@ -173,7 +175,7 @@ public class homeFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(logoutLabel);
-        logoutLabel.setBounds(290, 670, 90, 30);
+        logoutLabel.setBounds(280, 660, 90, 40);
 
         changePassButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         changePassButton.setText("Change Password");

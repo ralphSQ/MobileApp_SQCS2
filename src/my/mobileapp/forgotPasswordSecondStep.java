@@ -52,11 +52,13 @@ public class forgotPasswordSecondStep extends javax.swing.JFrame {
         errorLabel = new javax.swing.JLabel();
         repeatNewPasswordInput = new javax.swing.JPasswordField();
         newPasswordInput = new javax.swing.JPasswordField();
+        cancelButton = new javax.swing.JButton();
         submitButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Forgot Password");
         setResizable(false);
 
         jPanel1.setLayout(null);
@@ -80,21 +82,24 @@ public class forgotPasswordSecondStep extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         jLabel6.setText("New Password");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(40, 440, 330, 17);
+        jLabel6.setBounds(70, 440, 280, 17);
 
         jLabel4.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         jLabel4.setText("Repeat New Password");
         jPanel1.add(jLabel4);
-        jLabel4.setBounds(40, 510, 330, 17);
+        jLabel4.setBounds(70, 510, 280, 17);
 
+        errorLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         errorLabel.setForeground(java.awt.Color.red);
+        errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         errorLabel.setText("jLabel7");
         jPanel1.add(errorLabel);
-        errorLabel.setBounds(40, 590, 330, 20);
+        errorLabel.setBounds(70, 570, 280, 30);
 
-        repeatNewPasswordInput.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        repeatNewPasswordInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         repeatNewPasswordInput.setForeground(java.awt.Color.lightGray);
         repeatNewPasswordInput.setText("1234567890");
+        repeatNewPasswordInput.setBorder(null);
         repeatNewPasswordInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 repeatNewPasswordInputFocusGained(evt);
@@ -112,11 +117,12 @@ public class forgotPasswordSecondStep extends javax.swing.JFrame {
             }
         });
         jPanel1.add(repeatNewPasswordInput);
-        repeatNewPasswordInput.setBounds(40, 530, 330, 40);
+        repeatNewPasswordInput.setBounds(70, 530, 280, 40);
 
-        newPasswordInput.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        newPasswordInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         newPasswordInput.setForeground(java.awt.Color.lightGray);
         newPasswordInput.setText("1234567890");
+        newPasswordInput.setBorder(null);
         newPasswordInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 newPasswordInputFocusGained(evt);
@@ -126,9 +132,23 @@ public class forgotPasswordSecondStep extends javax.swing.JFrame {
             }
         });
         jPanel1.add(newPasswordInput);
-        newPasswordInput.setBounds(40, 460, 330, 40);
+        newPasswordInput.setBounds(70, 460, 280, 40);
 
-        submitButton.setText("Done");
+        cancelButton.setBackground(java.awt.Color.lightGray);
+        cancelButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        cancelButton.setText("Cancel");
+        cancelButton.setToolTipText("");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cancelButton);
+        cancelButton.setBounds(150, 620, 90, 40);
+
+        submitButton.setBackground(new java.awt.Color(38, 166, 154));
+        submitButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        submitButton.setText("Proceed");
         submitButton.setToolTipText("");
         submitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -136,7 +156,7 @@ public class forgotPasswordSecondStep extends javax.swing.JFrame {
             }
         });
         jPanel1.add(submitButton);
-        submitButton.setBounds(150, 620, 100, 40);
+        submitButton.setBounds(260, 620, 90, 40);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/Changepass_Banner.jpg"))); // NOI18N
         jPanel1.add(jLabel1);
@@ -231,6 +251,10 @@ public class forgotPasswordSecondStep extends javax.swing.JFrame {
          }
     }//GEN-LAST:event_repeatNewPasswordInputKeyReleased
 
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -268,6 +292,7 @@ public class forgotPasswordSecondStep extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cancelButton;
     private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

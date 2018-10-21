@@ -32,7 +32,7 @@ public class Client {
     public static boolean updateWithdrawal(int clientId, int pin2, int timeRequest, int status) {
         try {
             Statement st = DatabaseConnection.connect().createStatement();
-            String DBQ = "UPDATE CA_ABS.CARDLESS_WITHDRAWAL SET STATUS = "+ 2 + " WHERE CLIENT_ID=" + clientId + " AND PIN2 = " + pin2 + " AND TIMEREQUEST = " + timeRequest;
+            String DBQ = "UPDATE CA_ABS.CARDLESS_WITHDRAWAL SET STATUS = " + 2 + " WHERE CLIENT_ID=" + clientId + " AND PIN2 = " + pin2 + " AND TIMEREQUEST = " + timeRequest;
             int result = st.executeUpdate(DBQ);
             if (result > 0) {
                 return true;
@@ -135,6 +135,22 @@ public class Client {
         try {
             Statement st = DatabaseConnection.connect().createStatement();
             String DBQ = "UPDATE CA_ABS.CLIENT SET CLIENT_PW = '" + password + "' WHERE CLIENT_ID=" + clientId;
+            int result = st.executeUpdate(DBQ);
+            if (result > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException | NumberFormatException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public static boolean setPasswordResetCode(String email,String resetCode) {
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "UPDATE CA_ABS.CLIENT SET RESET_PW_CODE = '" + resetCode + "' WHERE CLIENT_EMAIL= '" + email + "'";
             int result = st.executeUpdate(DBQ);
             if (result > 0) {
                 return true;
@@ -338,7 +354,7 @@ public class Client {
             String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_ACCTNUM=" + accountNumber;
             ResultSet rs = st.executeQuery(DBQ);
             if (rs.next()) {
-                if (rs.getString("CLIENT_UNAME").trim().isEmpty()) {
+                if (rs.getString("CLIENT_UNAME").trim().isEmpty() && rs.getString("CLIENT_PW").trim().isEmpty()) {
                     return false;
                 } else {
                     return true;
@@ -414,6 +430,21 @@ public class Client {
         return 0;
     }
 
+    public static int getIdWithEmail(String email){
+        try {
+            Statement st = DatabaseConnection.connect().createStatement();
+            String DBQ = "SELECT * FROM CA_ABS.CLIENT WHERE CLIENT_EMAIL='" + email + "'";
+            ResultSet rs = st.executeQuery(DBQ);
+            if (rs.next()) {
+                return rs.getInt("CLIENT_ID");
+            } else {
+                return 0;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
     public static int getIdwithResetCode(String resetCode) {
         try {
             Statement st = DatabaseConnection.connect().createStatement();

@@ -39,10 +39,10 @@ public class PasswordGenerator {
         return result;
     }
     
-    public static String generateResetPasswordCode(int len){
+    public static String generateResetPasswordCode(){
         String dic = ALPHA_CAPS + NUMERIC;
         String result = "";
-         for (int i = 0; i < len; i++) {
+         for (int i = 0; i < 6; i++) {
             int index = random.nextInt(dic.length());
             result += dic.charAt(index);
         }

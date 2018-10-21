@@ -6,13 +6,8 @@
 package my.mobileapp;
 
 import java.awt.Color;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
@@ -32,8 +27,6 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
         errorLabel.setVisible(false);
     }
 
-
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -49,12 +42,15 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         emailInput = new javax.swing.JTextField();
+        cancelButton = new javax.swing.JButton();
         submitButton = new javax.swing.JButton();
         errorLabel = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Forgot Password");
+        setPreferredSize(new java.awt.Dimension(414, 733));
         setResizable(false);
 
         jPanel1.setLayout(null);
@@ -79,9 +75,10 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
         jPanel1.add(jLabel10);
         jLabel10.setBounds(30, 90, 400, 70);
 
-        emailInput.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        emailInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         emailInput.setForeground(new java.awt.Color(204, 204, 204));
         emailInput.setText("Enter Email");
+        emailInput.setBorder(null);
         emailInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 emailInputFocusGained(evt);
@@ -91,23 +88,38 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(emailInput);
-        emailInput.setBounds(40, 480, 330, 40);
+        emailInput.setBounds(60, 480, 300, 40);
 
-        submitButton.setText("Proceed");
+        cancelButton.setBackground(java.awt.Color.lightGray);
+        cancelButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        cancelButton.setText("Cancel");
+        cancelButton.setBorder(null);
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cancelButton);
+        cancelButton.setBounds(110, 600, 100, 40);
+
+        submitButton.setBackground(new java.awt.Color(38, 166, 154));
+        submitButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        submitButton.setText("Send Code");
+        submitButton.setBorder(null);
         submitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 submitButtonActionPerformed(evt);
             }
         });
         jPanel1.add(submitButton);
-        submitButton.setBounds(150, 580, 100, 40);
+        submitButton.setBounds(220, 600, 100, 40);
 
         errorLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         errorLabel.setForeground(java.awt.Color.red);
         errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         errorLabel.setText("Invalid email address");
         jPanel1.add(errorLabel);
-        errorLabel.setBounds(40, 540, 330, 23);
+        errorLabel.setBounds(60, 520, 300, 40);
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
         jPanel1.add(jLabel5);
@@ -125,8 +137,10 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 737, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
         );
+
+        getAccessibleContext().setAccessibleDescription("");
 
         pack();
         setLocationRelativeTo(null);
@@ -134,25 +148,25 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         if (!emailInput.getText().trim().isEmpty()) {
-            
+
             EmailValidator validator = new EmailValidator();
-            
+
             if (validator.validateEmail(emailInput.getText().trim())) {
-                
+
                 emailInput.setBorder(BorderFactory.createLineBorder(Color.green));
-                
+
                 if (Client.checkIfEmailExists(emailInput.getText().trim())) {
-                    
-                    try {
-                        String resetCode = PasswordGenerator.generateResetPasswordCode(6);
-                        
-                        Statement st = DatabaseConnection.connect().createStatement();
-                        String DBQ = "UPDATE CA_ABS.CLIENT SET RESET_PW_CODE='" + resetCode + "' WHERE CLIENT_EMAIL='" + emailInput.getText() + "'";
-                        int result = st.executeUpdate(DBQ);
-                        if (result > 0) {
-                            
+
+                    int clientId = Client.getIdWithEmail(emailInput.getText().trim());
+                    int accountNumber = Client.getAccountNumber(clientId);
+                    System.out.println("is registered?" + Client.checkIfRegistered(accountNumber));
+                    System.out.println("accountNumber?" + accountNumber);
+                    System.out.println("clientId?" + clientId);
+                    if (Client.checkIfRegistered(accountNumber)) {
+                        String resetCode = PasswordGenerator.generateResetPasswordCode();
+                        if (Client.setPasswordResetCode(emailInput.getText().trim(), resetCode)) {
                             if (Client.sendResetPassword(emailInput.getText(), resetCode)) {
-                                JOptionPane.showMessageDialog(this, "Password reset code has been sent to your email","Success",JOptionPane.INFORMATION_MESSAGE);
+                                JOptionPane.showMessageDialog(this, "Password reset code has been sent to your email", "Success", JOptionPane.INFORMATION_MESSAGE);
                             } else {
                                 JOptionPane.showMessageDialog(this, "Email not sent, please try again or check your internet connection", "Try Again", JOptionPane.WARNING_MESSAGE);
                             }
@@ -160,8 +174,9 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
                             this.dispose();
                             new forgotPasswordInputCode(this.email).setVisible(true);
                         }
-                    } catch (SQLException | NumberFormatException e) {
-                        System.out.println(e.getMessage());
+                    } else {
+                        errorLabel.setText("This email address is not registered");
+                        errorLabel.setVisible(true);
                     }
                 } else {
 
@@ -171,10 +186,12 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
             } else {
                 errorLabel.setText("Invalid email address format");
                 errorLabel.setVisible(true);
+                emailInput.requestFocus();
             }
         } else {
             errorLabel.setText("Please enter your email address");
             errorLabel.setVisible(true);
+            emailInput.requestFocus();
         }
     }//GEN-LAST:event_submitButtonActionPerformed
 
@@ -188,9 +205,15 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
     private void emailInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_emailInputFocusLost
         if (emailInput.getText().trim().isEmpty()) {
             emailInput.setBorder(BorderFactory.createLineBorder(Color.red));
+        } else {
+            emailInput.setBorder(BorderFactory.createLineBorder(Color.green));
         }
     }//GEN-LAST:event_emailInputFocusLost
 
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        this.dispose();
+        new loginFrame().setVisible(true);
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -229,6 +252,7 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cancelButton;
     private javax.swing.JTextField emailInput;
     private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel jLabel1;

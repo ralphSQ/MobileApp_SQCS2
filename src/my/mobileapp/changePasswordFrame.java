@@ -6,12 +6,6 @@
 package my.mobileapp;
 
 import java.awt.Color;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
@@ -67,6 +61,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Change Password");
         setResizable(false);
 
         jPanel1.setLayout(null);
@@ -88,24 +83,25 @@ public class changePasswordFrame extends javax.swing.JFrame {
         jPanel1.add(jLabel10);
         jLabel10.setBounds(0, 0, 400, 230);
 
-        oldPwLabel.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        oldPwLabel.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         oldPwLabel.setText("Old Password");
         jPanel1.add(oldPwLabel);
         oldPwLabel.setBounds(80, 440, 260, 20);
 
-        jLabel7.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         jLabel7.setText("New Password");
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(80, 500, 260, 16);
+        jLabel7.setBounds(80, 500, 260, 17);
 
-        jLabel8.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
         jLabel8.setText("Repeat New Password");
         jPanel1.add(jLabel8);
-        jLabel8.setBounds(80, 560, 260, 16);
+        jLabel8.setBounds(80, 560, 260, 17);
 
-        oldPasswordInput.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        oldPasswordInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         oldPasswordInput.setForeground(java.awt.Color.lightGray);
         oldPasswordInput.setText("1234567890");
+        oldPasswordInput.setBorder(null);
         oldPasswordInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 oldPasswordInputFocusGained(evt);
@@ -117,9 +113,10 @@ public class changePasswordFrame extends javax.swing.JFrame {
         jPanel1.add(oldPasswordInput);
         oldPasswordInput.setBounds(80, 460, 260, 40);
 
-        newPasswordInput.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        newPasswordInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         newPasswordInput.setForeground(java.awt.Color.lightGray);
         newPasswordInput.setText("1234567890");
+        newPasswordInput.setBorder(null);
         newPasswordInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 newPasswordInputFocusGained(evt);
@@ -131,9 +128,10 @@ public class changePasswordFrame extends javax.swing.JFrame {
         jPanel1.add(newPasswordInput);
         newPasswordInput.setBounds(80, 520, 260, 40);
 
-        repeatNewPasswordInput.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        repeatNewPasswordInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         repeatNewPasswordInput.setForeground(java.awt.Color.lightGray);
         repeatNewPasswordInput.setText("1234567890");
+        repeatNewPasswordInput.setBorder(null);
         repeatNewPasswordInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 repeatNewPasswordInputFocusGained(evt);
@@ -150,6 +148,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
         jPanel1.add(repeatNewPasswordInput);
         repeatNewPasswordInput.setBounds(80, 580, 260, 40);
 
+        cancelBtn.setBackground(java.awt.Color.lightGray);
         cancelBtn.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         cancelBtn.setText("Cancel");
         cancelBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -158,15 +157,16 @@ public class changePasswordFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(cancelBtn);
-        cancelBtn.setBounds(160, 650, 71, 40);
+        cancelBtn.setBounds(140, 650, 90, 40);
 
-        errorLabel.setFont(new java.awt.Font("Calibri Light", 0, 18)); // NOI18N
+        errorLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         errorLabel.setForeground(java.awt.Color.red);
         errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         errorLabel.setText("New password does not match");
         jPanel1.add(errorLabel);
         errorLabel.setBounds(80, 620, 260, 20);
 
+        btnSubmit.setBackground(new java.awt.Color(38, 166, 154));
         btnSubmit.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         btnSubmit.setText("Proceed");
         btnSubmit.addActionListener(new java.awt.event.ActionListener() {
@@ -175,7 +175,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnSubmit);
-        btnSubmit.setBounds(240, 650, 100, 40);
+        btnSubmit.setBounds(250, 650, 90, 40);
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
         jPanel1.add(jLabel5);

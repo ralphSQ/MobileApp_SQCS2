@@ -60,7 +60,7 @@ public class loginFrame extends javax.swing.JFrame {
         jPanel1.add(jLabel2);
         jLabel2.setBounds(50, 30, 320, 270);
 
-        usernameInput.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        usernameInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         usernameInput.setForeground(java.awt.Color.lightGray);
         usernameInput.setText("Username or Email Address");
         usernameInput.setToolTipText("");
@@ -75,7 +75,7 @@ public class loginFrame extends javax.swing.JFrame {
         jPanel1.add(usernameInput);
         usernameInput.setBounds(30, 340, 360, 50);
 
-        passwordInput.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        passwordInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         passwordInput.setForeground(java.awt.Color.lightGray);
         passwordInput.setText("1234567890");
         passwordInput.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -90,7 +90,7 @@ public class loginFrame extends javax.swing.JFrame {
         passwordInput.setBounds(30, 420, 360, 50);
 
         signupButton.setBackground(new java.awt.Color(51, 51, 51));
-        signupButton.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
+        signupButton.setFont(new java.awt.Font("Calibri", 1, 16)); // NOI18N
         signupButton.setForeground(new java.awt.Color(255, 255, 255));
         signupButton.setText("Sign Up");
         signupButton.setToolTipText("");
@@ -102,10 +102,10 @@ public class loginFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(signupButton);
-        signupButton.setBounds(30, 690, 160, 30);
+        signupButton.setBounds(30, 670, 150, 40);
 
         forgotpassButton.setBackground(new java.awt.Color(51, 51, 51));
-        forgotpassButton.setFont(new java.awt.Font("Calibri", 0, 16)); // NOI18N
+        forgotpassButton.setFont(new java.awt.Font("Calibri", 1, 16)); // NOI18N
         forgotpassButton.setForeground(new java.awt.Color(255, 255, 255));
         forgotpassButton.setText("Forgot Password?");
         forgotpassButton.setBorder(null);
@@ -116,9 +116,9 @@ public class loginFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(forgotpassButton);
-        forgotpassButton.setBounds(210, 690, 180, 30);
+        forgotpassButton.setBounds(240, 670, 150, 40);
 
-        loginButton.setBackground(new java.awt.Color(0, 176, 170));
+        loginButton.setBackground(new java.awt.Color(38, 166, 154));
         loginButton.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         loginButton.setForeground(new java.awt.Color(255, 255, 255));
         loginButton.setToolTipText("");

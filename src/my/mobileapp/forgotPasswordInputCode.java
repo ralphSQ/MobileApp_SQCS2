@@ -6,9 +6,6 @@
 package my.mobileapp;
 
 import java.awt.Color;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -31,6 +28,7 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
     public forgotPasswordInputCode(String email) {
         initComponents();
         this.email = email;
+        errorLabel.setVisible(false);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -46,12 +44,15 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         codeInput = new javax.swing.JTextField();
+        cancelButton = new javax.swing.JButton();
         submitButton = new javax.swing.JButton();
+        errorLabel = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Forgot Password");
         setResizable(false);
 
         jPanel1.setLayout(null);
@@ -72,10 +73,11 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
         jPanel1.add(jLabel2);
         jLabel2.setBounds(60, 250, 160, 170);
 
-        codeInput.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        codeInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         codeInput.setForeground(new java.awt.Color(204, 204, 204));
         codeInput.setText("Input Code");
         codeInput.setToolTipText("");
+        codeInput.setBorder(null);
         codeInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 codeInputFocusGained(evt);
@@ -87,8 +89,22 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
             }
         });
         jPanel1.add(codeInput);
-        codeInput.setBounds(40, 480, 330, 40);
+        codeInput.setBounds(60, 480, 300, 40);
 
+        cancelButton.setBackground(java.awt.Color.lightGray);
+        cancelButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        cancelButton.setText("Cancel");
+        cancelButton.setToolTipText("");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cancelButton);
+        cancelButton.setBounds(110, 580, 90, 40);
+
+        submitButton.setBackground(new java.awt.Color(38, 166, 154));
+        submitButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         submitButton.setText("Proceed");
         submitButton.setToolTipText("");
         submitButton.addActionListener(new java.awt.event.ActionListener() {
@@ -97,7 +113,14 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
             }
         });
         jPanel1.add(submitButton);
-        submitButton.setBounds(150, 580, 100, 40);
+        submitButton.setBounds(220, 580, 90, 40);
+
+        errorLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        errorLabel.setForeground(java.awt.Color.red);
+        errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        errorLabel.setText("jLabel4");
+        jPanel1.add(errorLabel);
+        errorLabel.setBounds(60, 520, 300, 30);
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/right-arrow.png"))); // NOI18N
         jPanel1.add(jLabel6);
@@ -119,7 +142,7 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 737, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
         );
 
         pack();
@@ -134,7 +157,8 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
             this.dispose();
             new forgotPasswordSecondStep(this.accountId).setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(this, "Invalid password reset code", "Reset Password", JOptionPane.INFORMATION_MESSAGE);
+            errorLabel.setText("Invalid password reset code");
+            errorLabel.setVisible(true);
         }
     }//GEN-LAST:event_submitButtonActionPerformed
 
@@ -150,6 +174,10 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
             evt.consume();
         }
     }//GEN-LAST:event_codeInputKeyTyped
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -190,7 +218,9 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cancelButton;
     private javax.swing.JTextField codeInput;
+    private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;

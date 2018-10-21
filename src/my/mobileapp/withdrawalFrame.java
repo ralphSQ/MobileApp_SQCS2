@@ -105,13 +105,15 @@ public class withdrawalFrame extends javax.swing.JFrame {
         jPanel1.add(jLabel9);
         jLabel9.setBounds(20, 560, 110, 40);
 
+        errorLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         errorLabel.setForeground(java.awt.Color.red);
         errorLabel.setText("jLabel12");
         jPanel1.add(errorLabel);
-        errorLabel.setBounds(140, 610, 230, 20);
+        errorLabel.setBounds(140, 610, 230, 30);
 
         pinInput.setBorder(null);
         pinInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
+        pinInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         pinInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 pinInputFocusLost(evt);
@@ -127,6 +129,7 @@ public class withdrawalFrame extends javax.swing.JFrame {
 
         amountInput.setBorder(null);
         amountInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#,###.00"))));
+        amountInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         amountInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 amountInputFocusLost(evt);
@@ -140,6 +143,7 @@ public class withdrawalFrame extends javax.swing.JFrame {
         jPanel1.add(amountInput);
         amountInput.setBounds(140, 500, 230, 40);
 
+        cancelButtton.setBackground(java.awt.Color.lightGray);
         cancelButtton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         cancelButtton.setText("Cancel");
         cancelButtton.setBorder(null);
@@ -149,8 +153,9 @@ public class withdrawalFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(cancelButtton);
-        cancelButtton.setBounds(160, 650, 100, 40);
+        cancelButtton.setBounds(180, 650, 90, 40);
 
+        submitButton.setBackground(new java.awt.Color(38, 166, 154));
         submitButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         submitButton.setText("Proceed");
         submitButton.setBorder(null);
@@ -160,7 +165,7 @@ public class withdrawalFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(submitButton);
-        submitButton.setBounds(270, 650, 100, 40);
+        submitButton.setBounds(280, 650, 90, 40);
 
         jLabel8.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -204,7 +209,7 @@ public class withdrawalFrame extends javax.swing.JFrame {
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         if (!amountInput.getText().trim().isEmpty() && !pinInput.getText().trim().isEmpty()) {
             double amount = Double.valueOf(amountInput.getText().replace(",", ""));
-            double balance = Double.parseDouble(Client.getFormattedBalance(clientId).replaceAll("Php", "").replace(",", ""));
+            double balance = Double.parseDouble(Client.getFormattedBalance(clientId).replaceAll("Php", "").replaceAll("$","").replace(",", ""));
             int pin = Integer.valueOf(pinInput.getText().trim());
             int pin2 = Integer.valueOf(PasswordGenerator.generatePin2());
             int confirm = 0;

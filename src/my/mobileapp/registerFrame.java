@@ -6,10 +6,7 @@
 package my.mobileapp;
 
 import java.awt.Color;
-import java.sql.*;
 import javax.swing.JOptionPane;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 
 /**
@@ -24,7 +21,6 @@ public class registerFrame extends javax.swing.JFrame {
     public registerFrame() {
         initComponents();
         errorLabel.setVisible(false);
-        submitButton.setEnabled(false);
 
     }
 
@@ -50,6 +46,7 @@ public class registerFrame extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Sign Up");
         setResizable(false);
 
         jPanel1.setLayout(null);
@@ -67,7 +64,7 @@ public class registerFrame extends javax.swing.JFrame {
         jPanel1.add(jLabel4);
         jLabel4.setBounds(60, 420, 150, 50);
 
-        submitButton.setBackground(new java.awt.Color(255, 255, 255));
+        submitButton.setBackground(new java.awt.Color(38, 166, 154));
         submitButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         submitButton.setText("Proceed");
         submitButton.setBorder(null);
@@ -77,9 +74,9 @@ public class registerFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(submitButton);
-        submitButton.setBounds(80, 590, 120, 40);
+        submitButton.setBounds(220, 590, 90, 40);
 
-        cancelButton.setBackground(new java.awt.Color(255, 255, 255));
+        cancelButton.setBackground(java.awt.Color.lightGray);
         cancelButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         cancelButton.setText("Cancel");
         cancelButton.setBorder(null);
@@ -89,13 +86,14 @@ public class registerFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(cancelButton);
-        cancelButton.setBounds(200, 590, 120, 40);
+        cancelButton.setBounds(110, 590, 90, 40);
 
         try {
             accountNumberInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#########")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        accountNumberInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         accountNumberInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 accountNumberInputFocusLost(evt);
@@ -107,13 +105,14 @@ public class registerFrame extends javax.swing.JFrame {
             }
         });
         jPanel1.add(accountNumberInput);
-        accountNumberInput.setBounds(30, 490, 350, 50);
+        accountNumberInput.setBounds(80, 490, 270, 40);
 
+        errorLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         errorLabel.setForeground(java.awt.Color.red);
         errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         errorLabel.setText("Label for errors");
         jPanel1.add(errorLabel);
-        errorLabel.setBounds(30, 550, 350, 20);
+        errorLabel.setBounds(80, 530, 270, 30);
 
         jLabel10.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
@@ -133,11 +132,11 @@ public class registerFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
         );
 
         pack();
@@ -173,10 +172,10 @@ public class registerFrame extends javax.swing.JFrame {
                     String receipient = Client.getEmail(clientId);
                     if (Client.sendCredentials(receipient, username, password)) {
                         if (Client.setUsername(username, clientId) && Client.setPassword(encryptedPassword, clientId)) {
-                        };
-                        //JOptionPane.showMessageDialog(this, "Registration complete!\nCheck your email account for your login credentials.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                        this.dispose();
-                        new loginFrame().setVisible(true);
+                            JOptionPane.showMessageDialog(this, "Registration complete!\nCheck your email account for your login credentials.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                            this.dispose();
+                            new loginFrame().setVisible(true);
+                        }
                     } else {
                         JOptionPane.showMessageDialog(this, "Account creation failed, please check your internet connection and try again.", "Failed", JOptionPane.WARNING_MESSAGE);
                     }
@@ -198,7 +197,6 @@ public class registerFrame extends javax.swing.JFrame {
     private void accountNumberInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_accountNumberInputKeyReleased
         if (accountNumberInput.getText().length() >= 9) {
             evt.consume();
-            submitButton.setEnabled(true);
         }
     }//GEN-LAST:event_accountNumberInputKeyReleased
 
