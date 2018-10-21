@@ -37,43 +37,36 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        icon = new javax.swing.JLabel();
+        labelForEmail = new javax.swing.JLabel();
+        title = new javax.swing.JLabel();
         emailInput = new javax.swing.JTextField();
         cancelButton = new javax.swing.JButton();
         submitButton = new javax.swing.JButton();
         errorLabel = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
+        background = new javax.swing.JLabel();
+        header = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Forgot Password");
         setPreferredSize(new java.awt.Dimension(414, 733));
         setResizable(false);
 
-        jPanel1.setLayout(null);
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/pass.png"))); // NOI18N
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(70, 260, 160, 150);
+        icon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/pass.png"))); // NOI18N
+        jPanel1.add(icon, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 260, 130, 130));
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/right-arrow.png"))); // NOI18N
-        jPanel1.add(jLabel6);
-        jLabel6.setBounds(280, 330, 150, 40);
+        labelForEmail.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
+        labelForEmail.setLabelFor(emailInput);
+        labelForEmail.setText("Enter Your E-Mail Address");
+        labelForEmail.setToolTipText("");
+        jPanel1.add(labelForEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 460, 300, 14));
 
-        jLabel3.setFont(new java.awt.Font("Calibri", 1, 12)); // NOI18N
-        jLabel3.setText("Input Email");
-        jLabel3.setToolTipText("");
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(110, 410, 110, 14);
-
-        jLabel10.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("Forgot Password");
-        jPanel1.add(jLabel10);
-        jLabel10.setBounds(30, 90, 400, 70);
+        title.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
+        title.setForeground(new java.awt.Color(255, 255, 255));
+        title.setText("Forgot Password");
+        jPanel1.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 400, 70));
 
         emailInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         emailInput.setForeground(new java.awt.Color(204, 204, 204));
@@ -87,57 +80,50 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
                 emailInputFocusLost(evt);
             }
         });
-        jPanel1.add(emailInput);
-        emailInput.setBounds(60, 480, 300, 40);
+        jPanel1.add(emailInput, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 480, 300, 40));
 
         cancelButton.setBackground(java.awt.Color.lightGray);
         cancelButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         cancelButton.setText("Cancel");
-        cancelButton.setBorder(null);
+        cancelButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(cancelButton);
-        cancelButton.setBounds(110, 600, 100, 40);
+        jPanel1.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 580, 100, 40));
 
         submitButton.setBackground(new java.awt.Color(38, 166, 154));
         submitButton.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         submitButton.setText("Send Code");
-        submitButton.setBorder(null);
+        submitButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         submitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 submitButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(submitButton);
-        submitButton.setBounds(220, 600, 100, 40);
+        jPanel1.add(submitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 580, 100, 40));
 
         errorLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         errorLabel.setForeground(java.awt.Color.red);
-        errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         errorLabel.setText("Invalid email address");
-        jPanel1.add(errorLabel);
-        errorLabel.setBounds(60, 520, 300, 40);
+        jPanel1.add(errorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 520, 300, 40));
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
-        jPanel1.add(jLabel5);
-        jLabel5.setBounds(0, 220, 420, 530);
+        background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
+        jPanel1.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 420, 490));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/Changepass_Banner.jpg"))); // NOI18N
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(0, -20, 416, 260);
+        header.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/Changepass_Banner.jpg"))); // NOI18N
+        jPanel1.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, -1, 260));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 414, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 733, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         getAccessibleContext().setAccessibleDescription("");
@@ -148,20 +134,12 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         if (!emailInput.getText().trim().isEmpty()) {
-
             EmailValidator validator = new EmailValidator();
-
             if (validator.validateEmail(emailInput.getText().trim())) {
-
                 emailInput.setBorder(BorderFactory.createLineBorder(Color.green));
-
                 if (Client.checkIfEmailExists(emailInput.getText().trim())) {
-
                     int clientId = Client.getIdWithEmail(emailInput.getText().trim());
                     int accountNumber = Client.getAccountNumber(clientId);
-                    System.out.println("is registered?" + Client.checkIfRegistered(accountNumber));
-                    System.out.println("accountNumber?" + accountNumber);
-                    System.out.println("clientId?" + clientId);
                     if (Client.checkIfRegistered(accountNumber)) {
                         String resetCode = PasswordGenerator.generateResetPasswordCode();
                         if (Client.setPasswordResetCode(emailInput.getText().trim(), resetCode)) {
@@ -175,16 +153,19 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
                             new forgotPasswordInputCode(this.email).setVisible(true);
                         }
                     } else {
-                        errorLabel.setText("This email address is not registered");
+                        errorLabel.setText("This email address is not registered yet");
+                        emailInput.setBorder(BorderFactory.createLineBorder(Color.red));
                         errorLabel.setVisible(true);
                     }
                 } else {
 
                     errorLabel.setText("Email address not found");
+                    emailInput.setBorder(BorderFactory.createLineBorder(Color.red));
                     errorLabel.setVisible(true);
                 }
             } else {
                 errorLabel.setText("Invalid email address format");
+                emailInput.setBorder(BorderFactory.createLineBorder(Color.red));
                 errorLabel.setVisible(true);
                 emailInput.requestFocus();
             }
@@ -252,16 +233,15 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel background;
     private javax.swing.JButton cancelButton;
     private javax.swing.JTextField emailInput;
     private javax.swing.JLabel errorLabel;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel header;
+    private javax.swing.JLabel icon;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel labelForEmail;
     private javax.swing.JButton submitButton;
+    private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }
