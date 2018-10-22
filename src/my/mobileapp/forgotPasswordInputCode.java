@@ -6,16 +6,14 @@
 package my.mobileapp;
 
 import java.awt.Color;
-import javax.swing.JOptionPane;
 
 /**
  *
  * @author Ralph
  */
 public class forgotPasswordInputCode extends javax.swing.JFrame {
-    
+
     private int accountId = 0;
-    private String firstname = "";
     private String email = "";
 
     /**
@@ -24,12 +22,13 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
     public forgotPasswordInputCode() {
         initComponents();
     }
-    
+
     public forgotPasswordInputCode(String email) {
         initComponents();
         this.email = email;
         errorLabel.setVisible(false);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -137,20 +136,24 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
-        if (Client.checkPasswordResetCode(codeInput.getText(),this.email)) {
-            this.accountId = Client.getIdwithResetCode(codeInput.getText());
-            System.out.println(this.accountId);
-            System.out.println(Client.resetCodeToNull(this.accountId));
-            this.dispose();
-            new forgotPasswordSecondStep(this.accountId).setVisible(true);
-        } else {
-            errorLabel.setText("Invalid password reset code");
-            errorLabel.setVisible(true);
+        if (!codeInput.getText().trim().isEmpty() && !codeInput.getText().trim().equals("Input Code")) {
+            boolean resetCodeMatch = Client.checkPasswordResetCode(codeInput.getText(), this.email);
+            
+            if (resetCodeMatch) {
+                
+                this.accountId = Client.getIdWithEmail(this.email);
+                this.dispose();
+                new forgotPasswordInputNewPassword(this.accountId).setVisible(true);
+                
+            } else {
+                errorLabel.setText("Invalid password reset code");
+                errorLabel.setVisible(true);
+            }
         }
     }//GEN-LAST:event_submitButtonActionPerformed
 
     private void codeInputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_codeInputFocusGained
-         if (codeInput.getText().equals("Input Code")) {
+        if (codeInput.getText().equals("Input Code")) {
             codeInput.setText("");
             codeInput.setForeground(Color.black);
         }
@@ -182,13 +185,7 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(forgotPasswordInputCode.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(forgotPasswordInputCode.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(forgotPasswordInputCode.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(forgotPasswordInputCode.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
@@ -196,11 +193,14 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new forgotPasswordInputCode().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new forgotPasswordInputCode().setVisible(true);
         });
     }
 

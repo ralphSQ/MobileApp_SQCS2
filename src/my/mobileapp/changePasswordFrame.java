@@ -16,8 +16,6 @@ import javax.swing.JOptionPane;
 public class changePasswordFrame extends javax.swing.JFrame {
 
     private int clientId = 0;
-    private String fullName = "";
-    private String firstName = "";
 
     /**
      * Creates new form changePasswordFrame
@@ -26,10 +24,8 @@ public class changePasswordFrame extends javax.swing.JFrame {
         initComponents();
     }
 
-    public changePasswordFrame(int clientId, String fullName, String firstName) {
+    public changePasswordFrame(int clientId) {
         this.clientId = clientId;
-        this.fullName = fullName;
-        this.firstName = firstName;
         initComponents();
         errorLabel.setVisible(false);
     }
@@ -250,13 +246,14 @@ public class changePasswordFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_repeatNewPasswordInputFocusLost
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-        String getPassword = "";
-        getPassword = Client.getPassword(this.clientId);
+        String getPassword = Client.getPassword(this.clientId);
         String newPassword = "", encryptedPassword = "", oldPassword = "";
-        int confirm = 0, result = 0;
+        int confirm = 0;
         oldPassword = new String(oldPasswordInput.getPassword());
         if (newPasswordInput.getText().equals(repeatNewPasswordInput.getText())) {
+            
             if (getPassword.equals(PasswordHasher.passwordHasher(oldPassword))) {
+                
                 oldPasswordInput.setBorder(BorderFactory.createLineBorder(Color.green));
                 newPassword = new String(newPasswordInput.getPassword());
                 encryptedPassword = PasswordHasher.passwordHasher(newPassword);
@@ -274,7 +271,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
                 oldPasswordInput.requestFocus();
                 errorLabel.setVisible(true);
             }
-        }
+        } 
 
 
     }//GEN-LAST:event_btnSubmitActionPerformed
@@ -306,22 +303,16 @@ public class changePasswordFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(changePasswordFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(changePasswordFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(changePasswordFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(changePasswordFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new changePasswordFrame().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new changePasswordFrame().setVisible(true);
         });
     }
 

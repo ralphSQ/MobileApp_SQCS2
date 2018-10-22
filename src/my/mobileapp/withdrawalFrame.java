@@ -19,9 +19,7 @@ import javax.swing.JOptionPane;
  */
 public class withdrawalFrame extends javax.swing.JFrame {
 
-    private String fullName;
     private int clientId;
-    private String firstName;
 
     /**
      * Creates new form withdrawalFrame
@@ -30,10 +28,8 @@ public class withdrawalFrame extends javax.swing.JFrame {
         initComponents();
     }
 
-    public withdrawalFrame(int accountId, String firstName, String fullName) {
+    public withdrawalFrame(int accountId) {
         this.clientId = accountId;
-        this.fullName = fullName;
-        this.firstName = firstName;
         initComponents();
         errorLabel.setVisible(false);
     }
@@ -96,7 +92,7 @@ public class withdrawalFrame extends javax.swing.JFrame {
         jPanel1.add(errorLabel);
         errorLabel.setBounds(140, 570, 230, 30);
 
-        pinInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+        pinInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
         pinInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         pinInput.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -104,8 +100,8 @@ public class withdrawalFrame extends javax.swing.JFrame {
             }
         });
         pinInput.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                pinInputKeyReleased(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                pinInputKeyTyped(evt);
             }
         });
         jPanel1.add(pinInput);
@@ -179,51 +175,51 @@ public class withdrawalFrame extends javax.swing.JFrame {
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         if (!amountInput.getText().trim().isEmpty() && !pinInput.getText().trim().isEmpty()) {
+
             double amount = Double.valueOf(amountInput.getText().replace(",", ""));
             double balance = Client.getBalance(clientId);
             int pin = Integer.valueOf(pinInput.getText().trim());
             int pin2 = Integer.valueOf(PasswordGenerator.generatePin2());
-            int confirm = 0;
+            int confirm = 0, threshold = 0;
             String message = "";
             long requestTime = Instant.now().getEpochSecond();
             LocalDateTime dateTime = LocalDateTime.ofEpochSecond(requestTime, 0, ZoneOffset.of("+8"));
-
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("Y M, d hh:mm a");
-            if (!(balance - 2000 < amount)) {
-                if (Client.checkIfPinIsCorrect(pin, this.clientId) || Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
-                    if (Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
-                        JOptionPane.showMessageDialog(this, "You are using your temporary pin assigned to your account.\nChange your PIN as soon as possible to increase your account's security", "Tip", JOptionPane.INFORMATION_MESSAGE);
-                    }
-                    System.out.println("Amount: " + amount);
-                    System.out.println("Pin 1: " + pin);
-                    System.out.println("Pin 2: " + pin2);
-                    System.out.println("Time Request: " + requestTime);
-                    System.out.println("Time Request in format: " + dateTime);
-                    message = "Fund Transfer"
-                            + "\n------------------------------"
-                            + "\nAmount: " + amount
-                            + "\nTime Request:" + dateTime.format(formatter);
-                    confirm = JOptionPane.showConfirmDialog(this, message, "Confirmation", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-                    if (confirm == 0) {
-                        if (Client.cardlessWithdrawal(clientId, amount, pin, pin2, (int) requestTime)) {
-                            this.dispose();
-                            new cardlessWithdrawalStep2(clientId, pin2, amount, (int) requestTime).setVisible(true);
-                        } else {
-                            JOptionPane.showMessageDialog(this, "An error occured, please blame the programmer.", "Error", JOptionPane.ERROR_MESSAGE);
+
+            if (Client.checkIfPinIsCorrect(pin, this.clientId) || Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
+                if (balance < amount) {
+                    errorLabel.setText("Insufficient Balance");
+                    errorLabel.setVisible(true);
+                } else if ((balance - 2000 < amount)) {
+                    errorLabel.setVisible(false);
+                    threshold = JOptionPane.showConfirmDialog(this, "You are about to go beyond the maintaining balance\nContinue transaction?", "Maintaining Balance", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                    if (threshold == 0) {
+                        if (Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
+                            JOptionPane.showMessageDialog(this, "You are using your temporary pin assigned to your account.\nChange your PIN as soon as possible to increase your account's security", "Tip", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        message = "Fund Transfer"
+                                + "\n------------------------------"
+                                + "\nAmount: " + amount
+                                + "\nTime Request:" + dateTime.format(formatter);
+                        confirm = JOptionPane.showConfirmDialog(this, message, "Confirmation", JOptionPane.OK_OPTION, JOptionPane.QUESTION_MESSAGE);
+                        if (confirm == 0) {
+                            if (Client.cardlessWithdrawal(clientId, amount, pin, pin2, (int) requestTime)) {
+                                this.dispose();
+                                new cardlessWithdrawalStep2(clientId, pin2, amount, (int) requestTime).setVisible(true);
+                            } else {
+                                JOptionPane.showMessageDialog(this, "An error occured, please blame the programmer.", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
                         }
                     }
-                } else {
-                    errorLabel.setText("Incorrect PIN");
-                    pinInput.requestFocus();
-                    pinInput.setBorder(BorderFactory.createLineBorder(Color.red));
-                    errorLabel.setVisible(true);
                 }
+
             } else {
-                errorLabel.setText("Insufficient balance");
-                amountInput.setBorder(BorderFactory.createLineBorder(Color.red));
-                amountInput.requestFocus();
+                errorLabel.setText("Incorrect PIN");
+                pinInput.requestFocus();
+                pinInput.setBorder(BorderFactory.createLineBorder(Color.red));
                 errorLabel.setVisible(true);
             }
+
         } else if (pinInput.getText().trim().isEmpty()) {
             errorLabel.setText("Please enter your pin");
             pinInput.requestFocus();
@@ -253,14 +249,14 @@ public class withdrawalFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_amountInputFocusLost
 
-    private void pinInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pinInputKeyReleased
+    private void pinInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pinInputKeyTyped
         if (pinInput.getText().length() >= 6) {
             evt.consume();
             pinInput.setBorder(BorderFactory.createLineBorder(Color.green));
         } else {
             pinInput.setBorder(BorderFactory.createLineBorder(Color.red));
         }
-    }//GEN-LAST:event_pinInputKeyReleased
+    }//GEN-LAST:event_pinInputKeyTyped
 
     /**
      * @param args the command line arguments
@@ -278,22 +274,16 @@ public class withdrawalFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(withdrawalFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(withdrawalFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(withdrawalFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(withdrawalFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
+        //</editor-fold>
+
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new withdrawalFrame().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new withdrawalFrame().setVisible(true);
         });
     }
 

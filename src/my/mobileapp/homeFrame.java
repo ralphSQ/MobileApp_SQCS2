@@ -5,16 +5,9 @@
  */
 package my.mobileapp;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import javax.swing.JOptionPane;
 import java.text.NumberFormat;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -25,8 +18,8 @@ public class homeFrame extends javax.swing.JFrame {
     private String fullName;
     private int clientId;
     private String firstName;
-    private String balance;
-    private String expectedBalance;
+    private double balance;
+    private double expectedBalance;
 
     /**
      * Creates new form homeFrame
@@ -38,23 +31,23 @@ public class homeFrame extends javax.swing.JFrame {
     public homeFrame(int userId) {
         this.clientId = userId;
         initComponents();
-        
+
         if (Client.checkIfNew(clientId)) {
             JOptionPane.showMessageDialog(this, "Please change your password immediately", "Change Password", JOptionPane.WARNING_MESSAGE);
         }
 
         greetingLabel.setText("Hi, " + Client.getFirstName(clientId));
         fullNameLabel.setText(Client.createFullName(clientId));
-        double balance =Client.getBalance(clientId);
+        this.balance = Client.getBalance(clientId);
         NumberFormat format = NumberFormat.getCurrencyInstance(Locale.US);
         String formattedBalance = format.format(balance);
-        
+
         balanceLabel.setText(formattedBalance);
-        double expectedBalance =Client.getExpectedBalance(clientId);
+        
+        this.expectedBalance = Client.getExpectedBalance(clientId);
         String formattedExpectedBalance = format.format(expectedBalance);
         expectedBalLabel.setText(formattedExpectedBalance);
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -197,18 +190,18 @@ public class homeFrame extends javax.swing.JFrame {
 
     private void withdrawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_withdrawButtonActionPerformed
         this.dispose();
-        new withdrawalFrame(this.clientId,this.firstName,this.fullName).setVisible(true);
+        new withdrawalFrame(this.clientId).setVisible(true);
     }//GEN-LAST:event_withdrawButtonActionPerformed
 
     private void viewTransactionsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTransactionsButtonActionPerformed
-       this.dispose();
-       new viewTransactionsFrame(this.clientId).setVisible(true);
-        
+        this.dispose();
+        new viewTransactionsFrame(this.clientId).setVisible(true);
+
     }//GEN-LAST:event_viewTransactionsButtonActionPerformed
 
     private void fundTransferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fundTransferButtonActionPerformed
-       this.dispose();
-       new fundTransferFrame(this.clientId,this.firstName,this.fullName).setVisible(true);
+        this.dispose();
+        new fundTransferFrame(this.clientId).setVisible(true);
     }//GEN-LAST:event_fundTransferButtonActionPerformed
 
     private void logoutLabelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutLabelActionPerformed
@@ -218,7 +211,7 @@ public class homeFrame extends javax.swing.JFrame {
 
     private void changePassButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changePassButtonActionPerformed
         this.dispose();
-        new changePasswordFrame(this.clientId, this.fullName, this.firstName).setVisible(true);
+        new changePasswordFrame(this.clientId).setVisible(true);
     }//GEN-LAST:event_changePassButtonActionPerformed
 
     /**
@@ -237,22 +230,17 @@ public class homeFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(homeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(homeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(homeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(homeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+        //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new homeFrame().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new homeFrame().setVisible(true);
         });
     }
 

@@ -17,18 +17,18 @@ import javax.swing.JOptionPane;
  *
  * @author Ralph
  */
-public class forgotPasswordSecondStep extends javax.swing.JFrame {
+public class forgotPasswordInputNewPassword extends javax.swing.JFrame {
 
     private int clientId = 0;
 
     /**
      * Creates new form resetPasswordSecondStep
      */
-    public forgotPasswordSecondStep() {
+    public forgotPasswordInputNewPassword() {
         initComponents();
     }
 
-    public forgotPasswordSecondStep(int clientId) {
+    public forgotPasswordInputNewPassword(int clientId) {
         this.clientId = clientId;
         initComponents();
         errorLabel.setVisible(false);
@@ -251,21 +251,23 @@ public class forgotPasswordSecondStep extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(forgotPasswordSecondStep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(forgotPasswordInputNewPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(forgotPasswordSecondStep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(forgotPasswordInputNewPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(forgotPasswordSecondStep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(forgotPasswordInputNewPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(forgotPasswordSecondStep.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(forgotPasswordInputNewPassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new forgotPasswordSecondStep().setVisible(true);
+                new forgotPasswordInputNewPassword().setVisible(true);
             }
         });
     }

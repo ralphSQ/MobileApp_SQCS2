@@ -6,10 +6,8 @@
 package my.mobileapp;
 
 import java.awt.Color;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 /**
@@ -166,12 +164,8 @@ public class loginFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
-        if (usernameInput.getText().trim().isEmpty() || usernameInput.getText().equals("Username or Email Address")) {
-            errorUsernameLabel.setVisible(true);
-        } else if (new String(passwordInput.getPassword()).trim().isEmpty() || new String(passwordInput.getPassword()).equals("1234567890")) {
-            errorPasswordLabel.setVisible(true);
-        } else {
-            String password = "", username = "", fullName = "", firstName = "";
+        if ((!usernameInput.getText().trim().isEmpty() && !usernameInput.getText().equals("Username or Email Address")) && (!new String(passwordInput.getPassword()).trim().isEmpty() && !new String(passwordInput.getPassword()).equals("1234567890"))) {
+            String password = "", username = "";
             int clientId = 0;
             password = new String(passwordInput.getPassword());
             username = usernameInput.getText().trim();
@@ -180,15 +174,23 @@ public class loginFrame extends javax.swing.JFrame {
             } else {
                 clientId = Client.login(username, password);
             }
-            if (clientId != 0) { // 0 means not found
-                fullName = Client.createFullName(clientId);
-                firstName = Client.getFirstName(clientId);
+            if (clientId != 0) {
+                int accountNumber = Client.getAccountNumber(clientId);
+                boolean isActive = Client.checkIfActive(accountNumber);
+                if (isActive) {
+                    this.dispose();
+                    new homeFrame(clientId).setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(this,"This account is currently disabled, visit your bank to reactivate your account.");
+                }
                 // open home frame
-                this.dispose();
-                new homeFrame(clientId).setVisible(true);
             } else {
                 errorLabel.setVisible(true);
             }
+        } else if (usernameInput.getText().trim().isEmpty() || usernameInput.getText().equals("Username or Email Address")) {
+            errorUsernameLabel.setVisible(true);
+        } else if (new String(passwordInput.getPassword()).trim().isEmpty() || new String(passwordInput.getPassword()).equals("1234567890")) {
+            errorPasswordLabel.setVisible(true);
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 

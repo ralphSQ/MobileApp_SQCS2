@@ -6,8 +6,6 @@
 package my.mobileapp;
 
 import java.awt.Color;
-import java.sql.SQLException;
-import java.sql.Statement;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 
@@ -134,21 +132,30 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         if (!emailInput.getText().trim().isEmpty()) {
+
             EmailValidator validator = new EmailValidator();
+
             if (validator.validateEmail(emailInput.getText().trim())) {
+
                 emailInput.setBorder(BorderFactory.createLineBorder(Color.green));
+
                 if (Client.checkIfEmailExists(emailInput.getText().trim())) {
+
                     int clientId = Client.getIdWithEmail(emailInput.getText().trim());
                     int accountNumber = Client.getAccountNumber(clientId);
+
                     if (Client.checkIfRegistered(accountNumber)) {
+
                         String resetCode = PasswordGenerator.generateResetPasswordCode();
+
                         if (Client.setPasswordResetCode(emailInput.getText().trim(), resetCode)) {
+
                             if (Client.sendResetPassword(emailInput.getText(), resetCode)) {
                                 JOptionPane.showMessageDialog(this, "Password reset code has been sent to your email", "Success", JOptionPane.INFORMATION_MESSAGE);
                             } else {
                                 JOptionPane.showMessageDialog(this, "Email not sent, please try again or check your internet connection", "Try Again", JOptionPane.WARNING_MESSAGE);
                             }
-                            this.email = emailInput.getText();
+                            this.email = emailInput.getText().trim();
                             this.dispose();
                             new forgotPasswordInputCode(this.email).setVisible(true);
                         }
@@ -156,12 +163,13 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
                         errorLabel.setText("This email address is not registered yet");
                         emailInput.setBorder(BorderFactory.createLineBorder(Color.red));
                         errorLabel.setVisible(true);
+                        emailInput.requestFocus();
                     }
                 } else {
-
                     errorLabel.setText("Email address not found");
                     emailInput.setBorder(BorderFactory.createLineBorder(Color.red));
                     errorLabel.setVisible(true);
+                    emailInput.requestFocus();
                 }
             } else {
                 errorLabel.setText("Invalid email address format");
@@ -212,23 +220,18 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(forgotPasswordFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(forgotPasswordFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(forgotPasswordFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(forgotPasswordFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
 
+        //</editor-fold>
+        //</editor-fold>
+
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new forgotPasswordFrame().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new forgotPasswordFrame().setVisible(true);
         });
     }
 

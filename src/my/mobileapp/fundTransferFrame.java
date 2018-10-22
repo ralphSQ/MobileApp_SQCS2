@@ -16,8 +16,6 @@ import javax.swing.JOptionPane;
 public class fundTransferFrame extends javax.swing.JFrame {
 
     private int clientId;
-    private String firstName;
-    private String fullName;
 
     /**
      * Creates new form fundTransferFrame
@@ -26,11 +24,9 @@ public class fundTransferFrame extends javax.swing.JFrame {
         initComponents();
     }
 
-    public fundTransferFrame(int clientId, String firstName, String fullName) {
+    public fundTransferFrame(int clientId) {
         initComponents();
         this.clientId = clientId;
-        this.firstName = firstName;
-        this.fullName = fullName;
         errorLabel.setVisible(false);
     }
 
@@ -206,7 +202,7 @@ public class fundTransferFrame extends javax.swing.JFrame {
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
 
         if (!amountInput.getText().trim().isEmpty() && !targetAccountNumberInput.getText().trim().isEmpty() && !amountInput.getText().trim().equals("PIN") && !targetAccountNumberInput.getText().trim().equals("Receipient's Account Number")) {
-            int pin = 0, targetAccountNumber = 0, confirm = 0, targetId = 0;
+            int pin = 0, targetAccountNumber = 0, confirm = 0, targetId = 0, threshold = 0;
             double amount, balance;
             String targetName, message;
             pin = Integer.parseInt(pinInput.getText().trim());
@@ -216,41 +212,41 @@ public class fundTransferFrame extends javax.swing.JFrame {
 
             if (Client.checkIfAccountExists(targetAccountNumber)) {
                 if (Client.checkIfPinIsCorrect(pin, this.clientId) || Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
-                    if (!(balance - 2000 < amount)) {
-                        if (Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
-                            JOptionPane.showMessageDialog(this, "You are using your temporary pin assigned to your account.\nChange your PIN as soon as possible to increase your account's security", "Tip", JOptionPane.INFORMATION_MESSAGE);
-                        }
-                        
-                        amountInput.setBorder(BorderFactory.createLineBorder(Color.green));
-                        pinInput.setBorder(BorderFactory.createLineBorder(Color.green));
-                        targetAccountNumberInput.setBorder(BorderFactory.createLineBorder(Color.green));
-                        targetId = Client.getId(targetAccountNumber);
-                        targetName = Client.createFullName(targetId);
-                        message = "Fund Transfer"
-                                + "\n------------------------------"
-                                + "\nReceipient Name: " + targetName
-                                + "\nReceipient Account Number: " + targetAccountNumber
-                                + "\nAmount to Transfer: " + amount
-                                + "\n------------------------------";
-                        confirm = JOptionPane.showConfirmDialog(this, message, "Confirmation", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-                        if (confirm == 0) {
-                            if (Client.fundTransfer(clientId, amount, targetAccountNumber, balance)) {
-                                this.dispose();
-                                new fundTransferConfirmFrame(clientId, firstName, fullName, targetAccountNumber, targetName, amount).setVisible(true);
-                            } else {
-                                JOptionPane.showMessageDialog(this, "An error occured, please blame the programmer.", "Error", JOptionPane.ERROR_MESSAGE);
+                    if (balance < amount) {
+                        errorLabel.setText("Insufficient Balance");
+                        errorLabel.setVisible(true);
+                    } else if ((balance - 2000 < amount)) {
+
+                    }
+                    if ((balance - 2000 < amount)) {
+                        threshold = JOptionPane.showConfirmDialog(this, "You are about to go beyond the maintaining balance\nContinue transaction?", "Maintaining Balance", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                        if (threshold == 0) {
+                            if (Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
+                                JOptionPane.showMessageDialog(this, "You are using your temporary pin assigned to your account.\nChange your PIN as soon as possible to increase your account's security", "Tip", JOptionPane.INFORMATION_MESSAGE);
+                            }
+
+                            amountInput.setBorder(BorderFactory.createLineBorder(Color.green));
+                            pinInput.setBorder(BorderFactory.createLineBorder(Color.green));
+                            targetAccountNumberInput.setBorder(BorderFactory.createLineBorder(Color.green));
+                            targetId = Client.getId(targetAccountNumber);
+                            targetName = Client.createFullName(targetId);
+                            errorLabel.setVisible(false);
+                            message = "Fund Transfer"
+                                    + "\n------------------------------"
+                                    + "\nReceipient Name: " + targetName
+                                    + "\nReceipient Account Number: " + targetAccountNumber
+                                    + "\nAmount to Transfer: " + amount
+                                    + "\n------------------------------";
+                            confirm = JOptionPane.showConfirmDialog(this, message, "Confirmation", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                            if (confirm == 0) {
+                                if (Client.fundTransfer(clientId, amount, targetAccountNumber, balance)) {
+                                    this.dispose();
+                                    new fundTransferConfirmFrame(clientId, targetAccountNumber, targetName, amount).setVisible(true);
+                                } else {
+                                    JOptionPane.showMessageDialog(this, "An error occured, please blame the programmer.", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
                             }
                         }
-                        System.out.println("Target ID: " + targetId);
-                        System.out.println("Target NAME: " + targetName);
-                        System.out.println("Amount: " + amount);
-                        System.out.println("Balance: " + balance);
-
-                    } else {
-                        errorLabel.setText("Insufficient balance");
-                        amountInput.requestFocus();
-                        amountInput.setBorder(BorderFactory.createLineBorder(Color.red));
-                        errorLabel.setVisible(true);
                     }
                 } else {
                     errorLabel.setText("Incorrect PIN");

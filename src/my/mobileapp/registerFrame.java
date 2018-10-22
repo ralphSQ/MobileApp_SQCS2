@@ -132,53 +132,63 @@ public class registerFrame extends javax.swing.JFrame {
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
 
-        boolean isExisting = false, isRegistered = false;
+        boolean isExisting = false, isNotRegistered = false, isActive = false, isSavings = false;
+
+        int accountNumber;
 
         if (accountNumberInput.getText().trim().isEmpty()) {
+
             errorLabel.setText("Please enter your account number");
             errorLabel.setVisible(true);
             accountNumberInput.requestFocus();
             accountNumberInput.setBorder(BorderFactory.createLineBorder(Color.red));
+
         } else {
-            try {
-                isExisting = Client.checkIfAccountExists(Integer.valueOf(accountNumberInput.getText().trim()));
-                isRegistered = Client.checkIfRegistered(Integer.valueOf(accountNumberInput.getText().trim()));
-                if (!isExisting) {
-                    errorLabel.setText("Account number does not exist");
-                    errorLabel.setVisible(true);
-                    accountNumberInput.requestFocus();
-                    accountNumberInput.setBorder(BorderFactory.createLineBorder(Color.red));
-                } else if (isRegistered) {
-                    errorLabel.setText("Account number is already registered");
-                    errorLabel.setVisible(true);
-                    accountNumberInput.requestFocus();
-                    accountNumberInput.setBorder(BorderFactory.createLineBorder(Color.red));
-                } else if(Client.getAccountTypeUsingAccountNumber(Integer.valueOf(accountNumberInput.getText().trim())).equals("CURRENT")) {
-                    JOptionPane.showMessageDialog(this, "This account number is associated with an CURRENT account, only savings account can register.");
-                } else {
-                    int clientId = Client.getId(Integer.valueOf(accountNumberInput.getText().trim()));
-                    String username = Client.createUserName(clientId);
-                    String password = PasswordGenerator.generatePassword(8);
-                    String encryptedPassword = PasswordHasher.passwordHasher(password);
 
-                    accountNumberInput.setBorder(BorderFactory.createLineBorder(Color.green));
-                    String receipient = Client.getEmail(clientId);
-                    if (Client.sendCredentials(receipient, username, password)) {
-                        if (Client.setUsername(username, clientId) && Client.setPassword(encryptedPassword, clientId)) {
-                            JOptionPane.showMessageDialog(this, "Registration complete!\nCheck your email account for your login credentials.", "Success", JOptionPane.INFORMATION_MESSAGE);
-                            this.dispose();
-                            new loginFrame().setVisible(true);
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Account creation failed, please check your internet connection and try again.", "Failed", JOptionPane.WARNING_MESSAGE);
+            accountNumber = Integer.valueOf(accountNumberInput.getText().trim());
+
+            isExisting = Client.checkIfAccountExists(accountNumber);
+            isNotRegistered = Client.checkIfNotRegistered(accountNumber);
+            isActive = Client.checkIfActive(accountNumber);
+            isSavings = Client.checkIfAccountIsSavings(accountNumber);
+
+            if (isExisting && isNotRegistered && isActive && isSavings) {
+                int clientId = Client.getId(accountNumber);
+                String username = Client.createUserName(clientId);
+                String password = PasswordGenerator.generatePassword(8);
+                String encryptedPassword = PasswordHasher.passwordHasher(password);
+
+                accountNumberInput.setBorder(BorderFactory.createLineBorder(Color.green));
+
+                String receipient = Client.getEmail(clientId);
+                if (Client.sendCredentials(receipient, username, password)) {
+                    if (Client.setUsername(username, clientId) && Client.setPassword(encryptedPassword, clientId)) {
+                        JOptionPane.showMessageDialog(this, "Registration complete!\nCheck your email account for your login credentials.", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        this.dispose();
+                        new loginFrame().setVisible(true);
                     }
-
+                } else {
+                    JOptionPane.showMessageDialog(this, "Account creation failed, please check your internet connection and try again.", "Failed", JOptionPane.WARNING_MESSAGE);
                 }
-            } catch (NullPointerException ex) {
-                JOptionPane.showMessageDialog(this, "Failed to connect to database.\nPlease check your database connection and try again.", "Connection Failed", JOptionPane.ERROR_MESSAGE);
+            } else if (!isExisting) {
+                errorLabel.setText("Account number does not exist");
+                errorLabel.setVisible(true);
+                accountNumberInput.requestFocus();
+                accountNumberInput.setBorder(BorderFactory.createLineBorder(Color.red));
+            } else if (!isActive) {
+                errorLabel.setText("This account is marked as not active");
+                errorLabel.setVisible(true);
+                accountNumberInput.requestFocus();
+                accountNumberInput.setBorder(BorderFactory.createLineBorder(Color.red));
+            } else if (!isNotRegistered) {
+                errorLabel.setText("Account number is already registered");
+                errorLabel.setVisible(true);
+                accountNumberInput.requestFocus();
+                accountNumberInput.setBorder(BorderFactory.createLineBorder(Color.red));
+            } else if (!isSavings) {
+                JOptionPane.showMessageDialog(this, "This account number is associated with an CURRENT account, only savings account can register.");
             }
         }
-
     }//GEN-LAST:event_submitButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
@@ -220,29 +230,18 @@ public class registerFrame extends javax.swing.JFrame {
 
                 }
             }
-        } catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(registerFrame.class
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(registerFrame.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(registerFrame.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(registerFrame.class
-                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new registerFrame().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new registerFrame().setVisible(true);
         });
     }
 
