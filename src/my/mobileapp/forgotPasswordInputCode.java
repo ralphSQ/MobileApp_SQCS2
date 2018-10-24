@@ -6,6 +6,8 @@
 package my.mobileapp;
 
 import java.awt.Color;
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -78,6 +80,9 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 codeInputFocusGained(evt);
             }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                codeInputFocusLost(evt);
+            }
         });
         codeInput.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -138,16 +143,17 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitButtonActionPerformed
         if (!codeInput.getText().trim().isEmpty() && !codeInput.getText().trim().equals("Input Code")) {
             boolean resetCodeMatch = Client.checkPasswordResetCode(codeInput.getText(), this.email);
-            
+            codeInput.setBorder(BorderFactory.createLineBorder(Color.red));
             if (resetCodeMatch) {
-                
+
                 this.accountId = Client.getIdWithEmail(this.email);
                 this.dispose();
                 new forgotPasswordInputNewPassword(this.accountId).setVisible(true);
-                
+
             } else {
                 errorLabel.setText("Invalid password reset code");
                 errorLabel.setVisible(true);
+                codeInput.setBorder(BorderFactory.createLineBorder(Color.red));
             }
         }
     }//GEN-LAST:event_submitButtonActionPerformed
@@ -162,12 +168,28 @@ public class forgotPasswordInputCode extends javax.swing.JFrame {
     private void codeInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codeInputKeyTyped
         if (codeInput.getText().length() >= 6) {
             evt.consume();
+        } else {
+            codeInput.setBorder(BorderFactory.createLineBorder(Color.green));
         }
     }//GEN-LAST:event_codeInputKeyTyped
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure?", "Cancel", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (confirm == 0) {
+            this.dispose();
+            new loginFrame().setVisible(true);
+        }
     }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void codeInputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_codeInputFocusLost
+        if (codeInput.getText().trim().isEmpty()) {
+            codeInput.setBorder(BorderFactory.createLineBorder(Color.red));
+            errorLabel.setText("Enter code to continue");
+            errorLabel.setVisible(true);
+        } else {
+            codeInput.setBorder(BorderFactory.createLineBorder(Color.green));
+        }
+    }//GEN-LAST:event_codeInputFocusLost
 
     /**
      * @param args the command line arguments

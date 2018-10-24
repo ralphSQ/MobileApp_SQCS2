@@ -169,7 +169,7 @@ public class forgotPasswordInputNewPassword extends javax.swing.JFrame {
         int confirm = 0;
         if (newPassword.equals(repeatNewPassword)) {
             System.out.println(newPassword);
-            
+
             confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to change your password?", "Confirm", JOptionPane.YES_NO_OPTION);
             if (confirm == 0) {
                 Client.setPassword(encryptedPassword, this.clientId);
@@ -216,22 +216,26 @@ public class forgotPasswordInputNewPassword extends javax.swing.JFrame {
     }//GEN-LAST:event_repeatNewPasswordInputFocusLost
 
     private void repeatNewPasswordInputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_repeatNewPasswordInputKeyTyped
-      
+
     }//GEN-LAST:event_repeatNewPasswordInputKeyTyped
 
     private void repeatNewPasswordInputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_repeatNewPasswordInputKeyReleased
         String newPassword = new String(newPasswordInput.getPassword());
         String repeatNewPassword = new String(repeatNewPasswordInput.getPassword());
-         if (!newPassword.equals(repeatNewPassword)){
-             errorLabel.setText("New Password does not match");
-             errorLabel.setVisible(true);
-         } else {
-             errorLabel.setVisible(false);
-         }
+        if (!newPassword.equals(repeatNewPassword)) {
+            errorLabel.setText("New password does not match");
+            errorLabel.setVisible(true);
+        } else {
+            errorLabel.setVisible(false);
+        }
     }//GEN-LAST:event_repeatNewPasswordInputKeyReleased
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        // TODO add your handling code here:
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure?", "Cancel", JOptionPane.NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (confirm == 0) {
+            this.dispose();
+            new loginFrame().setVisible(true);
+        }
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**

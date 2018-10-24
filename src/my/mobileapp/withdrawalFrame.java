@@ -88,9 +88,10 @@ public class withdrawalFrame extends javax.swing.JFrame {
 
         errorLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         errorLabel.setForeground(java.awt.Color.red);
+        errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         errorLabel.setText("jLabel12");
         jPanel1.add(errorLabel);
-        errorLabel.setBounds(140, 570, 230, 30);
+        errorLabel.setBounds(60, 570, 310, 30);
 
         pinInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("######"))));
         pinInput.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
@@ -186,35 +187,42 @@ public class withdrawalFrame extends javax.swing.JFrame {
             LocalDateTime dateTime = LocalDateTime.ofEpochSecond(requestTime, 0, ZoneOffset.of("+8"));
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("Y M, d hh:mm a");
 
-            if (Client.checkIfPinIsCorrect(pin, this.clientId) || Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
-                if (balance < amount) {
-                    errorLabel.setText("Insufficient Balance");
-                    errorLabel.setVisible(true);
-                } else if ((balance - 2000 < amount)) {
-                    errorLabel.setVisible(false);
-                    threshold = JOptionPane.showConfirmDialog(this, "You are about to go beyond the maintaining balance\nContinue transaction?", "Maintaining Balance", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE);
-                    if (threshold == 0) {
-                        if (Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
-                            JOptionPane.showMessageDialog(this, "You are using your temporary pin assigned to your account.\nChange your PIN as soon as possible to increase your account's security", "Tip", JOptionPane.INFORMATION_MESSAGE);
-                        }
-                        message = "Fund Transfer"
-                                + "\n------------------------------"
-                                + "\nAmount: " + amount
-                                + "\nTime Request:" + dateTime.format(formatter);
-                        confirm = JOptionPane.showConfirmDialog(this, message, "Confirmation", JOptionPane.OK_OPTION, JOptionPane.QUESTION_MESSAGE);
-                        if (confirm == 0) {
-                            if (Client.cardlessWithdrawal(clientId, amount, pin, pin2, (int) requestTime)) {
-                                this.dispose();
-                                new cardlessWithdrawalStep2(clientId, pin2, amount, (int) requestTime).setVisible(true);
-                            } else {
-                                JOptionPane.showMessageDialog(this, "An error occured, please blame the programmer.", "Error", JOptionPane.ERROR_MESSAGE);
+            if (amount % 100 == 0) {
+                if (Client.checkIfPinIsCorrect(pin, this.clientId) || Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
+                    if (balance < amount) {
+                        errorLabel.setText("Insufficient Balance");
+                        errorLabel.setVisible(true);
+                    } else if ((balance - 2000 < amount)) {
+                        errorLabel.setVisible(false);
+                        threshold = JOptionPane.showConfirmDialog(this, "You are about to go beyond the maintaining balance\nContinue transaction?", "Maintaining Balance", JOptionPane.OK_OPTION, JOptionPane.INFORMATION_MESSAGE);
+                        if (threshold == 0) {
+                            if (Client.checkIfTemporaryPinIsCorrect(pin, clientId)) {
+                                JOptionPane.showMessageDialog(this, "You are using your temporary pin assigned to your account.\nChange your PIN as soon as possible to increase your account's security", "Tip", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                            message = "Withdrawal Request"
+                                    + "\n------------------------------"
+                                    + "\nAmount: " + amount
+                                    + "\nTime Request:" + dateTime.format(formatter);
+                            confirm = JOptionPane.showConfirmDialog(this, message, "Confirmation", JOptionPane.OK_OPTION, JOptionPane.QUESTION_MESSAGE);
+                            if (confirm == 0) {
+                                if (Client.cardlessWithdrawal(clientId, amount, pin, pin2, (int) requestTime)) {
+                                    this.dispose();
+                                    new cardlessWithdrawalStep2(clientId, pin2, amount, (int) requestTime).setVisible(true);
+                                } else {
+                                    JOptionPane.showMessageDialog(this, "An error occured, please blame the programmer.", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
                             }
                         }
                     }
-                }
 
+                } else {
+                    errorLabel.setText("Incorrect PIN");
+                    pinInput.requestFocus();
+                    pinInput.setBorder(BorderFactory.createLineBorder(Color.red));
+                    errorLabel.setVisible(true);
+                }
             } else {
-                errorLabel.setText("Incorrect PIN");
+                errorLabel.setText("You can only withdraw multiples of 100");
                 pinInput.requestFocus();
                 pinInput.setBorder(BorderFactory.createLineBorder(Color.red));
                 errorLabel.setVisible(true);

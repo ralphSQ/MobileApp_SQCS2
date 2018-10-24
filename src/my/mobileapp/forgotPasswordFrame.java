@@ -105,7 +105,7 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
         errorLabel.setForeground(java.awt.Color.red);
         errorLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         errorLabel.setText("Invalid email address");
-        jPanel1.add(errorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 520, 300, 40));
+        jPanel1.add(errorLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 520, 370, 40));
 
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
         jPanel1.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 420, 500));
@@ -143,28 +143,43 @@ public class forgotPasswordFrame extends javax.swing.JFrame {
 
                     int clientId = Client.getIdWithEmail(emailInput.getText().trim());
                     int accountNumber = Client.getAccountNumber(clientId);
+                    if (Client.checkIfAccountIsSavings(accountNumber)) {
 
-                    if (Client.checkIfRegistered(accountNumber)) {
+                        if (Client.checkIfActive(accountNumber)) {
 
-                        String resetCode = PasswordGenerator.generateResetPasswordCode();
+                            if (Client.checkIfRegistered(accountNumber)) {
 
-                        if (Client.setPasswordResetCode(emailInput.getText().trim(), resetCode)) {
+                                String resetCode = PasswordGenerator.generateResetPasswordCode();
 
-                            if (Client.sendResetPassword(emailInput.getText(), resetCode)) {
-                                JOptionPane.showMessageDialog(this, "Password reset code has been sent to your email", "Success", JOptionPane.INFORMATION_MESSAGE);
+                                if (Client.setPasswordResetCode(emailInput.getText().trim(), resetCode)) {
+
+                                    if (Client.sendResetPassword(emailInput.getText(), resetCode)) {
+                                        JOptionPane.showMessageDialog(this, "Password reset code has been sent to your email", "Success", JOptionPane.INFORMATION_MESSAGE);
+                                    } else {
+                                        JOptionPane.showMessageDialog(this, "Email not sent, please try again or check your internet connection", "Try Again", JOptionPane.WARNING_MESSAGE);
+                                    }
+                                    this.email = emailInput.getText().trim();
+                                    this.dispose();
+                                    new forgotPasswordInputCode(this.email).setVisible(true);
+                                }
                             } else {
-                                JOptionPane.showMessageDialog(this, "Email not sent, please try again or check your internet connection", "Try Again", JOptionPane.WARNING_MESSAGE);
+                                errorLabel.setText("This email address\n is not registered yet");
+                                emailInput.setBorder(BorderFactory.createLineBorder(Color.red));
+                                errorLabel.setVisible(true);
+                                emailInput.requestFocus();
                             }
-                            this.email = emailInput.getText().trim();
-                            this.dispose();
-                            new forgotPasswordInputCode(this.email).setVisible(true);
+                        } else {
+                            errorLabel.setText("This email is associated\n with an inactive account");
+                            emailInput.setBorder(BorderFactory.createLineBorder(Color.red));
+                            errorLabel.setVisible(true);
+                            emailInput.requestFocus();
                         }
                     } else {
-                        errorLabel.setText("This email address is not registered yet");
-                        emailInput.setBorder(BorderFactory.createLineBorder(Color.red));
-                        errorLabel.setVisible(true);
-                        emailInput.requestFocus();
-                    }
+                            errorLabel.setText("This email is associated\n with a CURRENT account");
+                            emailInput.setBorder(BorderFactory.createLineBorder(Color.red));
+                            errorLabel.setVisible(true);
+                            emailInput.requestFocus();
+                        }
                 } else {
                     errorLabel.setText("Email address not found");
                     emailInput.setBorder(BorderFactory.createLineBorder(Color.red));

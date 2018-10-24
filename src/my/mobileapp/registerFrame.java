@@ -186,7 +186,8 @@ public class registerFrame extends javax.swing.JFrame {
                 accountNumberInput.requestFocus();
                 accountNumberInput.setBorder(BorderFactory.createLineBorder(Color.red));
             } else if (!isSavings) {
-                JOptionPane.showMessageDialog(this, "This account number is associated with an CURRENT account, only savings account can register.");
+                JOptionPane.showMessageDialog(this, "Only savings accounts are allowed to register.", "Information",JOptionPane.INFORMATION_MESSAGE);
+                errorLabel.setVisible(false);
             }
         }
     }//GEN-LAST:event_submitButtonActionPerformed

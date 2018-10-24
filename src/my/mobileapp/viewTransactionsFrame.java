@@ -35,8 +35,9 @@ public class viewTransactionsFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        withdrawRequestButton = new javax.swing.JButton();
+        depositButton1 = new javax.swing.JButton();
         withdrawButton = new javax.swing.JButton();
-        depositButton = new javax.swing.JButton();
         BackButton = new javax.swing.JButton();
         fundTransfersButton = new javax.swing.JButton();
         title1 = new javax.swing.JLabel();
@@ -45,21 +46,36 @@ public class viewTransactionsFrame extends javax.swing.JFrame {
         header = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Transaction HIstory");
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        withdrawRequestButton.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+        withdrawRequestButton.setText("Withdraw Requests");
+        withdrawRequestButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                withdrawRequestButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(withdrawRequestButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 440, 200, 40));
+
+        depositButton1.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+        depositButton1.setText("Deposits");
+        depositButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                depositButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(depositButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 540, 200, 40));
+
         withdrawButton.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
-        withdrawButton.setText("Withdraw Requests");
+        withdrawButton.setText("Withdraws");
         withdrawButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 withdrawButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(withdrawButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 440, 200, 40));
-
-        depositButton.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
-        depositButton.setText("Deposits");
-        jPanel1.add(depositButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 490, 200, 40));
+        jPanel1.add(withdrawButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 490, 200, 40));
 
         BackButton.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         BackButton.setText("Back");
@@ -68,7 +84,7 @@ public class viewTransactionsFrame extends javax.swing.JFrame {
                 BackButtonActionPerformed(evt);
             }
         });
-        jPanel1.add(BackButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 540, 100, 40));
+        jPanel1.add(BackButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 590, 100, 40));
 
         fundTransfersButton.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
         fundTransfersButton.setText("Fund Transfers");
@@ -81,13 +97,15 @@ public class viewTransactionsFrame extends javax.swing.JFrame {
 
         title1.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
         title1.setForeground(new java.awt.Color(255, 255, 255));
-        title1.setText("View Transfer");
-        jPanel1.add(title1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 60, 350, 70));
+        title1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        title1.setText("Transaction");
+        jPanel1.add(title1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 410, 70));
 
         title2.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
         title2.setForeground(new java.awt.Color(255, 255, 255));
+        title2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         title2.setText("History");
-        jPanel1.add(title2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 100, 260, 100));
+        jPanel1.add(title2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 390, 100));
 
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
         jPanel1.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 420, 500));
@@ -122,10 +140,20 @@ public class viewTransactionsFrame extends javax.swing.JFrame {
         new homeFrame(this.clientId).setVisible(true);
     }//GEN-LAST:event_BackButtonActionPerformed
 
-    private void withdrawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_withdrawButtonActionPerformed
+    private void withdrawRequestButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_withdrawRequestButtonActionPerformed
         this.dispose();
         new viewWithdrawRequests(this.clientId).setVisible(true);
+    }//GEN-LAST:event_withdrawRequestButtonActionPerformed
+
+    private void withdrawButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_withdrawButtonActionPerformed
+        this.dispose();
+        new viewWithdrawsFrame(this.clientId).setVisible(true);
     }//GEN-LAST:event_withdrawButtonActionPerformed
+
+    private void depositButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_depositButton1ActionPerformed
+        this.dispose();
+        new viewDepositsFrame(this.clientId).setVisible(true);
+    }//GEN-LAST:event_depositButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -165,12 +193,13 @@ public class viewTransactionsFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackButton;
     private javax.swing.JLabel background;
-    private javax.swing.JButton depositButton;
+    private javax.swing.JButton depositButton1;
     private javax.swing.JButton fundTransfersButton;
     private javax.swing.JLabel header;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel title1;
     private javax.swing.JLabel title2;
     private javax.swing.JButton withdrawButton;
+    private javax.swing.JButton withdrawRequestButton;
     // End of variables declaration//GEN-END:variables
 }

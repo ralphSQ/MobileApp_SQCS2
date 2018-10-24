@@ -142,21 +142,25 @@ public class cardlessWithdrawalStep2 extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-       if(Client.updateWithdrawal(clientId, pin2, timeRequest,2)){
-           int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to cancel this transaction?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
-           if(confirm == 0){
-               JOptionPane.showMessageDialog(this, "Transaction cancelled");
-               this.dispose();
-               new homeFrame(this.clientId).setVisible(true);
-           }
-       } else {
-         JOptionPane.showMessageDialog(this,"An error occured, please blame the programmer.","Error", JOptionPane.ERROR_MESSAGE);   
-       }
+        if (Client.checkIfWithdrawDone(clientId, pin2, timeRequest)) {
+            JOptionPane.showMessageDialog(this, "Transaction is already done.\nThank you");
+            this.dispose();
+            new homeFrame(this.clientId).setVisible(true);
+        } else if (Client.cancelWithdrawal(clientId, pin2, timeRequest, 2)) {
+            int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to cancel this transaction?", "Confirmation", JOptionPane.OK_CANCEL_OPTION);
+            if (confirm == 0) {
+                JOptionPane.showMessageDialog(this, "Transaction cancelled");
+                this.dispose();
+                new homeFrame(this.clientId).setVisible(true);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "An error occured, please blame the programmer.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
-        int status = Client.getWithdrawalStatus(clientId, pin2, timeRequest);
-        if(status == 1){
+        boolean isDone = Client.checkIfWithdrawDone(clientId, pin2, timeRequest);
+        if (isDone) {
             JOptionPane.showMessageDialog(this, "Withdrawal successful!");
         } else {
             JOptionPane.showMessageDialog(this, "Transaction is not yet done, click cancel if you wish to end the transaction.");

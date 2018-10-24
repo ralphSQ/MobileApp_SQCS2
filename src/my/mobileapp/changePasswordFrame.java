@@ -250,28 +250,33 @@ public class changePasswordFrame extends javax.swing.JFrame {
         String newPassword = "", encryptedPassword = "", oldPassword = "";
         int confirm = 0;
         oldPassword = new String(oldPasswordInput.getPassword());
-        if (newPasswordInput.getText().equals(repeatNewPasswordInput.getText())) {
-            
-            if (getPassword.equals(PasswordHasher.passwordHasher(oldPassword))) {
-                
-                oldPasswordInput.setBorder(BorderFactory.createLineBorder(Color.green));
-                newPassword = new String(newPasswordInput.getPassword());
-                encryptedPassword = PasswordHasher.passwordHasher(newPassword);
-                confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to change your password?", "Confirm", JOptionPane.YES_NO_OPTION);
+        if (!newPasswordInput.getText().equals("1234567890") && !repeatNewPasswordInput.getText().equals("1234567890")) {
+            if (newPasswordInput.getText().equals(repeatNewPasswordInput.getText())) {
 
-                if (confirm == 0) {
-                    Client.changePassword(encryptedPassword, clientId);
-                    this.dispose();
-                    JOptionPane.showMessageDialog(this, "Password changed successfully.");
-                    new homeFrame(clientId).setVisible(true);
+                if (getPassword.equals(PasswordHasher.passwordHasher(oldPassword))) {
+
+                    oldPasswordInput.setBorder(BorderFactory.createLineBorder(Color.green));
+                    newPassword = new String(newPasswordInput.getPassword());
+                    encryptedPassword = PasswordHasher.passwordHasher(newPassword);
+                    confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to change your password?", "Confirm", JOptionPane.YES_NO_OPTION);
+
+                    if (confirm == 0) {
+                        Client.changePassword(encryptedPassword, clientId);
+                        this.dispose();
+                        JOptionPane.showMessageDialog(this, "Password changed successfully.");
+                        new homeFrame(clientId).setVisible(true);
+                    }
+                } else {
+                    errorLabel.setText("Old password is incorrect");
+                    oldPasswordInput.setBorder(BorderFactory.createLineBorder(Color.red));
+                    oldPasswordInput.requestFocus();
+                    errorLabel.setVisible(true);
                 }
-            } else {
-                errorLabel.setText("Old password is incorrect");
-                oldPasswordInput.setBorder(BorderFactory.createLineBorder(Color.red));
-                oldPasswordInput.requestFocus();
-                errorLabel.setVisible(true);
             }
-        } 
+        } else {
+            errorLabel.setText("Please fill in the required fields");
+            errorLabel.setVisible(true);
+        }
 
 
     }//GEN-LAST:event_btnSubmitActionPerformed
@@ -307,7 +312,7 @@ public class changePasswordFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(changePasswordFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */

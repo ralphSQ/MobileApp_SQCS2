@@ -19,55 +19,53 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Ralph
  */
-public class viewWithdrawRequests extends javax.swing.JFrame {
+public class viewWithdrawsFrame extends javax.swing.JFrame {
 
     private int clientId;
     private DefaultTableModel model;
 
     /**
-     * Creates new form viewWithdrawRequests
+     * Creates new form viewWithdrawsFrame
      */
-    public viewWithdrawRequests() {
+    public viewWithdrawsFrame() {
         initComponents();
     }
-
-    public viewWithdrawRequests(int clientId) {
-        this.clientId = clientId;
+    public viewWithdrawsFrame(int clientId) {
         initComponents();
-        String[] columns = {"Date", "Amount", "STATUS"};
+        this.clientId = clientId;
+        String[] columns = {"Date", "Amount", "Method", "Balance"};
         model = new DefaultTableModel(columns, 0);
         populateModel(model);
-        transactionsTable.setModel(model);
+        withdrawsTable.setModel(model);
     }
-
-    public void populateModel(DefaultTableModel Model) {
+    
+         public void populateModel(DefaultTableModel Model) {
         try {
             int date = 0;
-            double amount = 0;
-            String formattedDate = "", status = "";
-            ResultSet rs = Client.getWithdrawRequests(clientId);
+            double amount = 0, balance = 0;
+            String formattedDate = "",method = "";
+            ResultSet rs = Client.getWithdraws(clientId);
             if (rs == null) {
                 JOptionPane.showMessageDialog(this, "No transaction to show.", "No Transaction", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                do {
-                    date = rs.getInt("TIMEREQUEST");
+                do{
+                    date = rs.getInt("TRANSACT_DATE");
                     LocalDateTime expiryTime = LocalDateTime.ofEpochSecond(date, 0, ZoneOffset.of("+8"));
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("Y/M/d - hh:mm a");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("Y M d, hh:mm a");
                     formattedDate = String.valueOf(expiryTime.plusMinutes(30).format(formatter));
-                    amount = rs.getDouble("AMOUNT");
-                    switch (rs.getInt("STATUS")) {
-                        case 1:
-                            status = "Done";
-                        case 2:
-                            status = "Cancelled";
-                    }
-                    this.model.addRow(new Object[]{formattedDate, amount, status});
-                } while (rs.next());
+                    amount = rs.getDouble("TRANSACT_AMOUNT");
+                    balance = rs.getDouble("BALANCE_CURRENT");
+                    method = rs.getString("TRANSACT_METHOD");
+                    this.model.addRow(new Object[]{formattedDate, amount, method, balance});
+                } while(rs.next());
+                
             }
         } catch (SQLException ex) {
             Logger.getLogger(viewFundTransfersFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -78,64 +76,64 @@ public class viewWithdrawRequests extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        transactionsTable = new javax.swing.JTable();
-        title1 = new javax.swing.JLabel();
-        title2 = new javax.swing.JLabel();
-        Back = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        withdrawsTable = new javax.swing.JTable();
+        title5 = new javax.swing.JLabel();
+        title6 = new javax.swing.JLabel();
+        Back2 = new javax.swing.JButton();
         background = new javax.swing.JLabel();
         header = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Withdraw Request History");
-        setResizable(false);
+        setTitle("Withdraw History");
 
-        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        transactionsTable.setAutoCreateRowSorter(true);
-        transactionsTable.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        transactionsTable.setToolTipText("");
-        jScrollPane1.setViewportView(transactionsTable);
+        withdrawsTable.setAutoCreateRowSorter(true);
+        withdrawsTable.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        withdrawsTable.setToolTipText("");
+        jScrollPane3.setViewportView(withdrawsTable);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 390, 430));
+        jPanel3.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 240, 390, 430));
 
-        title1.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
-        title1.setForeground(new java.awt.Color(255, 255, 255));
-        title1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        title1.setText("Withdraw Requests");
-        jPanel1.add(title1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 410, 70));
+        title5.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
+        title5.setForeground(new java.awt.Color(255, 255, 255));
+        title5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        title5.setText("Withdrawal");
+        jPanel3.add(title5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 410, 70));
 
-        title2.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
-        title2.setForeground(new java.awt.Color(255, 255, 255));
-        title2.setText("History");
-        jPanel1.add(title2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 100, 260, 100));
+        title6.setFont(new java.awt.Font("Calibri", 1, 48)); // NOI18N
+        title6.setForeground(new java.awt.Color(255, 255, 255));
+        title6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        title6.setText("History");
+        jPanel3.add(title6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 410, 100));
 
-        Back.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
-        Back.setText("Back");
-        Back.addActionListener(new java.awt.event.ActionListener() {
+        Back2.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        Back2.setText("Back");
+        Back2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BackActionPerformed(evt);
+                Back2ActionPerformed(evt);
             }
         });
-        jPanel1.add(Back, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 680, 90, 40));
+        jPanel3.add(Back2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 680, 90, 40));
 
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/BG_LandPage.jpg"))); // NOI18N
-        jPanel1.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 420, 500));
+        jPanel3.add(background, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 420, 500));
 
         header.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SourceImages/History_Banner.jpg"))); // NOI18N
-        jPanel1.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, -1, 260));
+        jPanel3.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, -1, 260));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 731, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 731, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -143,10 +141,10 @@ public class viewWithdrawRequests extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
+    private void Back2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Back2ActionPerformed
         this.dispose();
         new viewTransactionsFrame(this.clientId).setVisible(true);
-    }//GEN-LAST:event_BackActionPerformed
+    }//GEN-LAST:event_Back2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -165,32 +163,32 @@ public class viewWithdrawRequests extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(viewWithdrawRequests.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(viewWithdrawsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(viewWithdrawRequests.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(viewWithdrawsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(viewWithdrawRequests.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(viewWithdrawsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(viewWithdrawRequests.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(viewWithdrawsFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new viewWithdrawRequests().setVisible(true);
+                new viewWithdrawsFrame().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Back;
+    private javax.swing.JButton Back2;
     private javax.swing.JLabel background;
     private javax.swing.JLabel header;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel title1;
-    private javax.swing.JLabel title2;
-    private javax.swing.JTable transactionsTable;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel title5;
+    private javax.swing.JLabel title6;
+    private javax.swing.JTable withdrawsTable;
     // End of variables declaration//GEN-END:variables
 }
